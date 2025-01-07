@@ -1,0 +1,16 @@
+[
+	{
+		"modid": "${mod_id}",
+		"name": "${mod_name}",
+		"description": "for me",
+		"version": "${mod_version}",
+		"mcversion": "1.12.2",
+		"url": "https://github.com/spacecat393/Nali-Library",
+		"updateUrl": "",
+		"authorList": ["Nali"],
+		"credits": "",
+		"logoFile": "",
+		"screenshots": [],
+		"dependencies": []
+	}
+]
