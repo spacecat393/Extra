@@ -1,2 +1,4 @@
 #itemGroup.extra=Extra
 item.extra.box.name=Box
+tile.extra.glowshape.name=GlowShape
+tile.extra.glowshapeb.name=GlowShape B

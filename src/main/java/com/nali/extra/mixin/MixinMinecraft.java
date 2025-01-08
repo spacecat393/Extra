@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -50,4 +51,10 @@ public abstract class MixinMinecraft
 //		return false;
 //	}
 	//*extra-e0
+
+	//remove CreativeTabs
+	@Overwrite
+	public void populateSearchTreeManager()
+	{
+	}
 }
