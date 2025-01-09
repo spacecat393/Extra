@@ -19,7 +19,7 @@ public class RenderExtraSky
 > extends RenderO<BD>
 {
 	@Override
-	public void setFixedPipe(MemoS rs)
+	public void setUniform(MemoG rg, MemoS rs, int index)
 	{
 		FLOATBUFFER.limit(16);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
@@ -29,26 +29,7 @@ public class RenderExtraSky
 //		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
 //		FLOATBUFFER.limit(4);
 //		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2], FLOATBUFFER);
-	}
-
-	@Override
-	public void updateLight(MemoG rg)
-	{
-	}
-
-	@Override
-	public void setLightCoord(MemoS rs)
-	{
-	}
-
-	@Override
-	public void updateLightCoord(World world, BlockPos blockpos)
-	{
-	}
-
-	@Override
-	public void setLightMapUniform(MemoS rs)
-	{
+		this.setTextureUniform(rg, rs);
 	}
 
 	@Override

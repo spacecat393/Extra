@@ -2,6 +2,8 @@ package com.nali.extra.mixin;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -15,5 +17,22 @@ public abstract class MixinItem
 	{
 //		Nali.warn(tab + " " + this.tabToDisplayOn);
 		return (Item)(Object)this;
+	}
+
+	@Overwrite
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+	{
+	}
+
+	@Overwrite
+	protected boolean isInCreativeTab(CreativeTabs targetTab)
+	{
+		return false;
+	}
+
+	@Overwrite
+	public CreativeTabs getCreativeTab()
+	{
+		return null;
 	}
 }

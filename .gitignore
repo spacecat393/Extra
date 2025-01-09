@@ -23,6 +23,7 @@ run/screenshots
 run/server
 run/natives
 run/.mixin.out
+run/*.dot
 defaultconfigs
 mods
 resourcepacks

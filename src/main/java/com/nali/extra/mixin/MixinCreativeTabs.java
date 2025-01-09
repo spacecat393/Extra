@@ -48,11 +48,11 @@ public abstract class MixinCreativeTabs
 	@Mutable
 	@Shadow @Final public static CreativeTabs INVENTORY;
 
-//	@Shadow public static CreativeTabs[] CREATIVE_TAB_ARRAY;
+	@Shadow public static CreativeTabs[] CREATIVE_TAB_ARRAY;
 
 	static
 	{
-//		CREATIVE_TAB_ARRAY = null;
+		CREATIVE_TAB_ARRAY = new CreativeTabs[0];
 		BUILDING_BLOCKS = null;
 		DECORATIONS = null;
 		REDSTONE = null;

@@ -1,4 +1,3 @@
-ProjectionMatrix
-ModelViewMatrix
-Color
-texture_sampler
+Project
+View
+Texture

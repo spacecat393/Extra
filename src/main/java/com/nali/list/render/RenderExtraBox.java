@@ -28,7 +28,7 @@ public class RenderExtraBox
 	public static void setTextureMap()
 	{
 		COLOR_MAP.clear();
-		COLOR_MAP.put((G_LIST.get(BothDaExtraBox.IDA.O_StartPart() + 1)).ebo, 0xFFffc196);
+		COLOR_MAP.put((G_LIST.get(BothDaExtraBox.IDA.O_StartPart() + 1)).ebo, 0xFFFFFFFF);
 		COLOR_MAP.put((G_LIST.get(BothDaExtraBox.IDA.O_StartPart() + 2)).ebo, 0xFFffc196);
 	}
 
@@ -45,14 +45,13 @@ public class RenderExtraBox
 		{
 			this.extra_bit = 4;
 			int color = this.getTextureID(rg);
-//			FLOATBUFFER.limit(3);
 			FLOATBUFFER.clear();
 			FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
 			FLOATBUFFER.put(((color >> 8) & 0xFF) / 255.0F);
 			FLOATBUFFER.put((color & 0xFF) / 255.0F);
 			FLOATBUFFER.put(((color >> 24) & 0xFF) / 255.0F);
 			FLOATBUFFER.flip();
-			OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4/*+1*/], FLOATBUFFER);
+			OpenGlHelper.glUniform4(rs.uniformlocation_int_array[5], FLOATBUFFER);
 		}
 	}
 
@@ -69,21 +68,6 @@ public class RenderExtraBox
 		{
 			this.extra_bit = 4;
 			return integer;
-		}
-	}
-
-	@Override
-	public void setLightMapUniform(MemoS rs)
-	{
-		if (this.extra_bit == 4)
-		{
-			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
-//			OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
-//			setLightMapBuffer(((IMixinEntityRenderer) Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
-		}
-		else
-		{
-			super.setLightMapUniform(rs);
 		}
 	}
 

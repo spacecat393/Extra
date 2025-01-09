@@ -4,13 +4,13 @@ precision highp float;
 attribute vec3 vertex;
 attribute vec2 texcoord;
 
-uniform mat4 ProjectionMatrix;
-uniform mat4 ModelViewMatrix;
+uniform mat4 Project;
+uniform mat4 View;
 
 varying vec2 fragment_texcoord;
 
 void main()
 {
-	gl_Position = ProjectionMatrix * ModelViewMatrix * vec4(vertex, 1.0);
+	gl_Position = Project * View * vec4(vertex, 1.0);
 	fragment_texcoord = texcoord;
 }
