@@ -40,7 +40,7 @@ public abstract class MixinEntityLivingBase/* extends Entity*/
 //	}
 
 	@Redirect(method = "attackEntityFrom", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/EntityLivingBase;hurtResistantTime:I", ordinal = 1))
-	private void nali_attackEntityFrom_hurtResistantTime(EntityLivingBase instance, int value)
+	private void nali_extra_attackEntityFrom_hurtResistantTime(EntityLivingBase instance, int value)
 	{
 //		this.hurtResistantTime = 0;
 	}

@@ -228,19 +228,19 @@ public abstract class MixinRenderGlobal
 	}
 
 	@Redirect(method = "drawSelectionBox", at = @At(value = "FIELD", target = "Lnet/minecraft/util/math/RayTraceResult;typeOfHit:Lnet/minecraft/util/math/RayTraceResult$Type;"))
-	public RayTraceResult.Type nali_drawSelectionBox_Type(RayTraceResult instance)
+	public RayTraceResult.Type nali_extra_drawSelectionBox_Type(RayTraceResult instance)
 	{
 		return RayTraceResult.Type.BLOCK;
 	}
 
 	@Redirect(method = "drawSelectionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;getMaterial()Lnet/minecraft/block/material/Material;"))
-	public Material nali_drawSelectionBox_Material(IBlockState instance)
+	public Material nali_extra_drawSelectionBox_Material(IBlockState instance)
 	{
 		return Material.GRASS;
 	}
 
 	@Redirect(method = "drawSelectionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;drawSelectionBoundingBox(Lnet/minecraft/util/math/AxisAlignedBB;FFFF)V"))
-	public void nali_drawSelectionBox_Material(AxisAlignedBB box, float red, float green, float blue, float alpha)
+	public void nali_extra_drawSelectionBox_Material(AxisAlignedBB box, float red, float green, float blue, float alpha)
 	{
 //		if (Minecraft.getMinecraft().objectMouseOver.entityHit != null)
 //		{

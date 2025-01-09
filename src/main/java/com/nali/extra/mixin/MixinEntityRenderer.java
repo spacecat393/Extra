@@ -56,7 +56,7 @@ public abstract class MixinEntityRenderer
 	}
 
 	@Redirect(method = "setupCameraTransform", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;farPlaneDistance:F", ordinal = 0))
-	private void nali_setupCameraTransform(EntityRenderer instance, float value)
+	private void nali_extra_setupCameraTransform(EntityRenderer instance, float value)
 	{
 		this.farPlaneDistance = 64 * 16;
 //		this.farPlaneDistance = 64 * 64 * 64 * 64 * 64;
@@ -80,7 +80,7 @@ public abstract class MixinEntityRenderer
 	}
 
 	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 0))
-	private void nali_getMouseOver(Minecraft instance, RayTraceResult value)
+	private void nali_extra_getMouseOver(Minecraft instance, RayTraceResult value)
 	{
 		if (value != null)
 		{

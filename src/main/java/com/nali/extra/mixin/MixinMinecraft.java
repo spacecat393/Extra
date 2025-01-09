@@ -13,23 +13,23 @@ public abstract class MixinMinecraft
 {
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
-	private void nali_setIngameFocus(Minecraft instance, int value)
+	private void nali_extra_setIngameFocus(Minecraft instance, int value)
 	{
 	}
 
 	@Redirect(method = "clickMouse", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I", ordinal = 2))
-	private void nali_clickMouse(Minecraft instance, int value)
+	private void nali_extra_clickMouse(Minecraft instance, int value)
 	{
 	}
 
 	@Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I", ordinal = 0))
-	private void nali_runTick(Minecraft instance, int value)
+	private void nali_extra_runTick(Minecraft instance, int value)
 	{
 
 	}
 
 	@Redirect(method = "rightClickMouse", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;rightClickDelayTimer:I"))
-	private void nali_rightClickMouse_rightClickDelayTimer(Minecraft instance, int value)
+	private void nali_extra_rightClickMouse_rightClickDelayTimer(Minecraft instance, int value)
 	{
 	}
 
@@ -40,7 +40,7 @@ public abstract class MixinMinecraft
 //	}
 
 	@Redirect(method = "rightClickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;getMaterial()Lnet/minecraft/block/material/Material;"))
-	private Material nali_rightClickMouse_Material(IBlockState instance)
+	private Material nali_extra_rightClickMouse_Material(IBlockState instance)
 	{
 		return Material.GRASS;
 	}

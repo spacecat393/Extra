@@ -43,7 +43,7 @@ public abstract class MixinEntityItem extends Entity
 	@Shadow public abstract ItemStack getItem();
 
 	@Inject(method = "onUpdate", at = @At(value = "HEAD"))
-	private void nali_small_onUpdate(CallbackInfo ci)
+	private void nali_extra_onUpdate(CallbackInfo ci)
 	{
 		if (!this.world.isRemote)
 		{
