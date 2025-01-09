@@ -1,28 +1,31 @@
 {
-  "package": "com.nali.extra.mixin",
-  "required": true,
-  "refmap": "${mixin_refmap}",
-  "target": "@env(DEFAULT)",
-  "minVersion": "0.8.5",
-  "compatibilityLevel": "JAVA_8",
-  "client": [
-    "MixinEntityRenderer",
-    "MixinGlStateManager",
-    "MixinMinecraft",
-    "MixinNetHandlerPlayClient",
-    "MixinPlayerControllerMP",
-    "MixinRecipeBookClient",
-    "MixinRender",
-    "MixinRenderGlobal",
-    "MixinTileEntityRendererDispatcher"
-  ],
-  "mixins": [
-    "IMixinRayTraceResult",
-    "MixinCreativeTabs",
-    "MixinEntityItem",
-    "MixinEntityLivingBase",
-    "MixinEntityPlayer",
-    "MixinItem",
-    "MixinMinecraftServer"
-  ]
+	"package": "com.nali.extra.mixin",
+	"required": true,
+	"refmap": "${mixin_refmap}",
+	"target": "@env(DEFAULT)",
+	"minVersion": "0.8.5",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"MixinBakedQuad",
+		"MixinEntityRenderer",
+		"MixinGlStateManager",
+		"MixinMinecraft",
+		"MixinNetHandlerPlayClient",
+		"MixinPlayerControllerMP",
+		"MixinRecipeBookClient",
+		"MixinRender",
+		"MixinRenderGlobal",
+		"MixinTileEntityRendererDispatcher"
+	],
+	"mixins": [
+		"IMixinRayTraceResult",
+		"MixinCreativeTabs",
+		"MixinEntityItem",
+		"MixinEntityLivingBase",
+		"MixinEntityPlayer",
+		"MixinItem",
+		"MixinLightUtil",
+		"MixinMinecraftServer",
+		"MixinTexturedQuad"
+	]
 }

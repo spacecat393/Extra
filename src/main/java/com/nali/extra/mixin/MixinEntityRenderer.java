@@ -2,14 +2,17 @@ package com.nali.extra.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //*extra
 @Mixin(EntityRenderer.class)
@@ -20,7 +23,18 @@ public abstract class MixinEntityRenderer
 
 	@Shadow @Final private Minecraft mc;
 
-	@Shadow private Entity pointedEntity;
+//	@Shadow private Entity pointedEntity;
+
+//	@Shadow private boolean lightmapUpdateNeeded;
+
+//	@Mutable
+	@Shadow @Final private DynamicTexture lightmapTexture;
+
+//	@Mutable
+	@Shadow @Final private int[] lightmapColors;
+
+//	@Mutable
+//	@Shadow @Final private ResourceLocation locationLightMap;
 
 	//won't work with Nothirium
 	@Overwrite
@@ -296,4 +310,46 @@ public abstract class MixinEntityRenderer
 ////		DATA_SIZE = 0;
 ////		FIRST_MODEL_MAP.clear();
 ////	}
+
+	//s0-remove light
+	@Inject(method = "<init>", at = @At(value = "TAIL"))
+	private void nali_extra_init(Minecraft mcIn, IResourceManager resourceManagerIn, CallbackInfo ci)
+	{
+//		mcIn.getTextureManager().deleteTexture(this.locationLightMap);
+//
+//		this.lightmapTexture = new DynamicTexture(1, 1);
+//		this.locationLightMap = mcIn.getTextureManager().getDynamicTextureLocation("lightMap", this.lightmapTexture);
+//		this.lightmapColors = this.lightmapTexture.getTextureData();
+//
+//		this.lightmapColors[0] = 0xFFFFFFFF;
+		for (int i = 0; i < 16*16; ++i)
+		{
+			//0xFF000000
+//					this.lightmapColors[i] = -16777216 | 255 << 16 | 255 << 8 | 255;
+			this.lightmapColors[i] = 0xFFFFFFFF;
+		}
+
+		this.lightmapTexture.updateDynamicTexture();
+	}
+
+	@Overwrite
+	private void updateLightmap(float partialTicks)
+	{
+//		if (this.lightmapUpdateNeeded)
+//		{
+//			World world = this.mc.world;
+//
+//			if (world != null)
+//			{
+//				this.lightmapUpdateNeeded = false;
+//			}
+//		}
+	}
+
+	@Overwrite
+	private void updateTorchFlicker()
+	{
+
+	}
+	//e0-remove light
 }

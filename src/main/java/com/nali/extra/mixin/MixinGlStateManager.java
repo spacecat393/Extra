@@ -86,4 +86,30 @@ public abstract class MixinGlStateManager
 //
 //		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 //	}
+
+	//remove light
+	@Overwrite
+	public static void enableLighting()
+	{
+	}
+
+	@Overwrite
+	public static void disableLighting()
+	{
+	}
+
+	@Overwrite
+	public static void enableLight(int light)
+	{
+	}
+
+	@Overwrite
+	public static void disableLight(int light)
+	{
+	}
+
+	@Overwrite
+	public static void glLight(int light, int pname, FloatBuffer params)
+	{
+	}
 }
