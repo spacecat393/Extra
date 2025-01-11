@@ -1,37 +1,32 @@
 package com.nali.list.render;
 
 import com.nali.da.IBothDaO;
-import com.nali.list.da.BothDaExtraGlowshape;
-import com.nali.list.data.ExtraData;
+import com.nali.list.da.BothDaExtraGlowshapedown;
 import com.nali.list.data.SmallData;
 import com.nali.render.RenderHelper;
 import com.nali.render.RenderO;
+import com.nali.small.render.IRenderO;
 import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoG;
-import com.nali.system.opengl.memo.client.MemoS;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
-public class RenderExtraGlowshape
+public class RenderExtraGlowshapedown
 <
 	BD extends IBothDaO
-> extends RenderO<BD>
+> extends RenderO<BD> implements IRenderO<BD, RenderExtraGlowshapedown<BD>>
 {
 	public static Map<Integer, Integer> TEXTURE_MAP = new HashMap();
 
 	public static void setTextureMap()
 	{
 		TEXTURE_MAP.clear();
-		TEXTURE_MAP.put(ClientLoader.G_LIST.get(BothDaExtraGlowshape.IDA.O_StartPart()).ebo, RenderHelper.getTextureBuffer(new ResourceLocation("textures/blocks/glowstone.png")));
+		TEXTURE_MAP.put(ClientLoader.G_LIST.get(BothDaExtraGlowshapedown.IDA.O_StartPart()).ebo, RenderHelper.getTextureBuffer(new ResourceLocation("textures/blocks/glowstone.png")));
 	}
 
 	@Override

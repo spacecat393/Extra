@@ -12,4 +12,6 @@ SkyPlane_011 11 extra 0 2 0 0 0
 BoxOrange 0 small 0 0 1 0 0
 BoxBody_001 -1 small 1 1 0 0 0
 BoxBody_002 -1 small 1 1 0 0 0
-GlowShapeCube -1 small 0 0 0 0 1
+BoxBody_003 -1 small 1 1 0 0 0
+GlowShapeDown -1 small 0 0 1 0 1
+GlowShapeSide -1 small 0 0 1 0 1

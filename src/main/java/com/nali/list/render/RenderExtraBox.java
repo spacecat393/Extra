@@ -30,6 +30,7 @@ public class RenderExtraBox
 		COLOR_MAP.clear();
 		COLOR_MAP.put((G_LIST.get(BothDaExtraBox.IDA.O_StartPart() + 1)).ebo, 0xFFFFFFFF);
 		COLOR_MAP.put((G_LIST.get(BothDaExtraBox.IDA.O_StartPart() + 2)).ebo, 0xFFffc196);
+		COLOR_MAP.put((G_LIST.get(BothDaExtraBox.IDA.O_StartPart() + 3)).ebo, 0xFFABB265);
 	}
 
 	@Override

@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class ExtraGlowshapeb extends ExtraGlowshape
+public class ExtraGlowshapesideb extends ExtraGlowshapeside
 {
 	public static int ID;
 
-	public ExtraGlowshapeb(String[] string_array)
+	public ExtraGlowshapesideb(String[] string_array)
 	{
 		super(string_array);
 	}
@@ -23,7 +23,7 @@ public class ExtraGlowshapeb extends ExtraGlowshape
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta)
 	{
-		return new com.nali.list.block.tile.ExtraGlowshapeb();
+		return new com.nali.list.block.tile.ExtraGlowshapesideb();
 	}
 
 	@Override

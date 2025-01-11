@@ -5,9 +5,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ExtraGlowshapeb
+public class ExtraGlowshapeside
 <
-	T extends com.nali.list.block.tile.ExtraGlowshapeb
+	T extends com.nali.list.block.tile.ExtraGlowshapedown
 > extends RenderT<T>
 {
 }

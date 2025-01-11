@@ -3,19 +3,19 @@ package com.nali.list.da;
 import com.nali.da.IBothDaO;
 import com.nali.list.data.ExtraData;
 
-public class BothDaExtraGlowshape implements IBothDaO
+public class BothDaExtraGlowshapedown implements IBothDaO
 {
-	public static BothDaExtraGlowshape IDA;
+	public static BothDaExtraGlowshapedown IDA;
 
 	@Override
 	public int O_StartPart()
 	{
-		return ExtraData.MODEL_STEP + 14;
+		return ExtraData.MODEL_STEP + 15;
 	}
 
 	@Override
 	public int O_EndPart()
 	{
-		return ExtraData.MODEL_STEP + 15;
+		return ExtraData.MODEL_STEP + 16;
 	}
 }

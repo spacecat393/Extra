@@ -1,0 +1,21 @@
+{
+	"variants":
+	{
+		"facing=north":
+		{
+			"model": "extra:glowshapeside"
+		},
+		"facing=south":
+		{
+			"model": "extra:glowshapeside"
+		},
+		"facing=west":
+		{
+			"model": "extra:glowshapeside"
+		},
+		"facing=east":
+		{
+			"model": "extra:glowshapeside"
+		}
+	}
+}

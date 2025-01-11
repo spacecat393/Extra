@@ -3,7 +3,7 @@ package com.nali.list.block.tile;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
-public class ExtraGlowshape extends TileEntity implements ITickable
+public class ExtraGlowshapeside extends TileEntity implements ITickable
 {
 	public byte tick = 120;
 

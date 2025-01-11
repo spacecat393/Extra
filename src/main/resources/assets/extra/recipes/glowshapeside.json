@@ -4,11 +4,14 @@
 	[
 		{
 			"item": "minecraft:glowstone_dust"
+		},
+		{
+			"item": "minecraft:glowstone_dust"
 		}
 	],
 	"result":
 	{
-		"item": "extra:glowshape",
-		"count": 16
+		"item": "extra:glowshapeside",
+		"count": 8
 	}
 }

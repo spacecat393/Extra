@@ -1,5 +1,5 @@
 {
-	"parent": "extra:block/glowshape",
+	"parent": "extra:block/glowshapedown",
 	"display":
 	{
 		"gui":

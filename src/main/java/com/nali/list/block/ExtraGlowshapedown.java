@@ -1,8 +1,8 @@
 package com.nali.list.block;
 
 import com.nali.da.IBothDaO;
-import com.nali.list.da.BothDaExtraGlowshape;
-import com.nali.list.render.RenderExtraGlowshape;
+import com.nali.list.da.BothDaExtraGlowshapedown;
+import com.nali.list.render.RenderExtraGlowshapedown;
 import com.nali.small.mix.block.BlockB;
 import com.nali.small.mix.block.BlockRegistry;
 import com.nali.small.mix.item.ItemB;
@@ -28,12 +28,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class ExtraGlowshape extends BlockB implements ITileEntityProvider
+public class ExtraGlowshapedown extends BlockB implements ITileEntityProvider
 {
 	public static int ID;
 	public static final AxisAlignedBB AXISALIGNEDBB = new AxisAlignedBB(0.0D, 0.10D, 0.0D, 1.0D, 0.40D, 1.0D);
 
-	public ExtraGlowshape(String[] string_array)
+	public ExtraGlowshapedown(String[] string_array)
 	{
 		super(string_array, Material.ROCK);
 		this.setResistance(0.0F);
@@ -55,7 +55,7 @@ public class ExtraGlowshape extends BlockB implements ITileEntityProvider
 			ItemStack itemstack = playerIn.getHeldItem(hand);
 			if (itemstack.getItem() == Items.GLOWSTONE_DUST)
 			{
-				worldIn.setBlockState(pos, BlockRegistry.BLOCK_ARRAY[ExtraGlowshapeb.ID].getDefaultState());
+				worldIn.setBlockState(pos, BlockRegistry.BLOCK_ARRAY[ExtraGlowshapedownb.ID].getDefaultState());
 				itemstack.shrink(1);
 			}
 		}
@@ -85,21 +85,21 @@ public class ExtraGlowshape extends BlockB implements ITileEntityProvider
 	@Override
 	public void newC()
 	{
-		RenderExtraGlowshape r = new RenderExtraGlowshape();
+		RenderExtraGlowshapedown r = new RenderExtraGlowshapedown();
 		this.ibothb = new ClientB(r, this);
 	}
 
 	@Override
 	public IBothDaO getBD()
 	{
-		return BothDaExtraGlowshape.IDA;
+		return BothDaExtraGlowshapedown.IDA;
 	}
 
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta)
 	{
-		return new com.nali.list.block.tile.ExtraGlowshape();
+		return new com.nali.list.block.tile.ExtraGlowshapedown();
 	}
 
 	public Item getNewItem()
