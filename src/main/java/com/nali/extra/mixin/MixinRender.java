@@ -1,7 +1,11 @@
 package com.nali.extra.mixin;
 
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,6 +30,45 @@ public abstract class MixinRender<T extends Entity>
 //        Nali.I.logger.info("ignoreFrustumCheck " + livingEntity.ignoreFrustumCheck);
 //        Nali.I.logger.info("isBoundingBoxInFrustum " + camera.isBoundingBoxInFrustum(axisalignedbb));
 		return /*livingEntity.isInRangeToRender3d(camX, camY, camZ) && (*/livingEntity.ignoreFrustumCheck || camera.isBoundingBoxInFrustum(axisalignedbb)/*)*/;
+	}
+
+	//remove light
+	@Overwrite
+	public static void renderOffsetAABB(AxisAlignedBB boundingBox, double x, double y, double z)
+	{
+		GlStateManager.disableTexture2D();
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		bufferbuilder.setTranslation(x, y, z);
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
+		bufferbuilder.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+		bufferbuilder.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+		tessellator.draw();
+		bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
+		GlStateManager.enableTexture2D();
 	}
 }
 

@@ -2,13 +2,14 @@ package com.nali.extra.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -90,6 +91,13 @@ public abstract class MixinEntityRenderer
 				value.typeOfHit = RayTraceResult.Type.BLOCK;
 			}
 		}
+	}
+
+	//remove shader framebuffer
+	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 0))
+	private void nali_extra_renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
+	{
+		GlStateManager.disableBlend();
 	}
 
 	//display box on entity

@@ -11,6 +11,7 @@
 		"MixinGlStateManager",
 		"MixinMinecraft",
 		"MixinNetHandlerPlayClient",
+		"MixinOpenGlHelper",
 		"MixinPlayerControllerMP",
 		"MixinRecipeBookClient",
 		"MixinRender",
