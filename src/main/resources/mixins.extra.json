@@ -25,6 +25,7 @@
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",
 		"MixinItem",
+		"MixinItemFood",
 		"MixinLightUtil",
 		"MixinMinecraftServer",
 		"MixinTexturedQuad"
