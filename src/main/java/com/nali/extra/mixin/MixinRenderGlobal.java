@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.opengl.GL11;
@@ -54,6 +55,12 @@ public abstract class MixinRenderGlobal
 //	{
 //		return 64;
 //	}
+
+	//disable weather
+	@Overwrite
+	public void renderWorldBorder(Entity entityIn, float partialTicks)
+	{
+	}
 
 //	@Inject(method = "renderSky(FI)V", at = @At(value = "HEAD"), cancellable = true)
 //	private void nali_renderSky(float partialTicks, int pass, CallbackInfo ci)

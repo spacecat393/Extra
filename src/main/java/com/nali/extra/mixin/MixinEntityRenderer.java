@@ -3,6 +3,7 @@ package com.nali.extra.mixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.math.RayTraceResult;
@@ -98,6 +99,12 @@ public abstract class MixinEntityRenderer
 	private void nali_extra_renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 	{
 		GlStateManager.disableBlend();
+	}
+
+	//*extra fix transparent
+	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;depthMask(Z)V", ordinal = 2))
+	private void nali_extra_renderWorldPass2(boolean flagIn)
+	{
 	}
 
 	//display box on entity
@@ -360,4 +367,28 @@ public abstract class MixinEntityRenderer
 
 	}
 	//e0-remove light
+
+	//disable weather
+	@Overwrite
+	private void renderCloudsCheck(RenderGlobal renderGlobalIn, float partialTicks, int pass, double x, double y, double z)
+	{
+	}
+
+	//disable weather
+	@Overwrite
+	private void addRainParticles()
+	{
+	}
+
+//	//disable update
+//	@Overwrite
+//	public void updateRenderer()
+//	{
+//	}
+
+	//disable weather
+	@Overwrite
+	protected void renderRainSnow(float partialTicks)
+	{
+	}
 }
