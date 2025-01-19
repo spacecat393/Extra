@@ -100,8 +100,21 @@ public abstract class MixinEntityRenderer
 	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 0))
 	private void nali_extra_renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 	{
+		GlStateManager.enableAlpha();
 		GlStateManager.disableBlend();
 	}
+
+//	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 1))
+//	private int nali_extra_renderWorldPassCM(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
+//	{
+//		return d1;
+//	}
+//
+//	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 2))
+//	private int nali_extra_renderWorldPassC(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
+//	{
+//		return d1;
+//	}
 
 	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z"))
 	private boolean nali_extra_renderWorldPass(Entity instance, Material blockpos)

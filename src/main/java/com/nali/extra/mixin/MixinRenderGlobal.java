@@ -309,4 +309,15 @@ public abstract class MixinRenderGlobal
 //
 //		GL11.glEnd();
 	}
+
+//	@Redirect(method = "getVisibleFacings", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;isOpaqueCube()Z"))
+//	private boolean nali_extra_getVisibleFacings(IBlockState instance)
+//	{
+////		return true;
+//		if (instance.getBlock() instanceof BlockLeaves)
+//		{
+//			return true;
+//		}
+//		return instance.isOpaqueCube();
+//	}
 }

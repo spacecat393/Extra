@@ -24,6 +24,8 @@
 	],
 	"mixins": [
 		"IMixinRayTraceResult",
+		"MixinBlock",
+		"MixinBlockLeaves",
 		"MixinCreativeTabs",
 		"MixinEntityItem",
 		"MixinEntityLivingBase",
