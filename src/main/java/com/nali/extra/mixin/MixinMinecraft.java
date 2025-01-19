@@ -1,12 +1,15 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.ExtraCubeLine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
@@ -56,5 +59,11 @@ public abstract class MixinMinecraft
 	@Overwrite
 	public void populateSearchTreeManager()
 	{
+	}
+
+	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader/Framebuffer;setFramebufferColor(FFFF)V", shift = At.Shift.AFTER))
+	private void nali_extra_init(CallbackInfo callbackinfo)
+	{
+		ExtraCubeLine.init();
 	}
 }

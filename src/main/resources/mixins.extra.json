@@ -9,6 +9,7 @@
 		"MixinBakedQuad",
 		"MixinEntityRenderer",
 		"MixinGlStateManager",
+		"MixinItemRenderer",
 		"MixinMinecraft",
 		"MixinNetHandlerPlayClient",
 		"MixinOpenGlHelper",

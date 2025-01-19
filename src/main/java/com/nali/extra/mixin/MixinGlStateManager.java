@@ -112,4 +112,10 @@ public abstract class MixinGlStateManager
 	public static void glLight(int light, int pname, FloatBuffer params)
 	{
 	}
+
+	//fix tr
+	@Overwrite
+	public static void depthMask(boolean flagIn)
+	{
+	}
 }

@@ -1,11 +1,13 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.ExtraCubeLine;
 import com.nali.list.da.BothDaExtraSky;
 import com.nali.list.render.RenderExtraSky;
 import com.nali.render.RenderO;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -263,4 +265,48 @@ public abstract class MixinRenderGlobal
 		drawSelectionBoundingBox(box, color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, 1.0F);
 	}
 	//*extra-e0
+
+	@Overwrite
+	public static void drawBoundingBox(BufferBuilder buffer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha)
+	{
+		GL11.glColor4f(red, green, blue, alpha);
+		ExtraCubeLine.update(minX, minY, minZ, maxX, maxY, maxZ);
+		ExtraCubeLine.draw();
+
+//		GL11.glBegin(GL11.GL_LINES);
+//
+//		//b
+//		GL11.glVertex3d(minX, minY, minZ);
+//		GL11.glVertex3d(maxX, minY, minZ);
+//		GL11.glVertex3d(maxX, minY, minZ);
+//		GL11.glVertex3d(maxX, minY, maxZ);
+//		GL11.glVertex3d(maxX, minY, maxZ);
+//		GL11.glVertex3d(minX, minY, maxZ);
+//		GL11.glVertex3d(minX, minY, maxZ);
+//		GL11.glVertex3d(minX, minY, minZ);
+//
+//		//t
+//		GL11.glVertex3d(minX, maxY, minZ);
+//		GL11.glVertex3d(maxX, maxY, minZ);
+//		GL11.glVertex3d(maxX, maxY, minZ);
+//		GL11.glVertex3d(maxX, maxY, maxZ);
+//		GL11.glVertex3d(maxX, maxY, maxZ);
+//		GL11.glVertex3d(minX, maxY, maxZ);
+//		GL11.glVertex3d(minX, maxY, maxZ);
+//		GL11.glVertex3d(minX, maxY, minZ);
+//
+//		//s
+//		//north
+//		GL11.glVertex3d(minX, minY, minZ);
+//		GL11.glVertex3d(minX, maxY, minZ);
+//		GL11.glVertex3d(maxX, minY, minZ);
+//		GL11.glVertex3d(maxX, maxY, minZ);
+//		//south
+//		GL11.glVertex3d(maxX, minY, maxZ);
+//		GL11.glVertex3d(maxX, maxY, maxZ);
+//		GL11.glVertex3d(minX, minY, maxZ);
+//		GL11.glVertex3d(minX, maxY, maxZ);
+//
+//		GL11.glEnd();
+	}
 }

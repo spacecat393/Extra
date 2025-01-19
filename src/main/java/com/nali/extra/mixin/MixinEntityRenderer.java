@@ -1,11 +1,13 @@
 package com.nali.extra.mixin;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceResult;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -101,11 +103,17 @@ public abstract class MixinEntityRenderer
 		GlStateManager.disableBlend();
 	}
 
-	//*extra fix transparent
-	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;depthMask(Z)V", ordinal = 2))
-	private void nali_extra_renderWorldPass2(boolean flagIn)
+	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z"))
+	private boolean nali_extra_renderWorldPass(Entity instance, Material blockpos)
 	{
+		return false;
 	}
+
+//	//*extra fix transparent
+//	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;depthMask(Z)V", ordinal = 2))
+//	private void nali_extra_renderWorldPass2(boolean flagIn)
+//	{
+//	}
 
 	//display box on entity
 //	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 5))
