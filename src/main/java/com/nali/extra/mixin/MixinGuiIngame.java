@@ -65,7 +65,7 @@ public abstract class MixinGuiIngame extends Gui
 			GlStateManager.color(ExtraColor.RED, ExtraColor.GREEN, ExtraColor.BLUE, 1.0F);
 
 			float x = i - 91 - 1 + entityplayer.inventory.currentItem * 20;
-			ExtraQuadLine.update(x, 0, x + 24, 22);
+			ExtraQuadLine.update(x, 1, x + 24, 22 + 1);
 			ExtraQuadLine.draw();
 			GlStateManager.enableTexture2D();
 
@@ -88,7 +88,7 @@ public abstract class MixinGuiIngame extends Gui
 			{
 //				int l1 = sr.getScaledHeight() - 16 - 3;
 //				this.renderHotbarItem(i - 91 - 26, l1, partialTicks, entityplayer, itemstack);
-				this.renderHotbarItem(i - 91 - 26, 3, partialTicks, entityplayer, itemstack);
+				this.renderHotbarItem(i - 91 - 26, 3 + 1, partialTicks, entityplayer, itemstack);
 			}
 
 			for (int l = 0; l < 9; ++l)
@@ -96,7 +96,7 @@ public abstract class MixinGuiIngame extends Gui
 				int i1 = i - 90 + l * 20 + 2;
 //				int j1 = sr.getScaledHeight() - 16 - 3;
 //				this.renderHotbarItem(i1, j1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
-				this.renderHotbarItem(i1, 3, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
+				this.renderHotbarItem(i1, 3 + 1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
 			}
 
 			GL14.glBlendFuncSeparate(GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ONE);
@@ -104,7 +104,7 @@ public abstract class MixinGuiIngame extends Gui
 			{
 //				int l1 = sr.getScaledHeight() - 16 - 3;
 //				this.renderHotbarItem(i - 91 - 26, l1, partialTicks, entityplayer, itemstack);
-				this.renderHotbarItem(i - 91 - 26, 3, partialTicks, entityplayer, itemstack);
+				this.renderHotbarItem(i - 91 - 26, 3 + 1, partialTicks, entityplayer, itemstack);
 			}
 
 			for (int l = 0; l < 9; ++l)
@@ -112,7 +112,7 @@ public abstract class MixinGuiIngame extends Gui
 				int i1 = i - 90 + l * 20 + 2;
 //				int j1 = sr.getScaledHeight() - 16 - 3;
 //				this.renderHotbarItem(i1, j1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
-				this.renderHotbarItem(i1, 3, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
+				this.renderHotbarItem(i1, 3 + 1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
 			}
 			GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 //			GL14.glBlendEquation(GL14.GL_FUNC_ADD);

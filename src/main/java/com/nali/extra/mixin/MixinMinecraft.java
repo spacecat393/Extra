@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.settings.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,6 +20,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinMinecraft
 {
 	@Shadow public GuiIngame ingameGUI;
+
+	@Shadow protected abstract void clickMouse();
+
+	@Shadow protected abstract void rightClickMouse();
 
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
@@ -88,5 +93,25 @@ public abstract class MixinMinecraft
 	private void nali_extra_runGameLoop(CallbackInfo callbackinfo)
 	{
 		ExtraColor.update();
+	}
+
+	@Redirect(method = "processKeyBinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isPressed()Z", ordinal = 12))
+	private boolean processKeyBindsA(KeyBinding instance)
+	{
+		if (instance.isKeyDown())
+		{
+			this.clickMouse();
+		}
+		return false;
+	}
+
+	@Redirect(method = "processKeyBinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isPressed()Z", ordinal = 13))
+	private boolean processKeyBindsP(KeyBinding instance)
+	{
+		if (instance.isKeyDown())
+		{
+			this.rightClickMouse();
+		}
+		return false;
 	}
 }
