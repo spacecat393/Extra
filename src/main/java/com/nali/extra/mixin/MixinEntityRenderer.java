@@ -119,7 +119,7 @@ public abstract class MixinEntityRenderer
 	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z"))
 	private boolean nali_extra_renderWorldPass(Entity instance, Material blockpos)
 	{
-		return false;
+		return this.mc.gameSettings.hideGUI;
 	}
 
 //	//*extra fix transparent

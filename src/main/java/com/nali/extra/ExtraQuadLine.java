@@ -12,11 +12,11 @@ import org.lwjgl.opengl.GL20;
 import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public class ExtraCubeLine
+public class ExtraQuadLine
 {
 	public static int VBO;
-	public final static int VERTEX_COUNT = 24;
-	public final static int FLOATS_PER_VERTEX = 3;
+	public final static int VERTEX_COUNT = 8;
+	public final static int FLOATS_PER_VERTEX = 2;
 
 	public static void init()
 	{
@@ -33,27 +33,14 @@ public class ExtraCubeLine
 		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
 	}
 
-	public static void update(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+	public static void update(float minX, float minY, float maxX, float maxY)
 	{
 		float[] v3_float_array =
 		{
-			//b
-			minX, minY, minZ, maxX, minY, minZ,
-			maxX, minY, minZ, maxX, minY, maxZ,
-			maxX, minY, maxZ, minX, minY, maxZ,
-			minX, minY, maxZ, minX, minY, minZ,
-
-			//t
-			minX, maxY, minZ, maxX, maxY, minZ,
-			maxX, maxY, minZ, maxX, maxY, maxZ,
-			maxX, maxY, maxZ, minX, maxY, maxZ,
-			minX, maxY, maxZ, minX, maxY, minZ,
-
-			//l r
-			minX, minY, minZ, minX, maxY, minZ,
-			maxX, minY, minZ, maxX, maxY, minZ,
-			maxX, minY, maxZ, maxX, maxY, maxZ,
-			minX, minY, maxZ, minX, maxY, maxZ,
+			minX, minY, maxX, minY,
+			maxX, minY, maxX, maxY,
+			maxX, maxY, minX, maxY,
+			minX, maxY, minX, minY,
 		};
 
 		FloatBuffer floatbuffer = BufferUtils.createFloatBuffer(v3_float_array.length);

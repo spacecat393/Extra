@@ -1,5 +1,6 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraCubeLine;
 import com.nali.list.da.BothDaExtraSky;
 import com.nali.list.render.RenderExtraSky;
@@ -7,7 +8,7 @@ import com.nali.render.RenderO;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,8 +19,6 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.awt.*;
 
 //@Mixin(value = RenderGlobal.class, priority = Integer.MAX_VALUE)
 @Mixin(RenderGlobal.class)
@@ -260,55 +259,66 @@ public abstract class MixinRenderGlobal
 ////		{
 ////			alpha = 0.25F;
 ////		}
-		float c = Minecraft.getSystemTime() % 1000 / 1000.0F;
-		Color color = Color.getHSBColor(c, 1.0F, 1.0F);
-		drawSelectionBoundingBox(box, color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, 1.0F);
+		drawSelectionBoundingBox(box, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 	//*extra-e0
 
-	@Overwrite
-	public static void drawBoundingBox(BufferBuilder buffer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha)
-	{
-		GL11.glColor4f(red, green, blue, alpha);
-		ExtraCubeLine.update(minX, minY, minZ, maxX, maxY, maxZ);
-		ExtraCubeLine.draw();
+//	@Overwrite
+//	public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha)
+//	{
+////		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+////		ExtraCubeLine.update((float)minX, (float)minY, (float)minZ, (float)maxX, (float)maxY, (float)maxZ);
+////		ExtraCubeLine.draw();
+//	}
 
-//		GL11.glBegin(GL11.GL_LINES);
+//	@Overwrite
+//	public static void drawBoundingBox(BufferBuilder buffer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha)
+//	{
+//////		GlStateManager.color(ExtraColor.RED, ExtraColor.GREEN, ExtraColor.BLUE, 1.0F);
+////		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+//////		float c = Minecraft.getSystemTime() % 1000 / 1000.0F;
+//////		int color = Color.HSBtoRGB(c, 1.0F, 1.0F);
+//////		GlStateManager.color(((color >> 16) & 0xFF) / 255.0F, ((color >> 8) & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
+//////		GL11.glColor4f(ExtraColor.RED, ExtraColor.GREEN, ExtraColor.BLUE, 1.0F);
+////		ExtraCubeLine.update((float)minX, (float)minY, (float)minZ, (float)maxX, (float)maxY, (float)maxZ);
+////		ExtraCubeLine.draw();
 //
-//		//b
-//		GL11.glVertex3d(minX, minY, minZ);
-//		GL11.glVertex3d(maxX, minY, minZ);
-//		GL11.glVertex3d(maxX, minY, minZ);
-//		GL11.glVertex3d(maxX, minY, maxZ);
-//		GL11.glVertex3d(maxX, minY, maxZ);
-//		GL11.glVertex3d(minX, minY, maxZ);
-//		GL11.glVertex3d(minX, minY, maxZ);
-//		GL11.glVertex3d(minX, minY, minZ);
-//
-//		//t
-//		GL11.glVertex3d(minX, maxY, minZ);
-//		GL11.glVertex3d(maxX, maxY, minZ);
-//		GL11.glVertex3d(maxX, maxY, minZ);
-//		GL11.glVertex3d(maxX, maxY, maxZ);
-//		GL11.glVertex3d(maxX, maxY, maxZ);
-//		GL11.glVertex3d(minX, maxY, maxZ);
-//		GL11.glVertex3d(minX, maxY, maxZ);
-//		GL11.glVertex3d(minX, maxY, minZ);
-//
-//		//s
-//		//north
-//		GL11.glVertex3d(minX, minY, minZ);
-//		GL11.glVertex3d(minX, maxY, minZ);
-//		GL11.glVertex3d(maxX, minY, minZ);
-//		GL11.glVertex3d(maxX, maxY, minZ);
-//		//south
-//		GL11.glVertex3d(maxX, minY, maxZ);
-//		GL11.glVertex3d(maxX, maxY, maxZ);
-//		GL11.glVertex3d(minX, minY, maxZ);
-//		GL11.glVertex3d(minX, maxY, maxZ);
-//
-//		GL11.glEnd();
-	}
+////		GL11.glBegin(GL11.GL_LINES);
+////
+////		//b
+////		GL11.glVertex3d(minX, minY, minZ);
+////		GL11.glVertex3d(maxX, minY, minZ);
+////		GL11.glVertex3d(maxX, minY, minZ);
+////		GL11.glVertex3d(maxX, minY, maxZ);
+////		GL11.glVertex3d(maxX, minY, maxZ);
+////		GL11.glVertex3d(minX, minY, maxZ);
+////		GL11.glVertex3d(minX, minY, maxZ);
+////		GL11.glVertex3d(minX, minY, minZ);
+////
+////		//t
+////		GL11.glVertex3d(minX, maxY, minZ);
+////		GL11.glVertex3d(maxX, maxY, minZ);
+////		GL11.glVertex3d(maxX, maxY, minZ);
+////		GL11.glVertex3d(maxX, maxY, maxZ);
+////		GL11.glVertex3d(maxX, maxY, maxZ);
+////		GL11.glVertex3d(minX, maxY, maxZ);
+////		GL11.glVertex3d(minX, maxY, maxZ);
+////		GL11.glVertex3d(minX, maxY, minZ);
+////
+////		//s
+////		//north
+////		GL11.glVertex3d(minX, minY, minZ);
+////		GL11.glVertex3d(minX, maxY, minZ);
+////		GL11.glVertex3d(maxX, minY, minZ);
+////		GL11.glVertex3d(maxX, maxY, minZ);
+////		//south
+////		GL11.glVertex3d(maxX, minY, maxZ);
+////		GL11.glVertex3d(maxX, maxY, maxZ);
+////		GL11.glVertex3d(minX, minY, maxZ);
+////		GL11.glVertex3d(minX, maxY, maxZ);
+////
+////		GL11.glEnd();
+//	}
 
 //	@Redirect(method = "getVisibleFacings", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;isOpaqueCube()Z"))
 //	private boolean nali_extra_getVisibleFacings(IBlockState instance)
@@ -320,4 +330,46 @@ public abstract class MixinRenderGlobal
 //		}
 //		return instance.isOpaqueCube();
 //	}
+
+//	@Overwrite
+//	private boolean isOutlineActive(Entity entityIn, Entity viewer, ICamera camera)
+//	{
+//		boolean flag = entityIn.isGlowing();
+//		if (flag)
+//		{
+////			AxisAlignedBB viewer_axisalignedbb = viewer.getEntityBoundingBox();
+//			AxisAlignedBB boundingBox = entityIn.getEntityBoundingBox();
+////			GL11.glDisable(GL11.GL_DEPTH_TEST);
+//			float c = Minecraft.getSystemTime() % 1000 / 1000.0F;
+//			Color color = Color.getHSBColor(c, 1.0F, 1.0F);
+//			GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, 1.0F);
+//			ExtraCubeLine.update(boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+////			ExtraCubeLine.update(viewer_axisalignedbb.minX - boundingBox.minX, viewer_axisalignedbb.minY - boundingBox.minY, viewer_axisalignedbb.minZ - boundingBox.minZ, viewer_axisalignedbb.maxX - boundingBox.maxX, viewer_axisalignedbb.maxY - boundingBox.maxY, viewer_axisalignedbb.maxZ - boundingBox.maxZ);
+//			ExtraCubeLine.draw();
+////			GL11.glEnable(GL11.GL_DEPTH_TEST);
+//		}
+//		return flag;
+//	}
+
+	//switch to buffer with rgb
+	@Overwrite
+	public static void drawBoundingBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha)
+	{
+		//			AxisAlignedBB viewer_axisalignedbb = viewer.getEntityBoundingBox();
+//		AxisAlignedBB boundingBox = entityIn.getEntityBoundingBox();
+//			GL11.glDisable(GL11.GL_DEPTH_TEST);
+		if (red == 1.0F && green == 1.0F && blue == 1.0F/* && alpha == 1.0F*/)
+		{
+			GlStateManager.color(ExtraColor.RED, ExtraColor.GREEN, ExtraColor.BLUE, 1.0F);
+		}
+		else
+		{
+			GlStateManager.color(red, green, blue, alpha);
+		}
+		ExtraCubeLine.update((float)minX, (float)minY, (float)minZ, (float)maxX, (float)maxY, (float)maxZ);
+//		ExtraCubeLine.update(boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+//			ExtraCubeLine.update(viewer_axisalignedbb.minX - boundingBox.minX, viewer_axisalignedbb.minY - boundingBox.minY, viewer_axisalignedbb.minZ - boundingBox.minZ, viewer_axisalignedbb.maxX - boundingBox.maxX, viewer_axisalignedbb.maxY - boundingBox.maxY, viewer_axisalignedbb.maxZ - boundingBox.maxZ);
+		ExtraCubeLine.draw();
+//			GL11.glEnable(GL11.GL_DEPTH_TEST);
+	}
 }

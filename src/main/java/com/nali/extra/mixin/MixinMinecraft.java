@@ -1,11 +1,15 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraCubeLine;
+import com.nali.extra.ExtraQuadLine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -14,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
 {
+	@Shadow public GuiIngame ingameGUI;
+
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
 	private void nali_extra_setIngameFocus(Minecraft instance, int value)
@@ -61,9 +67,26 @@ public abstract class MixinMinecraft
 	{
 	}
 
+	//init gl
 	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader/Framebuffer;setFramebufferColor(FFFF)V", shift = At.Shift.AFTER))
 	private void nali_extra_init(CallbackInfo callbackinfo)
 	{
 		ExtraCubeLine.init();
+//		ExtraQuad.init();
+		ExtraQuadLine.init();
+	}
+
+	//clean gui
+	@Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;ingameGUI:Lnet/minecraft/client/gui/GuiIngame;"))
+	private void nali_extra_init_gui(Minecraft instance, GuiIngame value)
+	{
+		this.ingameGUI = new GuiIngame(instance);
+	}
+
+	@Inject(method = "runTick", at = @At(value = "HEAD"))
+//	@Inject(method = "runGameLoop", at = @At("HEAD"))
+	private void nali_extra_runGameLoop(CallbackInfo callbackinfo)
+	{
+		ExtraColor.update();
 	}
 }

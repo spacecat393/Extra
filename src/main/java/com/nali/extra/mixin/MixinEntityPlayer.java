@@ -13,4 +13,11 @@ public class MixinEntityPlayer
 	{
 		return 1.0F;
 	}
+
+	//clean sleep
+	@Overwrite
+	public int getSleepTimer()
+	{
+		return 0;
+	}
 }
