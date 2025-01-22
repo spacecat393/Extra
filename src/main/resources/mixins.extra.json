@@ -7,6 +7,8 @@
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"MixinBakedQuad",
+		"MixinBufferBuilder",
+		"MixinDefaultVertexFormats",
 		"MixinEntityRenderer",
 		"MixinGlStateManager",
 		"MixinGuiBossOverlay",
@@ -20,11 +22,13 @@
 		"MixinMinecraft",
 		"MixinNetHandlerPlayClient",
 		"MixinOpenGlHelper",
+		"MixinParticleSweepAttack",
 		"MixinPlayerControllerMP",
 		"MixinRecipeBookClient",
 		"MixinRender",
 		"MixinRenderGlobal",
-		"MixinTileEntityRendererDispatcher"
+		"MixinTileEntityRendererDispatcher",
+		"MixinVertexFormat"
 	],
 	"mixins": [
 		"IMixinRayTraceResult",
@@ -38,6 +42,7 @@
 		"MixinItemFood",
 		"MixinLightUtil",
 		"MixinMinecraftServer",
-		"MixinTexturedQuad"
+		"MixinTexturedQuad",
+		"MixinVertexLighterFlat"
 	]
 }
