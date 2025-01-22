@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -119,7 +120,7 @@ public abstract class MixinEntityRenderer
 	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z"))
 	private boolean nali_extra_renderWorldPass(Entity instance, Material blockpos)
 	{
-		return this.mc.gameSettings.hideGUI;
+		return this.mc.gameSettings.hideGUI || !(instance instanceof EntityPlayer);
 	}
 
 //	//*extra fix transparent

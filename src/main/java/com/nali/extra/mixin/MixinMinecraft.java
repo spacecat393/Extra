@@ -25,27 +25,34 @@ public abstract class MixinMinecraft
 
 	@Shadow protected abstract void rightClickMouse();
 
+	@Shadow private int rightClickDelayTimer;
+
+	@Shadow private int leftClickCounter;
+
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
 	private void nali_extra_setIngameFocus(Minecraft instance, int value)
 	{
+//		this.leftClickCounter = ExtraConfig.LEFTCLICK_DELAY;
 	}
 
 	@Redirect(method = "clickMouse", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I", ordinal = 2))
 	private void nali_extra_clickMouse(Minecraft instance, int value)
 	{
+//		this.leftClickCounter = ExtraConfig.LEFTCLICK_DELAY;
 	}
 
 	@Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I", ordinal = 0))
 	private void nali_extra_runTick(Minecraft instance, int value)
 	{
-
+//		this.leftClickCounter = ExtraConfig.LEFTCLICK_DELAY;
 	}
 
-	@Redirect(method = "rightClickMouse", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;rightClickDelayTimer:I"))
-	private void nali_extra_rightClickMouse_rightClickDelayTimer(Minecraft instance, int value)
-	{
-	}
+//	@Redirect(method = "rightClickMouse", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;rightClickDelayTimer:I"))
+//	private void nali_extra_rightClickMouse_rightClickDelayTimer(Minecraft instance, int value)
+//	{
+////		this.rightClickDelayTimer = ExtraConfig.RIGHTCLICK_DELAY;
+//	}
 
 //	@Redirect(method = "rightClickMouse", at = @At(value = "FIELD", target = "Lnet/minecraft/util/math/RayTraceResult;typeOfHit:Lnet/minecraft/util/math/RayTraceResult$Type;", ordinal = 0))
 //	private RayTraceResult.Type nali_rightClickMouse_Type(RayTraceResult instance)
