@@ -6,6 +6,7 @@ import com.nali.extra.ExtraQuadLine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
@@ -119,6 +120,13 @@ public abstract class MixinMinecraft
 		{
 			this.rightClickMouse();
 		}
+		return false;
+	}
+
+	//clean sleep
+	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;isPlayerSleeping()Z", ordinal = 0))
+	public boolean runTick(EntityPlayerSP instance)
+	{
 		return false;
 	}
 }

@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.opengl.GL11;
@@ -371,5 +372,11 @@ public abstract class MixinRenderGlobal
 //			ExtraCubeLine.update(viewer_axisalignedbb.minX - boundingBox.minX, viewer_axisalignedbb.minY - boundingBox.minY, viewer_axisalignedbb.minZ - boundingBox.minZ, viewer_axisalignedbb.maxX - boundingBox.maxX, viewer_axisalignedbb.maxY - boundingBox.maxY, viewer_axisalignedbb.maxZ - boundingBox.maxZ);
 		ExtraCubeLine.draw();
 //			GL11.glEnable(GL11.GL_DEPTH_TEST);
+	}
+
+	@Redirect(method = "renderEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isPlayerSleeping()Z"))
+	public boolean nali_extra_renderEntities(EntityLivingBase instance)
+	{
+		return false;
 	}
 }

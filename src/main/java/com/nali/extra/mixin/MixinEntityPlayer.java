@@ -20,4 +20,10 @@ public class MixinEntityPlayer
 	{
 		return 0;
 	}
+
+//	@Overwrite
+//	public boolean isPlayerSleeping()
+//	{
+//		return false;
+//	}
 }
