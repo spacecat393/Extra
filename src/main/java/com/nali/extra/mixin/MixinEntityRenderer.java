@@ -47,9 +47,11 @@ public abstract class MixinEntityRenderer
 	@Shadow @Final private int[] lightmapColors;
 
 	@Shadow private float thirdPersonDistancePrev;
+	@Shadow private boolean renderHand;
 	private static float ROTATE_Y;
-	private static byte STATE;//1c 2r 4swim
+	private static byte STATE;//1c 2r 4swim 8blink
 	private static long LAST_TIME;
+	private static float PARTIALTICKS;
 
 //	@Mutable
 //	@Shadow @Final private ResourceLocation locationLightMap;
@@ -114,6 +116,7 @@ public abstract class MixinEntityRenderer
 	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 0))
 	private void nali_extra_renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 	{
+		PARTIALTICKS = partialTicks;
 		GlStateManager.enableAlpha();
 		GlStateManager.disableBlend();
 	}
@@ -427,43 +430,56 @@ public abstract class MixinEntityRenderer
 	{
 	}
 
-	@Overwrite
-	private void renderHand(float partialTicks, int pass)
+	//fp
+	@Redirect(method = "renderWorldPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z"))
+	private boolean renderWorldPass(EntityRenderer instance)
 	{
-		EntityPlayerSP entityplayersp = this.mc.player;
-
-		//support aquaacrobatics
-		boolean swim = ((IMixinEntity)entityplayersp).GOgetFlag(4);
-		STATE |= swim ? 4 : 0;
-		if ((STATE & 4) == 4)
+		if (this.renderHand)
 		{
-			if (swim)
+			EntityPlayerSP entityplayersp = this.mc.player;
+
+			//support aquaacrobatics
+			boolean swim = ((IMixinEntity)entityplayersp).GOgetFlag(4);
+			STATE |= swim ? 4 : 0;
+			if ((STATE & 4) == 4)
 			{
-				LAST_TIME = Minecraft.getSystemTime();
-			}
-			else
-			{
-				long new_time = Minecraft.getSystemTime();
-				if (new_time - LAST_TIME >= 1000)//1sec
+				if (swim)
 				{
-					LAST_TIME = new_time;
-					STATE &= 255-4;
+					LAST_TIME = Minecraft.getSystemTime();
+				}
+				else
+				{
+					long new_time = Minecraft.getSystemTime();
+					if (new_time - LAST_TIME >= 1000)//1sec
+					{
+						LAST_TIME = new_time;
+						STATE &= 255-4;
+					}
 				}
 			}
-		}
 
-		if (this.mc.gameSettings.thirdPersonView == 0 && !entityplayersp.isElytraFlying() && !entityplayersp.isPlayerSleeping() && !swim && (STATE & 4) == 0)
-		{
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			Extra.FP |= 1;
-			if ((Extra.FP & 2) == 0)
+			if (this.mc.gameSettings.thirdPersonView == 0 && !entityplayersp.isElytraFlying() && !entityplayersp.isPlayerSleeping() && !swim && (STATE & 4) == 0)
 			{
-				this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, partialTicks, false);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+//				GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
+				Extra.FP |= 1;
+//				if ((Extra.FP & 2) == 0)
+//				if ((Small.FLAG & 1) == 0)
+//				{
+				this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, PARTIALTICKS, false);
+//				}
+				Extra.FP &= 255-1;
+//				Extra.FP ^= 2;
 			}
-			Extra.FP &= 255-1;
-			Extra.FP ^= 2;
 		}
+		return false;
 	}
+
+//	@Overwrite
+//	private void renderHand(float partialTicks, int pass)
+//	{
+//
+//	}
 
 	//tp
 	//clean sleep
@@ -616,4 +632,23 @@ public abstract class MixinEntityRenderer
 		GlStateManager.translate(0.0F, -f, 0.0F);
 		ci.cancel();
 	}
+
+//	//clean gui
+//	@Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;drawScreen(Lnet/minecraft/client/gui/GuiScreen;IIF)V"))
+//	private void nali_extra_updateCameraAndRender(GuiScreen screen, int mouseX, int mouseY, float partialTicks)
+//	{
+////		if ((STATE & 8) == 0)
+////		if ((Small.FLAG & 1) == 0)
+////		{
+////		GlStateManager.enableBlend();
+////		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+////		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
+//		screen.drawScreen(mouseX, mouseY, partialTicks);
+////		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+////		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+////		GlStateManager.disableBlend();
+////		}
+//
+////		STATE ^= 8;
+//	}
 }

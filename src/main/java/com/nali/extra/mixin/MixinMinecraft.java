@@ -8,7 +8,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,9 +28,11 @@ public abstract class MixinMinecraft
 
 	@Shadow protected abstract void rightClickMouse();
 
-	@Shadow private int rightClickDelayTimer;
+//	@Shadow private int rightClickDelayTimer;
+//
+//	@Shadow private int leftClickCounter;
 
-	@Shadow private int leftClickCounter;
+	@Shadow public GameSettings gameSettings;
 
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
@@ -84,6 +88,9 @@ public abstract class MixinMinecraft
 	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader/Framebuffer;setFramebufferColor(FFFF)V", shift = At.Shift.AFTER))
 	private void nali_extra_init(CallbackInfo callbackinfo)
 	{
+		Display.sync(this.getLimitFramerate());
+//		Extra.init();
+//		ExtraGTime.init();
 		ExtraCubeLine.init();
 //		ExtraQuad.init();
 		ExtraQuadLine.init();
@@ -98,7 +105,7 @@ public abstract class MixinMinecraft
 
 	@Inject(method = "runTick", at = @At(value = "HEAD"))
 //	@Inject(method = "runGameLoop", at = @At("HEAD"))
-	private void nali_extra_runGameLoop(CallbackInfo callbackinfo)
+	private void nali_extra_runTick(CallbackInfo callbackinfo)
 	{
 		ExtraColor.update();
 	}
@@ -129,4 +136,46 @@ public abstract class MixinMinecraft
 	{
 		return false;
 	}
+
+//	//gtime
+//	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
+//	private void nali_extra_runGameLoopH(CallbackInfo callbackinfo)
+//	{
+//		ExtraGTime.start();
+//	}
+//
+//	@Inject(method = "runGameLoop", at = @At(value = "TAIL"))
+//	private void nali_extra_runGameLoopT(CallbackInfo callbackinfo)
+//	{
+//		ExtraGTime.end();
+//	}
+
+	@Overwrite
+	public int getLimitFramerate()
+	{
+		return this.gameSettings.limitFramerate;
+//		return 60;
+	}
+
+//	@Overwrite
+//	public boolean isFramerateLimitBelowMax()
+//	{
+//		return false;
+//	}
+
+//	@Redirect(method = "updateDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;update()V"))
+//	public void nali_extra_updateDisplay()
+//	{
+//		if ((Small.FLAG & 1) == 1)
+//		{
+//			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, Extra.FB1);
+//		}
+//
+//		Display.update();
+//
+////		if ((Small.FLAG & 1) == 0)
+////		{
+////			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+////		}
+//	}
 }

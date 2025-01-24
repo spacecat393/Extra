@@ -1,22 +1,29 @@
 package com.nali.extra.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.util.List;
+
 //*extra
 @Mixin(EntityLivingBase.class)
-public abstract class MixinEntityLivingBase/* extends Entity*/
+public abstract class MixinEntityLivingBase extends Entity
 {
+	public MixinEntityLivingBase(World worldIn)
+	{
+		super(worldIn);
+	}
+
 //	@Shadow public int hurtTime;
 //	@Shadow public int maxHurtTime;
 //	@Shadow public int maxHurtResistantTime;
-
-//	public MixinEntityLivingBase(World worldIn)
-//	{
-//		super(worldIn);
-//	}
 
 //	@Inject(remap = false, method = "onUpdate", at = @At(value = "TAIL"))
 //	private void nali_onUpdate(CallbackInfo ci)
@@ -36,7 +43,10 @@ public abstract class MixinEntityLivingBase/* extends Entity*/
 //	@Redirect(method = "attackEntityFrom", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/EntityLivingBase;maxHurtTime:I"))
 //	private void nali_attackEntityFrom_maxHurtTime(EntityLivingBase instance, int value)
 //	{
-/// /		this.maxHurtTime = 0;
+
+	@Shadow protected abstract void collideWithEntity(Entity entityIn);
+
+	/// /		this.maxHurtTime = 0;
 //	}
 
 	@Redirect(method = "attackEntityFrom", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/EntityLivingBase;hurtResistantTime:I", ordinal = 1))
@@ -50,4 +60,35 @@ public abstract class MixinEntityLivingBase/* extends Entity*/
 //	{
 //		return 0;
 //	}
+
+	//remove hitbox
+	@Overwrite
+	protected void collideWithNearbyEntities()
+	{
+		List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox(), EntitySelectors.getTeamCollisionPredicate(this));
+
+		if (!list.isEmpty())
+		{
+			for (int l = 0; l < list.size(); ++l)
+			{
+				Entity entity = list.get(l);
+				this.collideWithEntity(entity);
+			}
+		}
+	}
+//	@Overwrite
+//	protected void collideWithEntity(Entity entityIn)
+//	{
+//	}
+//
+//	@Overwrite
+//	protected void collideWithNearbyEntities()
+//	{
+//	}
+//
+////	@Overwrite
+////	public boolean canBeCollidedWith()
+////	{
+////		return false;
+////	}
 }

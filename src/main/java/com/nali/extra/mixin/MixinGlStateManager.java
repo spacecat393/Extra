@@ -113,9 +113,34 @@ public abstract class MixinGlStateManager
 	{
 	}
 
+	//remove light
+	@Overwrite
+	public static void glNormal3f(float nx, float ny, float nz)
+	{
+	}
+
+	@Overwrite
+	public static void glLightModel(int pname, FloatBuffer params)
+	{
+	}
+
+//	//force set alpha
+//	@Overwrite
+//	public static void alphaFunc(int func, float ref)
+//	{
+//	}
+
 	//fix tr
 	@Overwrite
 	public static void depthMask(boolean flagIn)
 	{
 	}
+
+//	//keep color
+//	@Overwrite
+//	public static void clear(int mask)
+//	{
+//		mask &= 0xFFFFFFFF - GL11.GL_COLOR_BUFFER_BIT;
+//		GL11.glClear(mask);
+//	}
 }
