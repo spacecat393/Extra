@@ -194,6 +194,6 @@ public abstract class MixinMinecraft
 //		{
 //			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 //		}
-		Small.FLAG ^= 1;
+		Small.FLAG ^= 1 | 2;
 	}
 }
