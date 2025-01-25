@@ -2,7 +2,9 @@ package com.nali.extra.mixin;
 
 import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraCubeLine;
+import com.nali.extra.ExtraFBO;
 import com.nali.extra.ExtraQuadLine;
+import com.nali.small.Small;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -11,6 +13,8 @@ import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -89,7 +93,7 @@ public abstract class MixinMinecraft
 	private void nali_extra_init(CallbackInfo callbackinfo)
 	{
 		Display.sync(this.getLimitFramerate());
-//		Extra.init();
+		ExtraFBO.init();
 //		ExtraGTime.init();
 		ExtraCubeLine.init();
 //		ExtraQuad.init();
@@ -137,12 +141,14 @@ public abstract class MixinMinecraft
 		return false;
 	}
 
+	//fbo
 //	//gtime
-//	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
-//	private void nali_extra_runGameLoopH(CallbackInfo callbackinfo)
-//	{
+	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
+	private void nali_extra_runGameLoopH(CallbackInfo callbackinfo)
+	{
+		ExtraFBO.update();
 //		ExtraGTime.start();
-//	}
+	}
 //
 //	@Inject(method = "runGameLoop", at = @At(value = "TAIL"))
 //	private void nali_extra_runGameLoopT(CallbackInfo callbackinfo)
@@ -163,19 +169,31 @@ public abstract class MixinMinecraft
 //		return false;
 //	}
 
-//	@Redirect(method = "updateDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;update()V"))
-//	public void nali_extra_updateDisplay()
-//	{
-//		if ((Small.FLAG & 1) == 1)
+	@Redirect(method = "updateDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;update()V"))
+	public void nali_extra_updateDisplay()
+	{
+		if ((Small.FLAG & 1) == 1)
+		{
+			ExtraFBO.mix();
+//			GL11.glFinish();
+			Display.update();
+			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO0);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+		}
+		else
+		{
+			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
+			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+		}
+
+//		if ((Small.FLAG & 1) == 0)
 //		{
-//			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, Extra.FB1);
+//			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 //		}
-//
-//		Display.update();
-//
-////		if ((Small.FLAG & 1) == 0)
-////		{
-////			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-////		}
-//	}
+		Small.FLAG ^= 1;
+	}
 }

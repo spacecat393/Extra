@@ -136,11 +136,11 @@ public abstract class MixinGlStateManager
 	{
 	}
 
-//	//keep color
-//	@Overwrite
-//	public static void clear(int mask)
-//	{
+	//keep
+	@Overwrite
+	public static void clear(int mask)
+	{
 //		mask &= 0xFFFFFFFF - GL11.GL_COLOR_BUFFER_BIT;
 //		GL11.glClear(mask);
-//	}
+	}
 }

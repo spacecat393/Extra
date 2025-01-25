@@ -1,10 +1,12 @@
 package com.nali.extra.mixin;
 
 import com.nali.extra.Extra;
+import com.nali.small.Small;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -464,10 +466,10 @@ public abstract class MixinEntityRenderer
 //				GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
 				Extra.FP |= 1;
 //				if ((Extra.FP & 2) == 0)
-//				if ((Small.FLAG & 1) == 0)
-//				{
-				this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, PARTIALTICKS, false);
-//				}
+				if ((Small.FLAG & 1) == 0)
+				{
+					this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, PARTIALTICKS, false);
+				}
 				Extra.FP &= 255-1;
 //				Extra.FP ^= 2;
 			}
@@ -633,22 +635,22 @@ public abstract class MixinEntityRenderer
 		ci.cancel();
 	}
 
-//	//clean gui
-//	@Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;drawScreen(Lnet/minecraft/client/gui/GuiScreen;IIF)V"))
-//	private void nali_extra_updateCameraAndRender(GuiScreen screen, int mouseX, int mouseY, float partialTicks)
-//	{
-////		if ((STATE & 8) == 0)
-////		if ((Small.FLAG & 1) == 0)
-////		{
-////		GlStateManager.enableBlend();
-////		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-////		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
-//		screen.drawScreen(mouseX, mouseY, partialTicks);
-////		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-////		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-////		GlStateManager.disableBlend();
-////		}
-//
-////		STATE ^= 8;
-//	}
+	//clean gui
+	@Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/ForgeHooksClient;drawScreen(Lnet/minecraft/client/gui/GuiScreen;IIF)V"))
+	private void nali_extra_updateCameraAndRender(GuiScreen screen, int mouseX, int mouseY, float partialTicks)
+	{
+//		if ((STATE & 8) == 0)
+		if ((Small.FLAG & 1) == 0)
+		{
+	//		GlStateManager.enableBlend();
+	//		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
+			screen.drawScreen(mouseX, mouseY, partialTicks);
+	//		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	//		GlStateManager.disableBlend();
+		}
+
+//		STATE ^= 8;
+	}
 }
