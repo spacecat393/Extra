@@ -143,4 +143,15 @@ public abstract class MixinGlStateManager
 //		mask &= 0xFFFFFFFF - GL11.GL_COLOR_BUFFER_BIT;
 //		GL11.glClear(mask);
 	}
+
+//	//force tr
+//	@Overwrite
+//	public static void disableBlend()
+//	{
+//	}
+//
+//	@Overwrite
+//	public static void enableBlend()
+//	{
+//	}
 }

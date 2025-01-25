@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -642,13 +643,14 @@ public abstract class MixinEntityRenderer
 //		if ((STATE & 8) == 0)
 		if ((Small.FLAG & 1) == 0)
 		{
-	//		GlStateManager.enableBlend();
+//			GlStateManager.enableBlend();
 	//		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
-			screen.drawScreen(mouseX, mouseY, partialTicks);
+			ForgeHooksClient.drawScreen(this.mc.currentScreen, mouseX, mouseY, this.mc.getTickLength());
+//			screen.drawScreen(mouseX, mouseY, partialTicks);
 	//		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	//		GlStateManager.disableBlend();
+//			GlStateManager.disableBlend();
 		}
 
 //		STATE ^= 8;
