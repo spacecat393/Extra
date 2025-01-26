@@ -1,17 +1,23 @@
-package com.nali.extra.mixin;
-
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleSweepAttack;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.*;
-
-//remove light
-@Mixin(ParticleSweepAttack.class)
-public abstract class MixinParticleSweepAttack extends Particle
-{
+//package com.nali.extra.mixin;
+//
+//import net.minecraft.client.particle.Particle;
+//import net.minecraft.client.particle.ParticleSweepAttack;
+//import net.minecraft.client.renderer.BufferBuilder;
+//import net.minecraft.client.renderer.GlStateManager;
+//import net.minecraft.client.renderer.RenderHelper;
+//import net.minecraft.client.renderer.Tessellator;
+//import net.minecraft.client.renderer.texture.TextureManager;
+//import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+//import net.minecraft.client.renderer.vertex.VertexFormat;
+//import net.minecraft.entity.Entity;
+//import net.minecraft.util.ResourceLocation;
+//import net.minecraft.world.World;
+//import org.spongepowered.asm.mixin.*;
+//
+////remove light
+//@Mixin(ParticleSweepAttack.class)
+//public abstract class MixinParticleSweepAttack extends Particle
+//{
 //	@Shadow private int life;
 //
 //	@Shadow @Final private int lifeTime;
@@ -21,23 +27,23 @@ public abstract class MixinParticleSweepAttack extends Particle
 //	@Shadow @Final private TextureManager textureManager;
 //
 //	@Shadow @Final private static ResourceLocation SWEEP_TEXTURE;
-
-	@Mutable
-	@Shadow @Final private static VertexFormat VERTEX_FORMAT;
-
-	static
-	{
-		VERTEX_FORMAT = null;
-	}
-
-	protected MixinParticleSweepAttack(World worldIn, double posXIn, double posYIn, double posZIn)
-	{
-		super(worldIn, posXIn, posYIn, posZIn);
-	}
-
-	@Overwrite
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
-	{
+//
+//	@Mutable
+//	@Shadow @Final private static VertexFormat VERTEX_FORMAT;
+//
+//	static
+//	{
+//		VERTEX_FORMAT = null;
+//	}
+//
+//	protected MixinParticleSweepAttack(World worldIn, double posXIn, double posYIn, double posZIn)
+//	{
+//		super(worldIn, posXIn, posYIn, posZIn);
+//	}
+//
+//	@Overwrite
+//	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+//	{
 //		int i = (int)(((float)this.life + partialTicks) * 3.0F / (float)this.lifeTime);
 //
 //		if (i <= 7)
@@ -62,5 +68,5 @@ public abstract class MixinParticleSweepAttack extends Particle
 //			Tessellator.getInstance().draw();
 //			GlStateManager.enableLighting();
 //		}
-	}
-}
+//	}
+//}

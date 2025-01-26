@@ -91,6 +91,7 @@ public class ExtraFBO
 		{
 			WIDTH = width;
 			HEIGHT = height;
+			GL11.glViewport(0, 0, WIDTH, HEIGHT);
 
 			GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING, RenderO.INTBUFFER);
 			int gl_draw_framebuffer_binding = RenderO.INTBUFFER.get(0);
@@ -122,7 +123,7 @@ public class ExtraFBO
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+//		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, fbct, 0);
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_STENCIL_ATTACHMENT, GL11.GL_TEXTURE_2D, fbdst, 0);
 	}
@@ -130,7 +131,7 @@ public class ExtraFBO
 	public static void mix()
 	{
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+//		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 //		GL11.glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
 //		GL11.glDisable(GL11.GL_DEPTH_TEST);

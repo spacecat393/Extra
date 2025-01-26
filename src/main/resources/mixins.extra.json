@@ -7,8 +7,6 @@
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"MixinBakedQuad",
-		"MixinBufferBuilder",
-		"MixinDefaultVertexFormats",
 		"MixinEntityRenderer",
 		"MixinGlStateManager",
 		"MixinGuiBossOverlay",
@@ -25,18 +23,15 @@
 		"MixinModelPlayer",
 		"MixinNetHandlerPlayClient",
 		"MixinOpenGlHelper",
-		"MixinParticleSweepAttack",
 		"MixinPlayerControllerMP",
 		"MixinRecipeBookClient",
 		"MixinRender",
 		"MixinRenderGlobal",
 		"MixinRenderLivingBase",
-		"MixinTileEntityRendererDispatcher",
-		"MixinVertexFormat"
+		"MixinTileEntityRendererDispatcher"
 	],
 	"mixins": [
 		"IMixinEntity",
-		"IMixinRayTraceResult",
 		"MixinBlock",
 		"MixinBlockLeaves",
 		"MixinCreativeTabs",

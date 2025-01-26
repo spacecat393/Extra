@@ -28,45 +28,48 @@ public abstract class MixinGuiOverlayDebug
 	private static IBlockState IBLOCKSTATE;
 
 	@Inject(method = "getDebugInfoRight", at = @At("RETURN"))
-	protected <T extends Comparable<T>> void getDebugInfoRight(CallbackInfoReturnable<List<String>> cir)
+	protected <T extends Comparable<T>> void nali_extra_getDebugInfoRight(CallbackInfoReturnable<List<String>> cir)
 	{
-		List list = cir.getReturnValue();
-		Block block = IBLOCKSTATE.getBlock();
-		String harvest_tool;
-		String harvest_level;
-		if (IBLOCKSTATE.getMaterial().isToolNotRequired())
+		if (IBLOCKSTATE != null)
 		{
-			harvest_tool = "-";
-			harvest_level = "-";
-		}
-		else
-		{
-			harvest_tool = block.getHarvestTool(IBLOCKSTATE);
-			harvest_level = "" + block.getHarvestLevel(IBLOCKSTATE);
-		}
-		EntityPlayerSP entityplayersp = this.mc.player;
-		ItemStack itemstack = entityplayersp.getHeldItemMainhand();
-		Item item = itemstack.getItem();
-		int tool_level = -1;
-
-		Set<String> toolclasses_string_set = item.getToolClasses(itemstack);
-		if (!toolclasses_string_set.isEmpty())
-		{
-			for (String toolclasses : toolclasses_string_set)
+			List list = cir.getReturnValue();
+			Block block = IBLOCKSTATE.getBlock();
+			String harvest_tool;
+			String harvest_level;
+			if (IBLOCKSTATE.getMaterial().isToolNotRequired())
 			{
-				if (toolclasses.equals(harvest_tool))
+				harvest_tool = "-";
+				harvest_level = "-";
+			}
+			else
+			{
+				harvest_tool = block.getHarvestTool(IBLOCKSTATE);
+				harvest_level = "" + block.getHarvestLevel(IBLOCKSTATE);
+			}
+			EntityPlayerSP entityplayersp = this.mc.player;
+			ItemStack itemstack = entityplayersp.getHeldItemMainhand();
+			Item item = itemstack.getItem();
+			int tool_level = -1;
+
+			Set<String> toolclasses_string_set = item.getToolClasses(itemstack);
+			if (!toolclasses_string_set.isEmpty())
+			{
+				for (String toolclasses : toolclasses_string_set)
 				{
-					tool_level = item.getHarvestLevel(itemstack, harvest_tool, entityplayersp, IBLOCKSTATE);
-					break;
+					if (toolclasses.equals(harvest_tool))
+					{
+						tool_level = item.getHarvestLevel(itemstack, harvest_tool, entityplayersp, IBLOCKSTATE);
+						break;
+					}
 				}
 			}
-		}
 
-		list.add("Tool Classes: " + toolclasses_string_set);
-		list.add("Tool Level: " + tool_level);
-		list.add("Harvest Tool: " + harvest_tool);
-		list.add("Harvest Level: " + harvest_level);
-//		cir.setReturnValue(list);
+			list.add("Tool Classes: " + toolclasses_string_set);
+			list.add("Tool Level: " + tool_level);
+			list.add("Harvest Tool: " + harvest_tool);
+			list.add("Harvest Level: " + harvest_level);
+	//		cir.setReturnValue(list);
+		}
 	}
 
 	@Redirect(method = "getDebugInfoRight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))

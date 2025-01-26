@@ -469,6 +469,8 @@ public abstract class MixinEntityRenderer
 //				if ((Extra.FP & 2) == 0)
 				if ((Small.FLAG & 1) == 0)
 				{
+//					GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
+//					GlStateManager.bindTexture(0);
 					this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, PARTIALTICKS, false);
 				}
 				Extra.FP &= 255-1;
@@ -655,4 +657,14 @@ public abstract class MixinEntityRenderer
 
 //		STATE ^= 8;
 	}
+
+//	@Overwrite
+//	public void disableLightmap()
+//	{
+//	}
+//
+//	@Overwrite
+//	public void enableLightmap()
+//	{
+//	}
 }

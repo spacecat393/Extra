@@ -179,21 +179,21 @@ public abstract class MixinMinecraft
 			Display.update();
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO0);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
 		}
 		else
 		{
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
-			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
 		}
 
 //		if ((Small.FLAG & 1) == 0)
 //		{
 //			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 //		}
-		Small.FLAG ^= 1 | 2;
+		Small.FLAG ^= 1/* | 2*/;
 	}
 }

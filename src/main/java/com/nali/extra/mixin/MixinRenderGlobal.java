@@ -375,8 +375,14 @@ public abstract class MixinRenderGlobal
 	}
 
 	@Redirect(method = "renderEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isPlayerSleeping()Z"))
-	public boolean nali_extra_renderEntities(EntityLivingBase instance)
+	private boolean nali_extra_renderEntities(EntityLivingBase instance)
 	{
 		return false;
 	}
+
+//	@Redirect(method = "renderEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;size()I", ordinal = 1))
+//	private int nali_extra_renderEntities(List instance)
+//	{
+//		return 0;
+//	}
 }
