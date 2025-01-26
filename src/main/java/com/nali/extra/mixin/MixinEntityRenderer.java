@@ -16,6 +16,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -120,8 +121,42 @@ public abstract class MixinEntityRenderer
 	private void nali_extra_renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 	{
 		PARTIALTICKS = partialTicks;
-		GlStateManager.enableAlpha();
-		GlStateManager.disableBlend();
+//		GlStateManager.enableAlpha();
+//		GlStateManager.disableBlend();
+	}
+
+	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 0))
+	private int nali_extra_renderWorldPassL0(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
+	{
+		if ((Small.FLAG & 1) == 0)
+		{
+			GlStateManager.enableAlpha();
+			GlStateManager.disableBlend();
+			return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.SOLID, d0, d1, d2);
+		}
+		else
+		{
+			GlStateManager.enableBlend();
+			int i = this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
+			GlStateManager.disableBlend();
+			return i;
+		}
+	}
+
+	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 3))
+	private int nali_extra_renderWorldPassL2(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
+	{
+		if ((Small.FLAG & 1) == 0)
+		{
+//			GlStateManager.enableBlend();
+			return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
+		}
+		else
+		{
+			GlStateManager.enableAlpha();
+			GlStateManager.disableBlend();
+			return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.SOLID, d0, d1, d2);
+		}
 	}
 
 //	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 1))
