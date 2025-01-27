@@ -28,6 +28,7 @@
 		"MixinRender",
 		"MixinRenderGlobal",
 		"MixinRenderLivingBase",
+		"MixinRenderManager",
 		"MixinTileEntityRendererDispatcher"
 	],
 	"mixins": [
