@@ -1,6 +1,7 @@
 package com.nali.extra.mixin;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -64,10 +65,15 @@ public abstract class MixinGuiOverlayDebug
 				}
 			}
 
-			list.add("Tool Classes: " + toolclasses_string_set);
-			list.add("Tool Level: " + tool_level);
-			list.add("Harvest Tool: " + harvest_tool);
-			list.add("Harvest Level: " + harvest_level);
+			if (block instanceof BlockCrops)
+			{
+				BlockCrops blockcrops = (BlockCrops)block;
+				list.add("MaxAge " + blockcrops.getMaxAge());
+			}
+			list.add("ToolClasses " + toolclasses_string_set);
+			list.add("ToolLevel " + tool_level);
+			list.add("HarvestTool " + harvest_tool);
+			list.add("HarvestLevel " + harvest_level);
 	//		cir.setReturnValue(list);
 		}
 	}
