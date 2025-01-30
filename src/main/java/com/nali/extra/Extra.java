@@ -11,4 +11,12 @@ public class Extra
 
 	@SideOnly(Side.CLIENT)
 	public static byte FP;
+
+	@SideOnly(Side.CLIENT)
+	public static float
+		YAW,
+		PITCH,
+
+		P_YAW,
+		P_PITCH;
 }

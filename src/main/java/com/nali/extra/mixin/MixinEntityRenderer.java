@@ -51,9 +51,8 @@ public abstract class MixinEntityRenderer
 	@Shadow @Final private int[] lightmapColors;
 
 	@Shadow private float thirdPersonDistancePrev;
-	@Shadow private boolean renderHand;
-	private static float ROTATE_Y;
-	private static byte STATE;//1c 2r 4swim 8blink
+//	private static float ROTATE_Y;
+	private static byte STATE;//1key 4swim 8blink
 	private static long LAST_TIME;
 	private static float PARTIALTICKS;
 
@@ -472,7 +471,7 @@ public abstract class MixinEntityRenderer
 	@Redirect(method = "renderWorldPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z"))
 	private boolean renderWorldPass(EntityRenderer instance)
 	{
-		if (this.renderHand)
+		if (!this.mc.gameSettings.hideGUI)
 		{
 			EntityPlayerSP entityplayersp = this.mc.player;
 
@@ -537,26 +536,26 @@ public abstract class MixinEntityRenderer
 		double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)partialTicks + (double)f;
 		double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)partialTicks;
 
-		switch (this.mc.gameSettings.thirdPersonView)
-		{
-			case 0:
-				rotationYaw = entity.rotationYaw;
-				prevRotationYaw = entity.prevRotationYaw;
-				rotationPitch = entity.rotationPitch;
-				prevRotationPitch = entity.prevRotationPitch;
-				break;
-			case 1:
-				rotationYaw = entity.rotationYaw / 2;
-				prevRotationYaw = entity.prevRotationYaw / 2;
-				rotationPitch = entity.rotationPitch / 2;
-				prevRotationPitch = entity.prevRotationPitch / 2;
-				break;
-			default://case 2:
-				rotationYaw = 0;
-				prevRotationYaw = 0;
-				rotationPitch = -entity.rotationPitch;
-				prevRotationPitch = -entity.prevRotationPitch;
-		}
+//		switch (this.mc.gameSettings.thirdPersonView)
+//		{
+//			case 0:
+//				rotationYaw = entity.rotationYaw;
+//				prevRotationYaw = entity.prevRotationYaw;
+//				rotationPitch = entity.rotationPitch;
+//				prevRotationPitch = entity.prevRotationPitch;
+//				break;
+//			case 1:
+//				rotationYaw = Extra.YAW;
+//				prevRotationYaw = Extra.P_YAW;
+//				rotationPitch = Extra.PITCH;
+//				prevRotationPitch = Extra.P_PITCH;
+//				break;
+//			default://case 2:
+//				rotationYaw = 0;
+//				prevRotationYaw = 0;
+//				rotationPitch = -entity.rotationPitch;
+//				prevRotationPitch = -entity.prevRotationPitch;
+//		}
 
 		/*if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPlayerSleeping())
 		{
@@ -573,8 +572,13 @@ public abstract class MixinEntityRenderer
 				GlStateManager.rotate(prevRotationPitch + (rotationPitch - prevRotationPitch) * partialTicks, -1.0F, 0.0F, 0.0F);
 			}
 		}
-		else */if (this.mc.gameSettings.thirdPersonView > 0)
+		else */if (this.mc.gameSettings.thirdPersonView == 1)
 		{
+			rotationYaw = Extra.YAW;
+			prevRotationYaw = Extra.P_YAW;
+			rotationPitch = Extra.PITCH;
+			prevRotationPitch = Extra.P_PITCH;
+
 			double d3 = this.thirdPersonDistancePrev + (4.0F - this.thirdPersonDistancePrev) * partialTicks;
 
 			if (this.mc.gameSettings.debugCamEnable)
@@ -586,28 +590,46 @@ public abstract class MixinEntityRenderer
 				float f1 = rotationYaw;
 				float f2 = rotationPitch;
 
-				if (this.mc.gameSettings.thirdPersonView == 2)
+				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 				{
-					if (Keyboard.isKeyDown(Keyboard.KEY_TAB))
-					{
-						STATE |= 1;
-					}
-					else
-					{
-						STATE &= 255-2;
-					}
-
-					if ((STATE & 1+2) == 1)
-					{
-						ROTATE_Y += 45;
-						ROTATE_Y %= 360.0F;
-						STATE |= 2;
-					}
-
-					STATE &= 255-1;
-
-					f1 += ROTATE_Y;
+					entity.rotationYaw -= partialTicks;
 				}
+
+				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				{
+					entity.rotationYaw += partialTicks;
+				}
+
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				{
+					entity.rotationPitch -= partialTicks;
+					entity.rotationPitch = MathHelper.clamp(entity.rotationPitch, -90.0F, 90.0F);
+				}
+
+				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+				{
+					entity.rotationPitch += partialTicks;
+					entity.rotationPitch = MathHelper.clamp(entity.rotationPitch, -90.0F, 90.0F);
+				}
+
+//				if (this.mc.gameSettings.thirdPersonView == 2)
+//				{
+//					if (Keyboard.isKeyDown(Keyboard.KEY_TAB))
+//					{
+//						if ((STATE & 1) == 0)
+//						{
+//							ROTATE_Y += 45;
+//							ROTATE_Y %= 360.0F;
+//							STATE |= 1;
+//						}
+//					}
+//					else
+//					{
+//						STATE &= 255-1;
+//					}
+//
+//					f1 += ROTATE_Y;
+//				}
 
 				double d4 = (double)(-MathHelper.sin(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F)) * d3;
 				double d5 = (double)(MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F)) * d3;
@@ -634,10 +656,10 @@ public abstract class MixinEntityRenderer
 					}
 				}
 
-				if (this.mc.gameSettings.thirdPersonView == 2)
-				{
-					GlStateManager.rotate(ROTATE_Y, 0.0F, 1.0F, 0.0F);
-				}
+//				if (this.mc.gameSettings.thirdPersonView == 2)
+//				{
+//					GlStateManager.rotate(ROTATE_Y, 0.0F, 1.0F, 0.0F);
+//				}
 
 				GlStateManager.rotate(rotationPitch - f2, 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate(rotationYaw - f1, 0.0F, 1.0F, 0.0F);
@@ -648,6 +670,10 @@ public abstract class MixinEntityRenderer
 		}
 		else
 		{
+			rotationYaw = entity.rotationYaw;
+			prevRotationYaw = entity.prevRotationYaw;
+			rotationPitch = entity.rotationPitch;
+			prevRotationPitch = entity.prevRotationPitch;
 			GlStateManager.translate(0.0F, 0.0F, 0.05F);
 		}
 
@@ -702,4 +728,27 @@ public abstract class MixinEntityRenderer
 //	public void enableLightmap()
 //	{
 //	}
+
+//	@Redirect(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "Lnet/minecraft/util/MouseHelper;deltaX:I"))
+//	private int nali_extra_updateCameraAndRender(MouseHelper instance)
+//	{
+//		return this.mc.gameSettings.thirdPersonView == 0 ? instance.deltaX : 0;
+//	}
+
+	@Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;turn(FF)V"))
+	private void nali_extra_updateCameraAndRender(EntityPlayerSP instance, float yaw, float pitch)
+	{
+		if (this.mc.gameSettings.thirdPersonView == 0)
+		{
+			instance.turn(yaw, pitch);
+		}
+
+		float f = Extra.PITCH;
+		float f1 = Extra.YAW;
+		Extra.YAW = (float)((double)Extra.YAW + (double)yaw * 0.15D);
+		Extra.PITCH = (float)((double)Extra.PITCH - (double)pitch * 0.15D);
+		Extra.PITCH = MathHelper.clamp(Extra.PITCH, -90.0F, 90.0F);
+		Extra.P_PITCH += Extra.PITCH - f;
+		Extra.P_YAW += Extra.YAW - f1;
+	}
 }

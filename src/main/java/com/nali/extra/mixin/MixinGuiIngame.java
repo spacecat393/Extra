@@ -2,6 +2,8 @@ package com.nali.extra.mixin;
 
 import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraQuadLine;
+import com.nali.gui.page.Page;
+import com.nali.small.Small;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -12,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -37,8 +38,10 @@ public abstract class MixinGuiIngame extends Gui
 	@Overwrite
 	protected void renderHotbar(ScaledResolution sr, float partialTicks)
 	{
-		if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
+		byte bit = (byte)(Small.FLAG & 1+2);
+		if ((bit == 3 || bit == 0) && Page.PAGE == null && this.mc.getRenderViewEntity() instanceof EntityPlayer)
 		{
+			Small.FLAG &= 255-2;
 			EntityPlayer entityplayer = (EntityPlayer)this.mc.getRenderViewEntity();
 			ItemStack itemstack = entityplayer.getHeldItemOffhand();
 			int i = sr.getScaledWidth() / 2;
@@ -76,19 +79,38 @@ public abstract class MixinGuiIngame extends Gui
 
 			//
  			//force blend
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-//			GL14.glBlendEquation(GL14.GL_FUNC_SUBTRACT);
-//			GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+//			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+////			GL14.glBlendEquation(GL14.GL_FUNC_SUBTRACT);
+////			GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+//
+////			GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+//			GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_CONSTANT_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+////			GlStateManager.enableAlpha();
+//			//
+//			if (!itemstack.isEmpty())
+//			{
+////				int l1 = sr.getScaledHeight() - 16 - 3;
+////				this.renderHotbarItem(i - 91 - 26, l1, partialTicks, entityplayer, itemstack);
+//				this.renderHotbarItem(i - 91 - 26, 3 + 1, partialTicks, entityplayer, itemstack);
+//			}
+//
+//			for (int l = 0; l < 9; ++l)
+//			{
+//				int i1 = i - 90 + l * 20 + 2;
+////				int j1 = sr.getScaledHeight() - 16 - 3;
+////				this.renderHotbarItem(i1, j1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
+//				this.renderHotbarItem(i1, 3 + 1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
+//			}
 
-//			GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
-			GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_CONSTANT_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
-//			GlStateManager.enableAlpha();
-			//
+//			GL14.glBlendFuncSeparate(GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ONE);
+			GL11.glPushMatrix();
+			GL11.glTranslatef(0, 0, -100);
 			if (!itemstack.isEmpty())
 			{
 //				int l1 = sr.getScaledHeight() - 16 - 3;
 //				this.renderHotbarItem(i - 91 - 26, l1, partialTicks, entityplayer, itemstack);
-				this.renderHotbarItem(i - 91 - 26, 3 + 1, partialTicks, entityplayer, itemstack);
+//				this.renderHotbarItem(i - 91 - 26, 3 + 1, partialTicks, entityplayer, itemstack);
+				this.renderHotbarItem(i - 90 + 4 * 20 + 2, 3 + 1 + 26, partialTicks, entityplayer, itemstack);
 			}
 
 			for (int l = 0; l < 9; ++l)
@@ -98,23 +120,9 @@ public abstract class MixinGuiIngame extends Gui
 //				this.renderHotbarItem(i1, j1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
 				this.renderHotbarItem(i1, 3 + 1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
 			}
-
-			GL14.glBlendFuncSeparate(GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ONE);
-			if (!itemstack.isEmpty())
-			{
-//				int l1 = sr.getScaledHeight() - 16 - 3;
-//				this.renderHotbarItem(i - 91 - 26, l1, partialTicks, entityplayer, itemstack);
-				this.renderHotbarItem(i - 91 - 26, 3 + 1, partialTicks, entityplayer, itemstack);
-			}
-
-			for (int l = 0; l < 9; ++l)
-			{
-				int i1 = i - 90 + l * 20 + 2;
-//				int j1 = sr.getScaledHeight() - 16 - 3;
-//				this.renderHotbarItem(i1, j1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
-				this.renderHotbarItem(i1, 3 + 1, partialTicks, entityplayer, entityplayer.inventory.mainInventory.get(l));
-			}
-			GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+			GL11.glPopMatrix();
+//			GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+//			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 //			GL14.glBlendEquation(GL14.GL_FUNC_ADD);
 
 			RenderHelper.disableStandardItemLighting();
@@ -172,6 +180,11 @@ public abstract class MixinGuiIngame extends Gui
 
 	@Overwrite
 	protected void renderPotionEffects(ScaledResolution resolution)
+	{
+	}
+
+	@Overwrite
+	protected void renderPumpkinOverlay(ScaledResolution scaledRes)
 	{
 	}
 }
