@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import org.spongepowered.asm.mixin.Mixin;
 
+//cull leaves
 @Mixin(BlockLeaves.class)
 public abstract class MixinBlockLeaves extends Block
 {

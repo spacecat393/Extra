@@ -43,6 +43,7 @@
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",
 		"MixinEntitySnowball",
+		"MixinEntityWolf",
 		"MixinItem",
 		"MixinItemBow",
 		"MixinItemEgg",
