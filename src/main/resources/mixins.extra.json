@@ -8,7 +8,9 @@
 	"client": [
 		"MixinBakedQuad",
 		"MixinEntityRenderer",
+		"MixinFontRenderer",
 		"MixinGlStateManager",
+		"MixinGui",
 		"MixinGuiBossOverlay",
 		"MixinGuiButton",
 		"MixinGuiButtonLanguage",

@@ -473,41 +473,41 @@ public abstract class MixinEntityRenderer
 	{
 		if (!this.mc.gameSettings.hideGUI)
 		{
-			EntityPlayerSP entityplayersp = this.mc.player;
-
-			//support aquaacrobatics
-			boolean swim = ((IMixinEntity)entityplayersp).GOgetFlag(4);
-			STATE |= swim ? 4 : 0;
-			if ((STATE & 4) == 4)
+			if ((Small.FLAG & 1) == 1)
 			{
-				if (swim)
+				EntityPlayerSP entityplayersp = this.mc.player;
+
+				//support aquaacrobatics
+				boolean swim = /*((IMixinEntity)entityplayersp).GOgetFlag(2) || */((IMixinEntity)entityplayersp).GOgetFlag(4) || entityplayersp.height < 1.8F / 2.0F;
+				STATE |= swim ? 4 : 0;
+				if ((STATE & 4) == 4)
 				{
-					LAST_TIME = Minecraft.getSystemTime();
-				}
-				else
-				{
-					long new_time = Minecraft.getSystemTime();
-					if (new_time - LAST_TIME >= 1000)//1sec
+					if (swim)
 					{
-						LAST_TIME = new_time;
-						STATE &= 255-4;
+						LAST_TIME = Minecraft.getSystemTime();
+					}
+					else
+					{
+						long new_time = Minecraft.getSystemTime();
+						if (new_time - LAST_TIME >= 1000)//1sec
+						{
+							LAST_TIME = new_time;
+							STATE &= 255-4;
+						}
 					}
 				}
-			}
 
-			if (this.mc.gameSettings.thirdPersonView == 0 && !entityplayersp.isElytraFlying() && !entityplayersp.isPlayerSleeping() && !swim && (STATE & 4) == 0)
-			{
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 //				GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
-				Extra.FP |= 1;
 //				if ((Extra.FP & 2) == 0)
-				if ((Small.FLAG & 1) == 0)
+				if (this.mc.gameSettings.thirdPersonView == 0 && !entityplayersp.isElytraFlying() && !entityplayersp.isPlayerSleeping() && !swim && (STATE & 4) == 0)
 				{
+					GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+					Extra.FP |= 1;
 //					GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
 //					GlStateManager.bindTexture(0);
 					this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, PARTIALTICKS, false);
+					Extra.FP &= 255-1;
 				}
-				Extra.FP &= 255-1;
 //				Extra.FP ^= 2;
 			}
 		}
