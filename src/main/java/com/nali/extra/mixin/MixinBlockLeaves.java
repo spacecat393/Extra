@@ -30,6 +30,7 @@ public abstract class MixinBlockLeaves extends Block
 //	@Override
 //	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 //	{
+////		return blockAccess.getBlockState(pos.offset(side)).getBlock() == Blocks.AIR;
 //		return blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 //	}
 }

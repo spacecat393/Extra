@@ -359,22 +359,25 @@ public abstract class MixinRenderGlobal
 	@Overwrite
 	public static void drawBoundingBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha)
 	{
-		//			AxisAlignedBB viewer_axisalignedbb = viewer.getEntityBoundingBox();
-//		AxisAlignedBB boundingBox = entityIn.getEntityBoundingBox();
-//			GL11.glDisable(GL11.GL_DEPTH_TEST);
-		if (red == 1.0F && green == 1.0F && blue == 1.0F/* && alpha == 1.0F*/)
+		if (!Minecraft.getMinecraft().gameSettings.hideGUI)
 		{
-			GlStateManager.color(ExtraColor.RED, ExtraColor.GREEN, ExtraColor.BLUE, 1.0F);
+			//			AxisAlignedBB viewer_axisalignedbb = viewer.getEntityBoundingBox();
+	//		AxisAlignedBB boundingBox = entityIn.getEntityBoundingBox();
+	//			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			if (red == 1.0F && green == 1.0F && blue == 1.0F/* && alpha == 1.0F*/)
+			{
+				GlStateManager.color(ExtraColor.RED, ExtraColor.GREEN, ExtraColor.BLUE, 1.0F);
+			}
+			else
+			{
+				GlStateManager.color(red, green, blue, alpha);
+			}
+			ExtraCubeLine.update((float)minX, (float)minY, (float)minZ, (float)maxX, (float)maxY, (float)maxZ);
+	//		ExtraCubeLine.update(boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+	//			ExtraCubeLine.update(viewer_axisalignedbb.minX - boundingBox.minX, viewer_axisalignedbb.minY - boundingBox.minY, viewer_axisalignedbb.minZ - boundingBox.minZ, viewer_axisalignedbb.maxX - boundingBox.maxX, viewer_axisalignedbb.maxY - boundingBox.maxY, viewer_axisalignedbb.maxZ - boundingBox.maxZ);
+			ExtraCubeLine.draw();
+	//			GL11.glEnable(GL11.GL_DEPTH_TEST);
 		}
-		else
-		{
-			GlStateManager.color(red, green, blue, alpha);
-		}
-		ExtraCubeLine.update((float)minX, (float)minY, (float)minZ, (float)maxX, (float)maxY, (float)maxZ);
-//		ExtraCubeLine.update(boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-//			ExtraCubeLine.update(viewer_axisalignedbb.minX - boundingBox.minX, viewer_axisalignedbb.minY - boundingBox.minY, viewer_axisalignedbb.minZ - boundingBox.minZ, viewer_axisalignedbb.maxX - boundingBox.maxX, viewer_axisalignedbb.maxY - boundingBox.maxY, viewer_axisalignedbb.maxZ - boundingBox.maxZ);
-		ExtraCubeLine.draw();
-//			GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
 	@Redirect(method = "renderEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isPlayerSleeping()Z"))
