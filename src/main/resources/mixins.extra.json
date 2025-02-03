@@ -6,9 +6,11 @@
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
-		"MixinBakedQuad",
+		"MixinBlockFluidRenderer",
+		"MixinBlockModelRenderer",
 		"MixinEntityRenderer",
 		"MixinFontRenderer",
+		"MixinFrustum",
 		"MixinGlStateManager",
 		"MixinGui",
 		"MixinGuiBossOverlay",
@@ -36,7 +38,6 @@
 	],
 	"mixins": [
 		"IMixinEntity",
-		"MixinBlock",
 		"MixinBlockLeaves",
 		"MixinCreativeTabs",
 		"MixinEntity",

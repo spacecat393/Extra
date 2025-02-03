@@ -10,12 +10,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.ViewFrustum;
+import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,6 +35,8 @@ public abstract class MixinRenderGlobal
 	public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha)
 	{
 	}
+
+	@Shadow private ViewFrustum viewFrustum;
 
 	//*extra-s0
 	private static float X_ANGLE/* = 359.0F*/, Z_ANGLE/* = 359.0F*/;
@@ -397,4 +402,108 @@ public abstract class MixinRenderGlobal
 	{
 
 	}
+
+	//force chunk render
+	private static int YAW;
+	private static int PITCH;
+	private static long TIME;
+
+//	@Inject(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V", shift = At.Shift.AFTER))
+//	@Inject(method = "setupTerrain", at = @At(value = "HEAD"))
+	@Inject(method = "setupTerrain", at = @At(value = "TAIL"))
+	private void nali_extra_setupTerrain(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci)
+	{
+		int yaw = (int)viewEntity.rotationYaw;
+		int pitch = (int)viewEntity.rotationPitch;
+		if (YAW != yaw || PITCH != pitch)
+		{
+			long time = Minecraft.getSystemTime();
+			if (time - TIME >= 1000)
+			{
+				TIME = time;
+				YAW = yaw;
+				PITCH = pitch;
+//				updateChunkPositions(this.viewFrustum, viewEntity.posX, viewEntity.posZ);
+//				this.loadRenderers();
+//				updateRenderChunk();
+				for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
+				{
+					if (renderchunk != null)
+					{
+						renderchunk.setNeedsUpdate(false);
+					}
+				}
+			}
+		}
+	}
+
+//	private static void updateChunkPositions(ViewFrustum viewfrustum, double viewEntityX, double viewEntityZ)
+//	{
+//		IMixinViewFrustum imixinviewfrustum = (IMixinViewFrustum)viewfrustum;
+//		int baseX = MathHelper.floor(viewEntityX) - (8 * 16);
+//		int baseZ = MathHelper.floor(viewEntityZ) - (8 * 16);
+//		int chunkSize = imixinviewfrustum.countChunksX() * 16;
+//
+//		for (int chunkX = 0; chunkX < imixinviewfrustum.countChunksX(); ++chunkX)
+//		{
+//			int worldX = imixinviewfrustum.GOgetBaseCoordinate(baseX, chunkSize, chunkX);
+//
+//			for (int chunkZ = 0; chunkZ < imixinviewfrustum.countChunksZ(); ++chunkZ)
+//			{
+//				int worldZ = imixinviewfrustum.GOgetBaseCoordinate(baseZ, chunkSize, chunkZ);
+//
+//				for (int chunkY = 0; chunkY < imixinviewfrustum.countChunksY(); ++chunkY)
+//				{
+//					int worldY = chunkY * 16;
+//					RenderChunk renderChunk = viewfrustum.renderChunks[(chunkZ * imixinviewfrustum.countChunksY() + chunkY) * imixinviewfrustum.countChunksX() + chunkX];
+//
+//					if (renderChunk != null)
+//					{
+//						renderChunk.setPosition(worldX, worldY, worldZ);
+//					}
+//				}
+//			}
+//		}
+//	}
+
+//	private void updateRenderChunk()
+//	{
+////		EntityPlayerSP entityplayersp = this.mc.player;
+////
+////		int renderdistancechunks = this.mc.gameSettings.renderDistanceChunks;
+////
+////		for (int dx = -renderdistancechunks; dx <= renderdistancechunks; dx++)
+////		{
+////			for (int dz = -renderdistancechunks; dz <= renderdistancechunks; dz++)
+////			{
+////				int chunkX = entityplayersp.chunkCoordX + dx;
+////				int chunkZ = entityplayersp.chunkCoordZ + dz;
+////
+////				RenderChunk renderchunk = this.getRenderChunk(chunkX, chunkZ);
+////				if (renderchunk != null)
+////				{
+////					renderchunk.setNeedsUpdate(false);
+////				}
+////			}
+////		}
+//	}
+//
+////	private RenderChunk getRenderChunk(int chunkX, int chunkZ)
+////	{
+//////		if (this.viewFrustum != null)
+//////		{
+////		for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
+////		{
+//////			if (renderchunk != null)
+//////			{
+////			BlockPos pos = renderchunk.getPosition();
+////			if (pos.getX() >> 4 == chunkX && pos.getZ() >> 4 == chunkZ)
+////			{
+////				return renderchunk;
+////			}
+//////			}
+////		}
+//////		}
+////		return null;
+////	}
 }
