@@ -100,7 +100,7 @@ public abstract class MixinBlockModelRenderer
 //				}
 //			}
 
-			if (!list.isEmpty() && ExtraView.check(stateIn.getBlock(), posIn, worldIn, enumfacing) && stateIn.shouldSideBeRendered(worldIn, posIn, enumfacing))
+			if (!list.isEmpty() && ExtraView.check(stateIn.getBlock(), posIn, worldIn, stateIn, enumfacing) && stateIn.shouldSideBeRendered(worldIn, posIn, enumfacing))
 			{
 				int i = stateIn.getPackedLightmapCoords(worldIn, posIn.offset(enumfacing));
 				this.renderQuadsFlat(worldIn, stateIn, posIn, i, false, buffer, list, bitset);

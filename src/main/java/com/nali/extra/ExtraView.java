@@ -1,8 +1,7 @@
 package com.nali.extra;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.EnumFacing;
@@ -17,7 +16,7 @@ public class ExtraView
 //	public static double X, Y, Z;
 	public final static float EPSILON = 90.0F;
 
-	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, EnumFacing enumfacing)
+	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, IBlockState iblockstate, EnumFacing enumfacing)
 	{
 //		if (true)
 //		{
@@ -149,7 +148,8 @@ public class ExtraView
 			return false;
 		}
 
-		if (!(block instanceof BlockDoor) && !(block instanceof BlockTrapDoor))
+//		if (!(block instanceof BlockDoor) && !(block instanceof BlockTrapDoor) && !(block instanceof BlockSnow))
+		if (iblockstate.isFullCube())
 		{
 //			Block block = blockAccess.getBlockState(pos.offset(side)).getBlock();
 //			if (block == (Object)this/* || block instanceof BlockLeaves*/ || (((Object)this instanceof BlockLeaves) && block != Blocks.AIR))

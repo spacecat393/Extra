@@ -24,7 +24,7 @@ public abstract class MixinBlockFluidRenderer
 	@Redirect(method = "renderFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;shouldSideBeRendered(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;)Z"))
 	private boolean nali_extra_renderFluid(IBlockState instance, IBlockAccess iBlockAccess, BlockPos blockPos, EnumFacing enumFacing)
 	{
-		return ExtraView.check(instance.getBlock(), blockPos, iBlockAccess, enumFacing) && instance.shouldSideBeRendered(iBlockAccess, blockPos, enumFacing);
+		return ExtraView.check(instance.getBlock(), blockPos, iBlockAccess, instance, enumFacing) && instance.shouldSideBeRendered(iBlockAccess, blockPos, enumFacing);
 	}
 
 	@Redirect(method = "renderFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockLiquid;shouldRenderSides(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)Z"))
