@@ -1,6 +1,5 @@
 package com.nali.extra.mixin;
 
-import com.nali.extra.ExtraView;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -24,10 +23,13 @@ public abstract class MixinFrustum
 	@Inject(method = "<init>(Lnet/minecraft/client/renderer/culling/ClippingHelper;)V", at = @At("TAIL"))
 	private void nali_extra_init(CallbackInfo ci)
 	{
-//		Nali.warn("1");
-		ExtraView.X = this.x;
-		ExtraView.Y = this.y;
-		ExtraView.Z = this.z;
+////		Nali.warn("1");
+//		ExtraView.X = this.x;
+//		ExtraView.Y = this.y;
+//		ExtraView.Z = this.z;
+		this.x += 0.5D;
+		this.y += Minecraft.getMinecraft().player.getEyeHeight();
+		this.z += 0.5D;
 	}
 
 	@Overwrite

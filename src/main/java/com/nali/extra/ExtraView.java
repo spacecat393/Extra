@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,11 +14,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ExtraView
 {
-	public static double X, Y, Z;
+//	public static double X, Y, Z;
 	public final static float EPSILON = 90.0F;
 
 	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, EnumFacing enumfacing)
 	{
+//		if (true)
+//		{
+//			return true;
+//		}
 //		Vec3i direction_vec3i = enumfacing.getDirectionVec();
 //		double x = blockpos.getX() + direction_vec3i.getX();
 //		double y = blockpos.getY() + direction_vec3i.getY();
@@ -58,16 +61,52 @@ public class ExtraView
 //				return false;
 //			}
 //		}
-		Vec3i direction_vec3i = enumfacing.getDirectionVec();
-		double x = blockpos.getX() - direction_vec3i.getX() - entityplayersp.posX;
-		double y = blockpos.getY() - direction_vec3i.getY() - entityplayersp.posY;
-		double z = blockpos.getZ() - direction_vec3i.getZ() - entityplayersp.posZ;
+//		Vec3i direction_vec3i = enumfacing.getDirectionVec();
+//		double x = blockpos.getX() + direction_vec3i.getX() - entityplayersp.posX;
+//		double y = blockpos.getY() + direction_vec3i.getY() - entityplayersp.posY;
+//		double z = blockpos.getZ() + direction_vec3i.getZ() - entityplayersp.posZ;
+
+//		double x = blockpos.getX() - entityplayersp.posX;
+//		double y = blockpos.getY() - entityplayersp.posY;
+//		double z = blockpos.getZ() - entityplayersp.posZ;
+//		switch (enumfacing)
+//		{
+//			case NORTH:
+//				y += 0.5D;
+//				z -= 1.0D;
+//				break;
+//			case WEST:
+//				y += 0.5D;
+//				x -= 1.0D;
+//				break;
+//			case SOUTH:
+//				y += 0.5D;
+//				z += 1.0D;
+//				break;
+//			case EAST:
+//				y += 0.5D;
+//				x += 1.0D;
+//				break;
+//			case DOWN:
+//				x += 0.5D;
+//				z += 0.5D;
+//				y -= 1.0D;
+//				break;
+//			case UP:
+//				x += 0.5D;
+//				z += 0.5D;
+//				y += 1.0D;
+//		}
+
+//		double x = blockpos.getX() - direction_vec3i.getX() - entityplayersp.posX;
+//		double y = blockpos.getY() - direction_vec3i.getY() - entityplayersp.posY;
+//		double z = blockpos.getZ() - direction_vec3i.getZ() - entityplayersp.posZ;
 //		x -= entityplayersp.posX;
 //		y -= entityplayersp.posY;
 //		z -= entityplayersp.posZ;
-//		double x = blockpos.getX() + 0.5D - entityplayersp.posX;
-//		double y = blockpos.getY() + 0.5D - entityplayersp.posY;
-//		double z = blockpos.getZ() + 0.5D - entityplayersp.posZ;
+		double x = blockpos.getX() + 0.5D - entityplayersp.posX;
+		double y = blockpos.getY() + 0.5D - entityplayersp.posY;
+		double z = blockpos.getZ() + 0.5D - entityplayersp.posZ;
 //		double x = blockpos.getX();
 //		double y = blockpos.getY();
 //		double z = blockpos.getZ();
@@ -75,28 +114,12 @@ public class ExtraView
 //		double y = entityplayersp.posY - blockpos.getY() + 0.5D;
 //		double z = entityplayersp.posZ - blockpos.getZ() + 0.5D;
 
-		//		switch (enumfacing)
-		//		{
-		//			case NORTH:
-		//				break;
-		//			case WEST:
-		//				break;
-		//			case SOUTH:
-		//				break;
-		//			case EAST:
-		//				break;
-		//			case DOWN:
-		//				break;
-		//			case UP:
-		//				break;
-		//		}
-
 		double yaw = Math.toDegrees(Math.atan2(-x, z));
 //		float yaw = EntityMath.normalize((float)Math.toDegrees(Math.atan2(-x, z)), 360.0F);
 		double pitch = Math.toDegrees(Math.atan2(-y, Math.sqrt(x * x + z * z)));//Math.asin
 
 		float entityplayersp_rotationyaw = ((entityplayersp.rotationYaw + 180) % 360 + 360) % 360 - 180;
-		float entityplayersp_rotationpitch = ((entityplayersp.rotationPitch + 90) % 180 + 180) % 180 - 90;
+		float entityplayersp_rotationpitch = ((entityplayersp.rotationPitch /*+ 90 */+ 90) % 180 + 180) % 180 - 90;
 //		float entityplayersp_rotationyaw = EntityMath.normalize(entityplayersp.rotationYaw, 360.0F);
 //		float entityplayersp_rotationpitch = EntityMath.normalize(entityplayersp.rotationPitch, 180.0F);
 
@@ -112,6 +135,14 @@ public class ExtraView
 //		{
 //			y = 180 - y;
 //		}
+
+//		Nali.warn("enumfacing " + enumfacing);
+//		Nali.warn("entityplayersp_rotationyaw " + entityplayersp_rotationyaw);
+//		Nali.warn("entityplayersp_rotationpitch " + entityplayersp_rotationpitch);
+//		Nali.warn("yaw " + yaw);
+//		Nali.warn("pitch " + pitch);
+//		Nali.warn("x " + x);
+//		Nali.warn("y " + y);
 
 		if (x > EPSILON || y > EPSILON)
 		{
