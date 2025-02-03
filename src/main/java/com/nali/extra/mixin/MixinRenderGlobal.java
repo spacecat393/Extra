@@ -18,7 +18,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -65,12 +64,6 @@ public abstract class MixinRenderGlobal
 //	{
 //		return 64;
 //	}
-
-	//disable weather
-	@Overwrite
-	public void renderWorldBorder(Entity entityIn, float partialTicks)
-	{
-	}
 
 //	@Inject(method = "renderSky(FI)V", at = @At(value = "HEAD"), cancellable = true)
 //	private void nali_renderSky(float partialTicks, int pass, CallbackInfo ci)
@@ -243,6 +236,13 @@ public abstract class MixinRenderGlobal
 		RenderO.free();
 //		ci.cancel();
 	}
+	//*extra-e0
+
+	//disable weather
+	@Overwrite
+	public void renderWorldBorder(Entity entityIn, float partialTicks)
+	{
+	}
 
 	@Redirect(method = "drawSelectionBox", at = @At(value = "FIELD", target = "Lnet/minecraft/util/math/RayTraceResult;typeOfHit:Lnet/minecraft/util/math/RayTraceResult$Type;"))
 	public RayTraceResult.Type nali_extra_drawSelectionBox_Type(RayTraceResult instance)
@@ -270,7 +270,6 @@ public abstract class MixinRenderGlobal
 ////		}
 		drawSelectionBoundingBox(box, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
-	//*extra-e0
 
 //	@Overwrite
 //	public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha)
@@ -404,11 +403,12 @@ public abstract class MixinRenderGlobal
 	}
 
 	//force chunk render
-	private static int YAW;
-	private static int PITCH;
-	private static long TIME;
+	private static int
+		YAW,
+		PITCH;
+	private static long
+		TIME;
 
-//	@Inject(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V", shift = At.Shift.AFTER))
 //	@Inject(method = "setupTerrain", at = @At(value = "HEAD"))
 	@Inject(method = "setupTerrain", at = @At(value = "TAIL"))
 	private void nali_extra_setupTerrain(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci)
@@ -423,9 +423,9 @@ public abstract class MixinRenderGlobal
 				TIME = time;
 				YAW = yaw;
 				PITCH = pitch;
-//				updateChunkPositions(this.viewFrustum, viewEntity.posX, viewEntity.posZ);
-//				this.loadRenderers();
-//				updateRenderChunk();
+	//				updateChunkPositions(this.viewFrustum, viewEntity.posX, viewEntity.posZ);
+	//				this.loadRenderers();
+	//				updateRenderChunk();
 				for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
 				{
 					if (renderchunk != null)
@@ -436,6 +436,19 @@ public abstract class MixinRenderGlobal
 			}
 		}
 	}
+
+//	@Inject(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V", shift = At.Shift.AFTER))
+//	private void nali_extra_setupTerrainC(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci)
+//	{
+//		YAW = -YAW;
+//		for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
+//		{
+//			if (renderchunk != null)
+//			{
+//				renderchunk.setNeedsUpdate(false);
+//			}
+//		}
+//	}
 
 //	private static void updateChunkPositions(ViewFrustum viewfrustum, double viewEntityX, double viewEntityZ)
 //	{

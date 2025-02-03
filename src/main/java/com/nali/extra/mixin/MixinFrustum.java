@@ -1,11 +1,15 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.ExtraView;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.culling.Frustum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //force chunk render
 @Mixin(Frustum.class)
@@ -16,6 +20,15 @@ public abstract class MixinFrustum
 	@Shadow private double y;
 
 	@Shadow private double z;
+
+	@Inject(method = "<init>(Lnet/minecraft/client/renderer/culling/ClippingHelper;)V", at = @At("TAIL"))
+	private void nali_extra_init(CallbackInfo ci)
+	{
+//		Nali.warn("1");
+		ExtraView.X = this.x;
+		ExtraView.Y = this.y;
+		ExtraView.Z = this.z;
+	}
 
 	@Overwrite
 	public boolean isBoxInFrustum(double minx, double miny, double minz, double maxx, double maxy, double maxz)
@@ -147,10 +160,10 @@ public abstract class MixinFrustum
 			x = 360 - x;
 		}
 
-		if (y > 90)
-		{
-			y = 180 - y;
-		}
+//		if (y > 90)
+//		{
+//			y = 180 - y;
+//		}
 
 		return x <= epsilon && y <= epsilon;
 	}
