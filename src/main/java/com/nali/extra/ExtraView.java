@@ -13,8 +13,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ExtraView
 {
-//	public static double X, Y, Z;
-	public final static float EPSILON = 90.0F;
+	public static double X, Y, Z;
+	public static float YAW, PITCH;
+	public static int TEMP_YAW, TEMP_PITCH;
+	public static long TIME;
+
+	public final static float BLOCK_EPSILON = 90.0F;
+	public final static float CHUNK_EPSILON = 45.0F;
 
 	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, IBlockState iblockstate, EnumFacing enumfacing)
 	{
@@ -117,13 +122,24 @@ public class ExtraView
 //		float yaw = EntityMath.normalize((float)Math.toDegrees(Math.atan2(-x, z)), 360.0F);
 		double pitch = Math.toDegrees(Math.atan2(-y, Math.sqrt(x * x + z * z)));//Math.asin
 
-		float entityplayersp_rotationyaw = ((entityplayersp.rotationYaw + 180) % 360 + 360) % 360 - 180;
-		float entityplayersp_rotationpitch = ((entityplayersp.rotationPitch /*+ 90 */+ 90) % 180 + 180) % 180 - 90;
-//		float entityplayersp_rotationyaw = EntityMath.normalize(entityplayersp.rotationYaw, 360.0F);
-//		float entityplayersp_rotationpitch = EntityMath.normalize(entityplayersp.rotationPitch, 180.0F);
+//		float entityplayersp_rotationyaw = ((entityplayersp.rotationYaw + 180) % 360 + 360) % 360 - 180;
+//		float entityplayersp_rotationpitch = ((entityplayersp.rotationPitch /*+ 90 */+ 90) % 180 + 180) % 180 - 90;
+////		float entityplayersp_rotationyaw = EntityMath.normalize(entityplayersp.rotationYaw, 360.0F);
+////		float entityplayersp_rotationpitch = EntityMath.normalize(entityplayersp.rotationPitch, 180.0F);
 
-		x = Math.abs(entityplayersp_rotationyaw - yaw);
-		y = Math.abs(entityplayersp_rotationpitch - pitch);
+//		x = Math.abs(entityplayersp_rotationyaw - yaw);
+//		y = Math.abs(entityplayersp_rotationpitch - pitch);
+//		if (PITCH == -90 && pitch == -90)
+//		{
+//			return true;
+//		}
+//		else if (PITCH == 90 && pitch == 90)
+//		{
+//			return true;
+//		}
+		x = Math.abs(YAW - yaw);
+		y = Math.abs(PITCH - pitch);
+//		Nali.warn("pitch " + pitch);
 
 		if (x > 180)
 		{
@@ -143,7 +159,7 @@ public class ExtraView
 //		Nali.warn("x " + x);
 //		Nali.warn("y " + y);
 
-		if (x > EPSILON || y > EPSILON)
+		if (x > BLOCK_EPSILON || y > BLOCK_EPSILON)
 		{
 			return false;
 		}
@@ -161,5 +177,70 @@ public class ExtraView
 		}
 
 		return true;
+	}
+
+//	public static boolean check(double x, double y, double z, float entityplayersp_rotationyaw, float entityplayersp_rotationpitch)
+//	{
+//		double yaw = Math.toDegrees(Math.atan2(-x, z));
+//		double pitch = Math.toDegrees(Math.atan2(-y, Math.sqrt(x * x + z * z)));
+//
+//		x = Math.abs(entityplayersp_rotationyaw - yaw);
+//		y = Math.abs(entityplayersp_rotationpitch - pitch);
+//
+//		if (x > 180)
+//		{
+//			x = 360 - x;
+//		}
+//
+////		if (y > 90)
+////		{
+////			y = 180 - y;
+////		}
+//
+//		return x <= CHUNK_EPSILON && y <= CHUNK_EPSILON;
+//	}
+//
+//	public static boolean check(double x, double z, float entityplayersp_rotationyaw)
+//	{
+//		double yaw = Math.toDegrees(Math.atan2(-x, z));
+//
+//		x = Math.abs(entityplayersp_rotationyaw - yaw);
+//
+//		if (x > 180)
+//		{
+//			x = 360 - x;
+//		}
+//
+//		return x <= CHUNK_EPSILON;
+//	}
+
+	public static boolean check(double x, double y, double z)
+	{
+		double yaw = Math.toDegrees(Math.atan2(-x, z));
+		double pitch = Math.toDegrees(Math.atan2(-y, Math.sqrt(x * x + z * z)));
+
+		x = Math.abs(YAW - yaw);
+		y = Math.abs(PITCH - pitch);
+
+		if (x > 180)
+		{
+			x = 360 - x;
+		}
+
+		return x <= CHUNK_EPSILON && y <= CHUNK_EPSILON;
+	}
+
+	public static boolean check(double x, double z)
+	{
+		double yaw = Math.toDegrees(Math.atan2(-x, z));
+
+		x = Math.abs(YAW - yaw);
+
+		if (x > 180)
+		{
+			x = 360 - x;
+		}
+
+		return x <= CHUNK_EPSILON;
 	}
 }

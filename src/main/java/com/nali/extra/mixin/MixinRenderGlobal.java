@@ -2,6 +2,7 @@ package com.nali.extra.mixin;
 
 import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraCubeLine;
+import com.nali.extra.ExtraView;
 import com.nali.list.da.BothDaExtraSky;
 import com.nali.list.render.RenderExtraSky;
 import com.nali.render.RenderO;
@@ -403,26 +404,34 @@ public abstract class MixinRenderGlobal
 	}
 
 	//force chunk render
-	private static int
-		YAW,
-		PITCH;
-	private static long
-		TIME;
-
 //	@Inject(method = "setupTerrain", at = @At(value = "HEAD"))
 	@Inject(method = "setupTerrain", at = @At(value = "TAIL"))
 	private void nali_extra_setupTerrain(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci)
 	{
 		int yaw = (int)viewEntity.rotationYaw;
 		int pitch = (int)viewEntity.rotationPitch;
-		if (YAW != yaw || PITCH != pitch)
+		if (ExtraView.TEMP_YAW != yaw || ExtraView.TEMP_PITCH != pitch)
 		{
 			long time = Minecraft.getSystemTime();
-			if (time - TIME >= 1000)
+			if (time - ExtraView.TIME >= 1000)
 			{
-				TIME = time;
-				YAW = yaw;
-				PITCH = pitch;
+				ExtraView.TIME = time;
+				ExtraView.TEMP_YAW = yaw;
+				ExtraView.TEMP_PITCH = pitch;
+				ExtraView.YAW = ((viewEntity.rotationYaw + 180) % 360 + 360) % 360 - 180;
+//				ExtraView.PITCH = ((viewEntity.rotationPitch + 90) % 180 + 180) % 180 - 90;
+				ExtraView.PITCH = ((viewEntity.rotationPitch + 180) % 360 + 360) % 360 - 180;
+//				Nali.warn("ExtraView.YAW " + ExtraView.YAW);
+//				Nali.warn("ExtraView.PITCH " + ExtraView.PITCH);
+
+//				if (ExtraView.PITCH == 90)
+//				{
+//					ExtraView.YAW -= 5;
+//				}
+//				else if (ExtraView.PITCH == -90)
+//				{
+//					ExtraView.YAW += 5;
+//				}
 	//				updateChunkPositions(this.viewFrustum, viewEntity.posX, viewEntity.posZ);
 	//				this.loadRenderers();
 	//				updateRenderChunk();
@@ -435,6 +444,50 @@ public abstract class MixinRenderGlobal
 				}
 			}
 		}
+	}
+
+	@Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/culling/ICamera;isBoundingBoxInFrustum(Lnet/minecraft/util/math/AxisAlignedBB;)Z"))
+	private boolean nali_extra_setupTerrain(ICamera instance, AxisAlignedBB axisAlignedBB)
+	{
+		double minx = axisAlignedBB.minX;
+		double maxx = axisAlignedBB.maxX;
+		double minz = axisAlignedBB.minZ;
+		double maxz = axisAlignedBB.maxZ;
+
+		if
+		(
+			(ExtraView.X >= minx && ExtraView.X <= maxx) &&
+			(ExtraView.Z >= minz && ExtraView.Z <= maxz)
+		)
+		{
+			return true;
+		}
+
+		minx -= ExtraView.X;
+		minz -= ExtraView.Z;
+		maxx -= ExtraView.X;
+		maxz -= ExtraView.Z;
+
+		if (ExtraView.check(minx, minz))
+		{
+			return true;
+		}
+
+		if (ExtraView.check(maxx, minz))
+		{
+			return true;
+		}
+
+		if (ExtraView.check(maxx, maxz))
+		{
+			return true;
+		}
+
+		if (ExtraView.check(minx, maxz))
+		{
+			return true;
+		}
+		return false;
 	}
 
 //	@Inject(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V", shift = At.Shift.AFTER))

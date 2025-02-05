@@ -1,11 +1,10 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.ExtraView;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.culling.Frustum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,32 +13,46 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Frustum.class)
 public abstract class MixinFrustum
 {
-	@Shadow private double x;
+//	@Mutable
+//	@Shadow @Final private ClippingHelper clippingHelper;
+//
+//	@Inject(method = "<init>(Lnet/minecraft/client/renderer/culling/ClippingHelper;)V", at = @At("TAIL"))
+//	private void nali_extra_init(CallbackInfo ci)
+//	{
+////////		Nali.warn("1");
+//////		ExtraView.X = this.x;
+//////		ExtraView.Y = this.y;
+//////		ExtraView.Z = this.z;
+////		this.x += 0.5D;
+////		this.y += Minecraft.getMinecraft().player.getEyeHeight();
+////		this.z += 0.5D;
+//		this.clippingHelper = null;
+//	}
 
-	@Shadow private double y;
-
-	@Shadow private double z;
-
-	@Inject(method = "<init>(Lnet/minecraft/client/renderer/culling/ClippingHelper;)V", at = @At("TAIL"))
-	private void nali_extra_init(CallbackInfo ci)
+	@Inject(method = "setPosition", at = @At("TAIL"))
+	private void nali_extra_setPosition(double xIn, double yIn, double zIn, CallbackInfo ci)
+//	@Overwrite
+//	public void setPosition(double xIn, double yIn, double zIn)
 	{
-////		Nali.warn("1");
-//		ExtraView.X = this.x;
-//		ExtraView.Y = this.y;
-//		ExtraView.Z = this.z;
-		this.x += 0.5D;
-		this.y += Minecraft.getMinecraft().player.getEyeHeight();
-		this.z += 0.5D;
+		ExtraView.X = xIn + 0.5D;
+		ExtraView.Y = yIn + Minecraft.getMinecraft().player.getEyeHeight();
+		ExtraView.Z = zIn + 0.5D;
 	}
 
 	@Overwrite
 	public boolean isBoxInFrustum(double minx, double miny, double minz, double maxx, double maxy, double maxz)
 	{
+//		Nali.warn("x " + (maxx - minx));
+//		Nali.warn("y " + (maxy - miny));
+//		Nali.warn("z " + (maxz - minz));
 		if
 		(
-			(this.x >= minx && this.x <= maxx) &&
-			(this.y >= miny && this.y <= maxy) &&
-			(this.z >= minz && this.z <= maxz)
+//			(this.x >= minx && this.x <= maxx) &&
+//			(this.y >= miny && this.y <= maxy) &&
+//			(this.z >= minz && this.z <= maxz)
+			(ExtraView.X >= minx && ExtraView.X <= maxx) &&
+			(ExtraView.Y >= miny && ExtraView.Y <= maxy) &&
+			(ExtraView.Z >= minz && ExtraView.Z <= maxz)
 		)
 		{
 //			Nali.warn("1");
@@ -48,12 +61,18 @@ public abstract class MixinFrustum
 
 //		float epsilon = 45.0F;
 
-		minx -= this.x;
-		miny -= this.y;
-		minz -= this.z;
-		maxx -= this.x;
-		maxy -= this.y;
-		maxz -= this.z;
+//		minx -= this.x;
+//		miny -= this.y;
+//		minz -= this.z;
+//		maxx -= this.x;
+//		maxy -= this.y;
+//		maxz -= this.z;
+		minx -= ExtraView.X;
+		miny -= ExtraView.Y;
+		minz -= ExtraView.Z;
+		maxx -= ExtraView.X;
+		maxy -= ExtraView.Y;
+		maxz -= ExtraView.Z;
 
 //		double x_scalar = maxx - minx;
 //		double y_scalar = maxy - miny;
@@ -72,11 +91,7 @@ public abstract class MixinFrustum
 //			return true;
 //		}
 
-		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
-		float yaw = ((entityplayersp.rotationYaw + 180) % 360 + 360) % 360 - 180;
-		float pitch = ((entityplayersp.rotationPitch + 90) % 180 + 180) % 180 - 90;
-
-		if (check(minx, miny, minz, yaw, pitch))
+		if (ExtraView.check(minx, miny, minz))
 		{
 			return true;
 		}
@@ -85,7 +100,7 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(maxx, miny, minz, yaw, pitch))
+		if (ExtraView.check(maxx, miny, minz))
 		{
 			return true;
 		}
@@ -94,7 +109,7 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(maxx, miny, maxz, yaw, pitch))
+		if (ExtraView.check(maxx, miny, maxz))
 		{
 			return true;
 		}
@@ -103,7 +118,7 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(minx, miny, maxz, yaw, pitch))
+		if (ExtraView.check(minx, miny, maxz))
 		{
 			return true;
 		}
@@ -112,7 +127,7 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(minx, maxy, minz, yaw, pitch))
+		if (ExtraView.check(minx, maxy, minz))
 		{
 			return true;
 		}
@@ -121,7 +136,7 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(maxx, maxy, minz, yaw, pitch))
+		if (ExtraView.check(maxx, maxy, minz))
 		{
 			return true;
 		}
@@ -130,7 +145,7 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(maxx, maxy, maxz, yaw, pitch))
+		if (ExtraView.check(maxx, maxy, maxz))
 		{
 			return true;
 		}
@@ -139,35 +154,12 @@ public abstract class MixinFrustum
 //		{
 //			return true;
 //		}
-		if (check(minx, maxy, maxz, yaw, pitch))
+		if (ExtraView.check(minx, maxy, maxz))
 		{
 			return true;
 		}
 		return false;
 //		return true;
-	}
-
-	private static boolean check(double x, double y, double z, float entityplayersp_rotationyaw, float entityplayersp_rotationpitch)
-	{
-		float epsilon = 45.0F;
-
-		double yaw = Math.toDegrees(Math.atan2(-x, z));
-		double pitch = Math.toDegrees(Math.atan2(-y, Math.sqrt(x * x + z * z)));
-
-		x = Math.abs(entityplayersp_rotationyaw - yaw);
-		y = Math.abs(entityplayersp_rotationpitch - pitch);
-
-		if (x > 180)
-		{
-			x = 360 - x;
-		}
-
-//		if (y > 90)
-//		{
-//			y = 180 - y;
-//		}
-
-		return x <= epsilon && y <= epsilon;
 	}
 
 //	@Overwrite

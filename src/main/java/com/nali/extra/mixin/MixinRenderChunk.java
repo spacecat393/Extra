@@ -1,8 +1,12 @@
 //package com.nali.extra.mixin;
 //
+//import net.minecraft.block.state.IBlockState;
 //import net.minecraft.client.renderer.chunk.RenderChunk;
 //import org.spongepowered.asm.mixin.Mixin;
+//import org.spongepowered.asm.mixin.injection.At;
+//import org.spongepowered.asm.mixin.injection.Redirect;
 //
+////cull leaves
 //@Mixin(RenderChunk.class)
 //public abstract class MixinRenderChunk
 //{
@@ -16,4 +20,10 @@
 ////		}
 ////		return instance.canRenderInLayer(state, layer);
 ////	}
+//
+//	@Redirect(method = "rebuildChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;isOpaqueCube()Z"))
+//	private boolean nali_extra_rebuildChunk(IBlockState instance)
+//	{
+//		return !instance.isFullCube();
+//	}
 //}
