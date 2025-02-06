@@ -159,6 +159,7 @@ public abstract class MixinFrustum
 			return true;
 		}
 		return false;
+//		return this.clippingHelper.isBoxInFrustum(minx, miny, minz, maxx, maxy, maxz);
 //		return true;
 	}
 

@@ -7,7 +7,6 @@ import com.nali.render.RenderHelper;
 import com.nali.render.RenderO;
 import com.nali.small.render.IRenderO;
 import com.nali.system.ClientLoader;
-import com.nali.system.opengl.memo.client.MemoG;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,10 +17,16 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class RenderExtraGlowshapedown
 <
-	BD extends IBothDaO
-> extends RenderO<BD> implements IRenderO<BD, RenderExtraGlowshapedown<BD>>
+	BD extends IBothDaO,
+	R extends RenderO<BD> & IRenderO<BD, R>
+> extends RenderO<BD> implements IRenderO<BD, R>
 {
 	public static Map<Integer, Integer> TEXTURE_MAP = new HashMap();
+
+	public RenderExtraGlowshapedown()
+	{
+		super((BD)BothDaExtraGlowshapedown.IDA);
+	}
 
 	public static void setTextureMap()
 	{
@@ -30,20 +35,26 @@ public class RenderExtraGlowshapedown
 	}
 
 	@Override
-	public int getTextureBuffer(MemoG rg)
+	public int getTextureBuffer()
 	{
-		return TEXTURE_MAP.get(rg.ebo);
+		return TEXTURE_MAP.get(this.rg.ebo);
 	}
 
 	@Override
-	public byte getExtraBit(MemoG rg)
+	public byte getExtraBit()
 	{
-		return (byte)(super.getExtraBit(rg) | 16);
+		return (byte)(IRenderO.super.getExtraBit() | 16);
 	}
 
 	@Override
-	public int getShaderID(MemoG rg)
+	public int getShaderID()
 	{
-		return SmallData.SHADER_STEP + super.getShaderID(rg);
+		return SmallData.SHADER_STEP + super.getShaderID();
+	}
+
+	@Override
+	public R getR()
+	{
+		return (R)this;
 	}
 }

@@ -8,7 +8,6 @@ import com.nali.render.RenderO;
 import com.nali.small.draw.DrawDa;
 import com.nali.small.render.IRenderO;
 import com.nali.system.ClientLoader;
-import com.nali.system.opengl.memo.client.MemoG;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,12 +20,18 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class RenderExtraGlowshapeside
 <
-	BD extends IBothDaO
-> extends RenderO<BD> implements IRenderO<BD, RenderExtraGlowshapeside<BD>>
+	BD extends IBothDaO,
+	R extends RenderO<BD> & IRenderO<BD, R>
+> extends RenderO<BD> implements IRenderO<BD, R>
 {
 	public static Map<Integer, Integer> TEXTURE_MAP = new HashMap();
 
 	public EnumFacing enumfacing;
+
+	public RenderExtraGlowshapeside()
+	{
+		super((BD)BothDaExtraGlowshapeside.IDA);
+	}
 
 	public static void setTextureMap()
 	{
@@ -35,25 +40,25 @@ public class RenderExtraGlowshapeside
 	}
 
 	@Override
-	public int getTextureBuffer(MemoG rg)
+	public int getTextureBuffer()
 	{
-		return TEXTURE_MAP.get(rg.ebo);
+		return TEXTURE_MAP.get(this.rg.ebo);
 	}
 
 	@Override
-	public byte getExtraBit(MemoG rg)
+	public byte getExtraBit()
 	{
-		return (byte)(super.getExtraBit(rg) | 16);
+		return (byte)(IRenderO.super.getExtraBit() | 16);
 	}
 
 	@Override
-	public int getShaderID(MemoG rg)
+	public int getShaderID()
 	{
-		return SmallData.SHADER_STEP + super.getShaderID(rg);
+		return SmallData.SHADER_STEP + super.getShaderID();
 	}
 
 	@Override
-	public void startDrawLater(BD bd, RenderExtraGlowshapeside<BD> r, DrawDa drawda)
+	public void startDrawLater(DrawDa drawda)
 	{
 		GL11.glPushMatrix();
 		switch (this.enumfacing)
@@ -72,7 +77,13 @@ public class RenderExtraGlowshapeside
 				break;
 			//EAST
 		}
-		IRenderO.super.startDrawLater(bd, r, drawda);
+		IRenderO.super.startDrawLater(drawda);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public R getR()
+	{
+		return (R)this;
 	}
 }

@@ -18,7 +18,8 @@ public class ExtraView
 	public static int TEMP_YAW, TEMP_PITCH;
 	public static long TIME;
 
-	public final static float BLOCK_EPSILON = 90.0F;
+	public final static float YAW_BLOCK_EPSILON = 90.0F;//75.0F
+	public final static float PITCH_BLOCK_EPSILON = 90.0F;//45.0F
 	public final static float CHUNK_EPSILON = 45.0F;
 
 	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, IBlockState iblockstate, EnumFacing enumfacing)
@@ -159,7 +160,7 @@ public class ExtraView
 //		Nali.warn("x " + x);
 //		Nali.warn("y " + y);
 
-		if (x > BLOCK_EPSILON || y > BLOCK_EPSILON)
+		if (x > YAW_BLOCK_EPSILON || y > PITCH_BLOCK_EPSILON)
 		{
 			return false;
 		}

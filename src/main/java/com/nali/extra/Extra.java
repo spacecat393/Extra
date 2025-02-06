@@ -1,5 +1,6 @@
 package com.nali.extra;
 
+import com.nali.list.render.RenderExtraSky;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -8,6 +9,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Extra
 {
 	public final static String ID = "extra";
+
+	@SideOnly(Side.CLIENT)
+	public static RenderExtraSky RENDEREXTRASKY;
 
 	@SideOnly(Side.CLIENT)
 	public static byte FP;

@@ -1,9 +1,7 @@
 package com.nali.extra.mixin;
 
-import com.nali.extra.ExtraColor;
-import com.nali.extra.ExtraCubeLine;
-import com.nali.extra.ExtraFBO;
-import com.nali.extra.ExtraQuadLine;
+import com.nali.extra.*;
+import com.nali.list.render.RenderExtraSky;
 import com.nali.small.Small;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -91,6 +89,7 @@ public abstract class MixinMinecraft
 	private void nali_extra_init(CallbackInfo callbackinfo)
 	{
 		Display.sync(this.getLimitFramerate());
+		Extra.RENDEREXTRASKY = new RenderExtraSky();
 		ExtraFBO.init();
 //		ExtraGTime.init();
 		ExtraCubeLine.init();

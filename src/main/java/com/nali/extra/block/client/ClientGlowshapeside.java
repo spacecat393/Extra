@@ -17,10 +17,11 @@ public class ClientGlowshapeside
 	BD extends IBothDaO,
 	I extends IMixN<BD, ?, E>,
 	E extends ExtraGlowshapeside,
-	T extends TileEntity
-> extends ClientB<BD, RenderExtraGlowshapeside<BD>, I, E, T>
+	T extends TileEntity,
+	R extends RenderExtraGlowshapeside<BD, R>
+> extends ClientB<BD, R, I, E, T>
 {
-	public ClientGlowshapeside(RenderExtraGlowshapeside<BD> r, I i)
+	public ClientGlowshapeside(R r, I i)
 	{
 		super(r, i);
 	}

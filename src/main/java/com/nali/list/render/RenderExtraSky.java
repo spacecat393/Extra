@@ -1,13 +1,10 @@
 package com.nali.list.render;
 
 import com.nali.da.IBothDaO;
+import com.nali.list.da.BothDaExtraSky;
 import com.nali.list.data.ExtraData;
 import com.nali.render.RenderO;
-import com.nali.system.opengl.memo.client.MemoG;
-import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -18,8 +15,13 @@ public class RenderExtraSky
 	BD extends IBothDaO
 > extends RenderO<BD>
 {
+	public RenderExtraSky()
+	{
+		super((BD)BothDaExtraSky.IDA);
+	}
+
 	@Override
-	public void setUniform(MemoG rg, MemoS rs, int index)
+	public void setUniform()
 	{
 		FLOATBUFFER.limit(16);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
@@ -29,18 +31,18 @@ public class RenderExtraSky
 //		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
 //		FLOATBUFFER.limit(4);
 //		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2], FLOATBUFFER);
-		this.setTextureUniform(rg, rs);
+		this.setTextureUniform();
 	}
 
 	@Override
-	public int getTextureID(MemoG rg)
+	public int getTextureID()
 	{
-		return ExtraData.TEXTURE_STEP + super.getTextureID(rg);
+		return ExtraData.TEXTURE_STEP + super.getTextureID();
 	}
 
 	@Override
-	public int getShaderID(MemoG rg)
+	public int getShaderID()
 	{
-		return ExtraData.SHADER_STEP + super.getShaderID(rg);
+		return ExtraData.SHADER_STEP + super.getShaderID();
 	}
 }

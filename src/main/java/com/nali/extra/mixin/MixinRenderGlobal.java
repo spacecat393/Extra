@@ -1,10 +1,9 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.Extra;
 import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraCubeLine;
 import com.nali.extra.ExtraView;
-import com.nali.list.da.BothDaExtraSky;
-import com.nali.list.render.RenderExtraSky;
 import com.nali.render.RenderO;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -41,7 +40,6 @@ public abstract class MixinRenderGlobal
 	//*extra-s0
 	private static float X_ANGLE/* = 359.0F*/, Z_ANGLE/* = 359.0F*/;
 //	private static BoxImage BOXIMAGE;
-	private static RenderExtraSky RENDEREXTRASKY = new RenderExtraSky();
 //	private static float[] GL_CURRENT_COLOR = new float[4];
 
 //	@Shadow
@@ -106,7 +104,7 @@ public abstract class MixinRenderGlobal
 		GL11.glScalef(1000.0F, 1000.0F, 1000.0F);
 //		GL11.glTranslatef(0.0F, 1.0F, 0.0F);
 //		GL11.glDisable(GL11.GL_CULL_FACE);
-		RENDEREXTRASKY.draw(BothDaExtraSky.IDA);
+		Extra.RENDEREXTRASKY.doDraw();
 //		GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], GL_CURRENT_COLOR[3]);
 //		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //		if (gl_texture_2d)

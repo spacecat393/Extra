@@ -42,6 +42,7 @@
 		"MixinCreativeTabs",
 		"MixinEntity",
 		"MixinEntityEgg",
+		"MixinEntityItem",
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",
 		"MixinEntitySnowball",
