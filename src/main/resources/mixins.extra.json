@@ -55,6 +55,8 @@
 		"MixinLightUtil",
 		"MixinMinecraftServer",
 		"MixinTexturedQuad",
-		"MixinVertexLighterFlat"
+		"MixinVertexLighterFlat",
+		"MixinWorldProvider",
+		"MixinWorldServer"
 	]
 }

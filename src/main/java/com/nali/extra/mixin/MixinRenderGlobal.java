@@ -37,6 +37,8 @@ public abstract class MixinRenderGlobal
 
 	@Shadow private ViewFrustum viewFrustum;
 
+	@Shadow protected abstract void stopChunkUpdates();
+
 	//*extra-s0
 	private static float X_ANGLE/* = 359.0F*/, Z_ANGLE/* = 359.0F*/;
 //	private static BoxImage BOXIMAGE;
@@ -433,6 +435,7 @@ public abstract class MixinRenderGlobal
 	//				updateChunkPositions(this.viewFrustum, viewEntity.posX, viewEntity.posZ);
 	//				this.loadRenderers();
 	//				updateRenderChunk();
+//				this.stopChunkUpdates();
 				for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
 				{
 					if (renderchunk != null)
@@ -552,22 +555,50 @@ public abstract class MixinRenderGlobal
 ////		}
 //	}
 //
-////	private RenderChunk getRenderChunk(int chunkX, int chunkZ)
-////	{
-//////		if (this.viewFrustum != null)
-//////		{
-////		for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
-////		{
-//////			if (renderchunk != null)
-//////			{
-////			BlockPos pos = renderchunk.getPosition();
-////			if (pos.getX() >> 4 == chunkX && pos.getZ() >> 4 == chunkZ)
-////			{
-////				return renderchunk;
-////			}
-//////			}
-////		}
-//////		}
-////		return null;
-////	}
+/// /	private RenderChunk getRenderChunk(int chunkX, int chunkZ)
+/// /	{
+/// ///		if (this.viewFrustum != null)
+/// ///		{
+/// /		for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
+/// /		{
+/// ///			if (renderchunk != null)
+/// ///			{
+/// /			BlockPos pos = renderchunk.getPosition();
+/// /			if (pos.getX() >> 4 == chunkX && pos.getZ() >> 4 == chunkZ)
+/// /			{
+/// /				return renderchunk;
+/// /			}
+/// ///			}
+/// /		}
+/// ///		}
+/// /		return null;
+/// /	}
+///
+/// @return
+
+//	@Overwrite
+//	public void updateChunks(long finishTimeNano)
+//	{
+//		this.displayListEntitiesDirty |= this.renderDispatcher.runChunkUploads(finishTimeNano);
+//
+//		if (!this.chunksToUpdate.isEmpty())
+//		{
+//			Iterator<RenderChunk> iterator = this.chunksToUpdate.iterator();
+//
+//			if (iterator.hasNext())
+//			{
+//				RenderChunk renderchunk1 = iterator.next();
+//
+//				this.renderDispatcher.updateChunkLater(renderchunk1);
+//
+//				renderchunk1.clearNeedsUpdate();
+//			}
+//		}
+//	}
+
+	@Redirect(method = "setupTerrain", at = @At(value = "FIELD", target = "Lnet/minecraftforge/common/ForgeModContainer;alwaysSetupTerrainOffThread:Z"))
+	private boolean nali_extra_setupTerrain(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator)
+	{
+		return true;
+	}
 }
