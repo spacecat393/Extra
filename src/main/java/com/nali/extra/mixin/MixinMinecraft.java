@@ -3,6 +3,7 @@ package com.nali.extra.mixin;
 import com.nali.extra.*;
 import com.nali.list.render.RenderExtraSky;
 import com.nali.small.Small;
+import com.nali.small.SmallConfig;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -90,7 +91,10 @@ public abstract class MixinMinecraft
 	{
 		Display.sync(this.getLimitFramerate());
 		RenderExtraSky.RENDEREXTRASKY = new RenderExtraSky();
-		ExtraFBO.init();
+		if (!ExtraConfig.RAW_FPS)
+		{
+			ExtraFBO.init();
+		}
 //		ExtraGTime.init();
 		ExtraCubeLine.init();
 //		ExtraQuad.init();
@@ -143,8 +147,11 @@ public abstract class MixinMinecraft
 	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
 	private void nali_extra_runGameLoopH(CallbackInfo callbackinfo)
 	{
-		ExtraFBO.update();
+		if (!ExtraConfig.RAW_FPS)
+		{
+			ExtraFBO.update();
 //		ExtraGTime.start();
+		}
 	}
 //
 //	@Inject(method = "runGameLoop", at = @At(value = "TAIL"))
@@ -169,29 +176,48 @@ public abstract class MixinMinecraft
 	@Redirect(method = "updateDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;update()V"))
 	public void nali_extra_updateDisplay()
 	{
-		if ((Small.FLAG & 1) == 1)
+		if (ExtraConfig.RAW_FPS)
 		{
-			ExtraFBO.mix();
-//			GL11.glFinish();
 			Display.update();
-			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
-			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO0);
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
 		}
 		else
 		{
-			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
-//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+			if ((Small.FLAG & 1) == 1)
+			{
+				ExtraFBO.mix();
+	//			GL11.glFinish();
+				Display.update();
+				GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+	//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+				GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO0);
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+	//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+			}
+			else
+			{
+				GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO1);
+	//			GL11.glViewport(0, 0, ExtraFBO.WIDTH, ExtraFBO.HEIGHT);
+			}
 		}
 
 //		if ((Small.FLAG & 1) == 0)
 //		{
 //			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 //		}
-		Small.FLAG ^= 1/* | 2*/;
+		if (SmallConfig.FAST_RAW_FPS)
+		{
+			++Small.FLAG;
+			if (Small.FLAG == 4)
+			{
+				Small.FLAG = 0;
+			}
+		}
+		else
+		{
+			Small.FLAG ^= 1/* | 2*/;
+		}
 	}
 
 	//force player move

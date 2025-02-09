@@ -1,6 +1,7 @@
 package com.nali.extra.mixin;
 
 import com.nali.small.Small;
+import com.nali.small.SmallConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
@@ -39,10 +40,20 @@ public abstract class MixinGuiOverlayDebug
 	@Inject(method = "renderDebugInfo", at = @At("HEAD"), cancellable = true)
 	private void nali_extra_renderDebugInfo(ScaledResolution scaledResolutionIn, CallbackInfo ci)
 	{
-		Small.FLAG |= 2;
-		if ((Small.FLAG & 1) == 1)
+		if (SmallConfig.FAST_RAW_FPS)
 		{
-			ci.cancel();
+			if (Small.FLAG == 3/*4*/)
+			{
+				ci.cancel();
+			}
+		}
+		else
+		{
+			Small.FLAG |= 2;
+			if ((Small.FLAG & 1) == 1)
+			{
+				ci.cancel();
+			}
 		}
 	}
 

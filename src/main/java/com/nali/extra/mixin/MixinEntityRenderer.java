@@ -1,7 +1,9 @@
 package com.nali.extra.mixin;
 
 import com.nali.extra.Extra;
+import com.nali.extra.ExtraConfig;
 import com.nali.small.Small;
+import com.nali.small.SmallConfig;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -16,6 +18,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -141,10 +144,29 @@ public abstract class MixinEntityRenderer
 //			return i;
 //		}
 //	}
-//
-//	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 3))
-//	private int nali_extra_renderWorldPassL2(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
-//	{
+
+	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 3))
+	private int nali_extra_renderWorldPassL2(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
+	{
+		if (ExtraConfig.RAW_FPS)
+		{
+			if (SmallConfig.FAST_RAW_FPS)
+			{
+				if (Small.FLAG == 2)
+				{
+					return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
+				}
+				return 0;
+			}
+			else
+			{
+				return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
+			}
+		}
+		else
+		{
+			return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
+		}
 //		if ((Small.FLAG & 1) == 0)
 //		{
 ////			GlStateManager.enableBlend();
@@ -158,7 +180,7 @@ public abstract class MixinEntityRenderer
 //			GlStateManager.enableBlend();
 //			return i;
 //		}
-//	}
+	}
 
 //	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 1))
 //	private int nali_extra_renderWorldPassCM(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
@@ -475,7 +497,7 @@ public abstract class MixinEntityRenderer
 	{
 		if (!this.mc.gameSettings.hideGUI)
 		{
-			if ((Small.FLAG & 1) == 1)
+			if ((SmallConfig.FAST_RAW_FPS && Small.FLAG == 0) || (!SmallConfig.FAST_RAW_FPS && (Small.FLAG & 1) == 1))
 			{
 				EntityPlayerSP entityplayersp = this.mc.player;
 
@@ -711,7 +733,7 @@ public abstract class MixinEntityRenderer
 	private void nali_extra_updateCameraAndRender(GuiScreen screen, int mouseX, int mouseY, float partialTicks)
 	{
 //		if ((STATE & 8) == 0)
-		if ((Small.FLAG & 1) == 0)
+		if ((SmallConfig.FAST_RAW_FPS && Small.FLAG == 3/*4*//*5*/) || (!SmallConfig.FAST_RAW_FPS && (Small.FLAG & 1) == 0))
 		{
 //			GlStateManager.enableBlend();
 	//		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
