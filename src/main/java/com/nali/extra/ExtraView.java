@@ -18,9 +18,10 @@ public class ExtraView
 	public static int TEMP_YAW, TEMP_PITCH;
 	public static long TIME;
 
-	public final static float YAW_BLOCK_EPSILON = 90.0F;//75.0F
-	public final static float PITCH_BLOCK_EPSILON = 90.0F;//45.0F
-	public final static float CHUNK_EPSILON = 45.0F;
+//	public final static float BLOCK_DISTANCE_EPSILON = 4.0F;
+	public final static float YAW_BLOCK_EPSILON = 80.0F;//75.0F
+	public final static float PITCH_BLOCK_EPSILON = 80.0F;//45.0F
+	public final static float CHUNK_EPSILON = 45.0F;//90.0F
 
 	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, IBlockState iblockstate, EnumFacing enumfacing)
 	{
@@ -119,6 +120,8 @@ public class ExtraView
 //		double y = entityplayersp.posY - blockpos.getY() + 0.5D;
 //		double z = entityplayersp.posZ - blockpos.getZ() + 0.5D;
 
+//		double d = x * x + y * y + z * z;
+
 		double yaw = Math.toDegrees(Math.atan2(-x, z));
 //		float yaw = EntityMath.normalize((float)Math.toDegrees(Math.atan2(-x, z)), 360.0F);
 		double pitch = Math.toDegrees(Math.atan2(-y, Math.sqrt(x * x + z * z)));//Math.asin
@@ -160,10 +163,13 @@ public class ExtraView
 //		Nali.warn("x " + x);
 //		Nali.warn("y " + y);
 
+//		if (d - (X * X + Y * Y + Z * Z) > BLOCK_DISTANCE_EPSILON)
+//		{
 		if (x > YAW_BLOCK_EPSILON || y > PITCH_BLOCK_EPSILON)
 		{
 			return false;
 		}
+//		}
 
 //		if (!(block instanceof BlockDoor) && !(block instanceof BlockTrapDoor) && !(block instanceof BlockSnow))
 		if (iblockstate.isFullCube())

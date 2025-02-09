@@ -17,7 +17,10 @@ public abstract class MixinLayerArmorBase
 	{
 		if (entitylivingbaseIn instanceof EntityPlayer)
 		{
+//			if ((Small.FLAG & 1) == 0)
+//			{
 			ci.cancel();
+//			}
 		}
 	}
 

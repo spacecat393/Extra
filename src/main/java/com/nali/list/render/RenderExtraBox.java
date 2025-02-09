@@ -5,6 +5,7 @@ import com.nali.list.da.BothDaExtraBox;
 import com.nali.list.data.ExtraData;
 import com.nali.list.data.SmallData;
 import com.nali.render.RenderO;
+import com.nali.small.draw.DrawMap;
 import com.nali.small.render.IRenderO;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +50,7 @@ public class RenderExtraBox
 		}
 		else
 		{
-			this.extra_bit = 4;
+			this.extra_bit = DrawMap.B_COLOR;
 			int color = this.getTextureID();
 			FLOATBUFFER.clear();
 			FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
@@ -72,7 +73,7 @@ public class RenderExtraBox
 		}
 		else
 		{
-			this.extra_bit = 4;
+			this.extra_bit = DrawMap.B_COLOR;
 			return integer;
 		}
 	}

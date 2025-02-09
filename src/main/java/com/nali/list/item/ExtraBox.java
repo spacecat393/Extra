@@ -283,12 +283,7 @@ public class ExtraBox extends ItemI
 		{
 			int id = world.rand.nextInt(EntityRegistry.ENTITIES_CLASS_LIST.size());
 			Constructor constructor = (EntityRegistry.ENTITIES_CLASS_LIST.get(id)).getConstructor(World.class);
-			Entity entity = (Entity)constructor.newInstance(world);
-
-			if (!(entity instanceof EntityPlayer))
-			{
-				ExtraBox.putToBox(entity, itemstack);
-			}
+			ExtraBox.putToBox((Entity)constructor.newInstance(world), itemstack);
 		}
 		catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
 		{

@@ -89,7 +89,7 @@ public abstract class MixinMinecraft
 	private void nali_extra_init(CallbackInfo callbackinfo)
 	{
 		Display.sync(this.getLimitFramerate());
-		Extra.RENDEREXTRASKY = new RenderExtraSky();
+		RenderExtraSky.RENDEREXTRASKY = new RenderExtraSky();
 		ExtraFBO.init();
 //		ExtraGTime.init();
 		ExtraCubeLine.init();

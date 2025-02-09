@@ -592,29 +592,30 @@ public abstract class MixinEntityRenderer
 				float f1 = rotationYaw;
 				float f2 = rotationPitch;
 
+				float tick_length = this.mc.getTickLength() * 5.0F;
 //				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 				if (Keyboard.isKeyDown(Keyboard.KEY_J))
 				{
-					entity.rotationYaw -= partialTicks;
+					entity.rotationYaw -= tick_length;
 				}
 
 //				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 				if (Keyboard.isKeyDown(Keyboard.KEY_L))
 				{
-					entity.rotationYaw += partialTicks;
+					entity.rotationYaw += tick_length;
 				}
 
 //				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 				if (Keyboard.isKeyDown(Keyboard.KEY_I))
 				{
-					entity.rotationPitch -= partialTicks;
+					entity.rotationPitch -= tick_length;
 					entity.rotationPitch = MathHelper.clamp(entity.rotationPitch, -90.0F, 90.0F);
 				}
 
 //				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
 				if (Keyboard.isKeyDown(Keyboard.KEY_K))
 				{
-					entity.rotationPitch += partialTicks;
+					entity.rotationPitch += tick_length;
 					entity.rotationPitch = MathHelper.clamp(entity.rotationPitch, -90.0F, 90.0F);
 				}
 

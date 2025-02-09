@@ -22,6 +22,6 @@ void main()
 //	{
 //		texture0_vec4.b = texture0_vec4.b / 2.0 + texture1_vec4.b / 2.0;
 //	}
-	gl_FragColor = vec4(mix(texture0_vec4, texture1_vec4, 0.25).rgb, 1.0);//texture0_vec4;
+	gl_FragColor = vec4(mix(texture0_vec4, texture1_vec4, 0.4).rgb, 1.0);//texture0_vec4;
 //	gl_FragColor = vec4(1, 1, 1, 1);
 }

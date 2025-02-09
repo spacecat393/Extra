@@ -5,6 +5,7 @@ import com.nali.list.da.BothDaExtraGlowshapedown;
 import com.nali.list.data.SmallData;
 import com.nali.render.RenderHelper;
 import com.nali.render.RenderO;
+import com.nali.small.draw.DrawMap;
 import com.nali.small.render.IRenderO;
 import com.nali.system.ClientLoader;
 import net.minecraft.util.ResourceLocation;
@@ -43,7 +44,7 @@ public class RenderExtraGlowshapedown
 	@Override
 	public byte getExtraBit()
 	{
-		return (byte)(IRenderO.super.getExtraBit() | 16);
+		return (byte)(IRenderO.super.getExtraBit() | DrawMap.B_TILE_ENTITY);
 	}
 
 	@Override

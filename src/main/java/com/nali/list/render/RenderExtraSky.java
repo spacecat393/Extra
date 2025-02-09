@@ -15,6 +15,9 @@ public class RenderExtraSky
 	BD extends IBothDaO
 > extends RenderO<BD>
 {
+	public static RenderExtraSky RENDEREXTRASKY;
+	public static float X_ANGLE/* = 359.0F*/, Z_ANGLE/* = 359.0F*/;
+
 	public RenderExtraSky()
 	{
 		super((BD)BothDaExtraSky.IDA);

@@ -6,6 +6,7 @@ import com.nali.list.data.SmallData;
 import com.nali.render.RenderHelper;
 import com.nali.render.RenderO;
 import com.nali.small.draw.DrawDa;
+import com.nali.small.draw.DrawMap;
 import com.nali.small.render.IRenderO;
 import com.nali.system.ClientLoader;
 import net.minecraft.util.EnumFacing;
@@ -48,7 +49,7 @@ public class RenderExtraGlowshapeside
 	@Override
 	public byte getExtraBit()
 	{
-		return (byte)(IRenderO.super.getExtraBit() | 16);
+		return (byte)(IRenderO.super.getExtraBit() | DrawMap.B_TILE_ENTITY);
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package com.nali.extra.mixin;
 
-import com.nali.extra.Extra;
 import com.nali.extra.ExtraColor;
 import com.nali.extra.ExtraCubeLine;
 import com.nali.extra.ExtraView;
+import com.nali.list.render.RenderExtraSky;
 import com.nali.render.RenderO;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,17 +38,18 @@ public abstract class MixinRenderGlobal
 
 	@Shadow private ViewFrustum viewFrustum;
 
-	@Shadow protected abstract void stopChunkUpdates();
+//	@Shadow protected abstract void stopChunkUpdates();
 
 	//*extra-s0
-	private static float X_ANGLE/* = 359.0F*/, Z_ANGLE/* = 359.0F*/;
 //	private static BoxImage BOXIMAGE;
 //	private static float[] GL_CURRENT_COLOR = new float[4];
 
 //	@Shadow
 //	private int renderDistanceChunks;
 //
-////    @Shadow @Final private Minecraft mc;
+	@Shadow @Final private Minecraft mc;
+
+	////    @Shadow @Final private Minecraft mc;
 //
 //	@Redirect(method = "loadRenderers", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderDistanceChunks:I"))
 //	private void nali_loadRenderers(RenderGlobal instance, int value)
@@ -78,14 +80,13 @@ public abstract class MixinRenderGlobal
 //		GL_CURRENT_COLOR[2] = RenderO.FLOATBUFFER.get(2);
 //		GL_CURRENT_COLOR[3] = RenderO.FLOATBUFFER.get(3);
 
-		Minecraft minecraft = Minecraft.getMinecraft();
-		if (!minecraft.isGamePaused())
+		if (!this.mc.isGamePaused())
 		{
-			float tick_length = minecraft.getTickLength();
-			X_ANGLE += tick_length * 0.01F;
-			Z_ANGLE += tick_length * 0.01F;
-			X_ANGLE %= 360.0F;
-			Z_ANGLE %= 360.0F;
+			float tick_length = this.mc.getTickLength();
+			RenderExtraSky.X_ANGLE += tick_length * 0.01F;
+			RenderExtraSky.Z_ANGLE += tick_length * 0.01F;
+			RenderExtraSky.X_ANGLE %= 360.0F;
+			RenderExtraSky.Z_ANGLE %= 360.0F;
 //			Nali.warn("X_ANGLE " + X_ANGLE);
 //			Nali.warn("Z_ANGLE " + Z_ANGLE);
 		}
@@ -99,14 +100,14 @@ public abstract class MixinRenderGlobal
 		GL11.glDepthMask(false);
 		GL11.glPushMatrix();
 //		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glRotatef(-90.0F + X_ANGLE, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(Z_ANGLE, 0.0F, 0.0F, 1.0F);
+		GL11.glRotatef(-90.0F + RenderExtraSky.X_ANGLE, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(RenderExtraSky.Z_ANGLE, 0.0F, 0.0F, 1.0F);
 //		EntityPlayerSP entityplayersp = minecraft.player;
 //		GL11.glTranslated(0.0D, (entityplayersp.prevPosY + (entityplayersp.posY - entityplayersp.prevPosY) * minecraft.getRenderPartialTicks()), 0.0D);
 		GL11.glScalef(1000.0F, 1000.0F, 1000.0F);
 //		GL11.glTranslatef(0.0F, 1.0F, 0.0F);
 //		GL11.glDisable(GL11.GL_CULL_FACE);
-		Extra.RENDEREXTRASKY.doDraw();
+		RenderExtraSky.RENDEREXTRASKY.doDraw();
 //		GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], GL_CURRENT_COLOR[3]);
 //		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //		if (gl_texture_2d)
@@ -410,32 +411,32 @@ public abstract class MixinRenderGlobal
 	{
 		int yaw = (int)viewEntity.rotationYaw;
 		int pitch = (int)viewEntity.rotationPitch;
+		long time = Minecraft.getSystemTime();
 		if (ExtraView.TEMP_YAW != yaw || ExtraView.TEMP_PITCH != pitch)
 		{
-			long time = Minecraft.getSystemTime();
 			if (time - ExtraView.TIME >= 1000)
 			{
 				ExtraView.TIME = time;
 				ExtraView.TEMP_YAW = yaw;
 				ExtraView.TEMP_PITCH = pitch;
 				ExtraView.YAW = ((viewEntity.rotationYaw + 180) % 360 + 360) % 360 - 180;
-//				ExtraView.PITCH = ((viewEntity.rotationPitch + 90) % 180 + 180) % 180 - 90;
+	//				ExtraView.PITCH = ((viewEntity.rotationPitch + 90) % 180 + 180) % 180 - 90;
 				ExtraView.PITCH = ((viewEntity.rotationPitch + 180) % 360 + 360) % 360 - 180;
-//				Nali.warn("ExtraView.YAW " + ExtraView.YAW);
-//				Nali.warn("ExtraView.PITCH " + ExtraView.PITCH);
+	//				Nali.warn("ExtraView.YAW " + ExtraView.YAW);
+	//				Nali.warn("ExtraView.PITCH " + ExtraView.PITCH);
 
-//				if (ExtraView.PITCH == 90)
-//				{
-//					ExtraView.YAW -= 5;
-//				}
-//				else if (ExtraView.PITCH == -90)
-//				{
-//					ExtraView.YAW += 5;
-//				}
+	//				if (ExtraView.PITCH == 90)
+	//				{
+	//					ExtraView.YAW -= 5;
+	//				}
+	//				else if (ExtraView.PITCH == -90)
+	//				{
+	//					ExtraView.YAW += 5;
+	//				}
 	//				updateChunkPositions(this.viewFrustum, viewEntity.posX, viewEntity.posZ);
 	//				this.loadRenderers();
 	//				updateRenderChunk();
-//				this.stopChunkUpdates();
+	//				this.stopChunkUpdates();
 				for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
 				{
 					if (renderchunk != null)
@@ -444,6 +445,10 @@ public abstract class MixinRenderGlobal
 					}
 				}
 			}
+		}
+		else
+		{
+			ExtraView.TIME = time;
 		}
 	}
 
@@ -494,14 +499,14 @@ public abstract class MixinRenderGlobal
 //	@Inject(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V", shift = At.Shift.AFTER))
 //	private void nali_extra_setupTerrainC(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci)
 //	{
-//		YAW = -YAW;
-//		for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
-//		{
-//			if (renderchunk != null)
-//			{
-//				renderchunk.setNeedsUpdate(false);
-//			}
-//		}
+//		ExtraView.TEMP_YAW = -ExtraView.TEMP_YAW;
+////		for (RenderChunk renderchunk : this.viewFrustum.renderChunks)
+////		{
+////			if (renderchunk != null)
+////			{
+////				renderchunk.setNeedsUpdate(false);
+////			}
+////		}
 //	}
 
 //	private static void updateChunkPositions(ViewFrustum viewfrustum, double viewEntityX, double viewEntityZ)
