@@ -1,7 +1,6 @@
 package com.nali.extra.mixin;
 
 import com.nali.extra.Extra;
-import com.nali.extra.ExtraConfig;
 import com.nali.small.Small;
 import com.nali.small.SmallConfig;
 import net.minecraft.block.material.Material;
@@ -148,25 +147,25 @@ public abstract class MixinEntityRenderer
 	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 3))
 	private int nali_extra_renderWorldPassL2(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
 	{
-		if (ExtraConfig.RAW_FPS)
+//		if (ExtraConfig.RAW_FPS)
+//		{
+		if (SmallConfig.FAST_RAW_FPS)
 		{
-			if (SmallConfig.FAST_RAW_FPS)
-			{
-				if (Small.FLAG == 2)
-				{
-					return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
-				}
-				return 0;
-			}
-			else
+			if (Small.FLAG == 2)
 			{
 				return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
 			}
+			return 0;
 		}
 		else
 		{
 			return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
 		}
+//		}
+//		else
+//		{
+//			return this.mc.renderGlobal.renderBlockLayer(BlockRenderLayer.TRANSLUCENT, d0, d1, d2);
+//		}
 //		if ((Small.FLAG & 1) == 0)
 //		{
 ////			GlStateManager.enableBlend();

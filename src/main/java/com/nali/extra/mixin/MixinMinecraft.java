@@ -91,7 +91,8 @@ public abstract class MixinMinecraft
 	{
 		Display.sync(this.getLimitFramerate());
 		RenderExtraSky.RENDEREXTRASKY = new RenderExtraSky();
-		if (!ExtraConfig.RAW_FPS)
+//		if (!ExtraConfig.RAW_FPS)
+		if (!SmallConfig.FAST_RAW_FPS)
 		{
 			ExtraFBO.init();
 		}
@@ -147,7 +148,8 @@ public abstract class MixinMinecraft
 	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
 	private void nali_extra_runGameLoopH(CallbackInfo callbackinfo)
 	{
-		if (!ExtraConfig.RAW_FPS)
+//		if (!ExtraConfig.RAW_FPS)
+		if (!SmallConfig.FAST_RAW_FPS)
 		{
 			ExtraFBO.update();
 //		ExtraGTime.start();
@@ -176,7 +178,8 @@ public abstract class MixinMinecraft
 	@Redirect(method = "updateDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;update()V"))
 	public void nali_extra_updateDisplay()
 	{
-		if (ExtraConfig.RAW_FPS)
+//		if (ExtraConfig.RAW_FPS)
+		if (SmallConfig.FAST_RAW_FPS)
 		{
 			Display.update();
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
