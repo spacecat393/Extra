@@ -39,6 +39,8 @@
 	"mixins": [
 		"IMixinEntity",
 		"MixinBlockLeaves",
+		"MixinBlockPos",
+		"MixinChunkCache",
 		"MixinCreativeTabs",
 		"MixinEntity",
 		"MixinEntityEgg",
@@ -54,8 +56,10 @@
 		"MixinItemSnowball",
 		"MixinLightUtil",
 		"MixinMinecraftServer",
+		"MixinStateImplementation",
 		"MixinTexturedQuad",
 		"MixinVertexLighterFlat",
+		"MixinWorld",
 		"MixinWorldProvider",
 		"MixinWorldServer"
 	]

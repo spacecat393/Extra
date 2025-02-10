@@ -172,7 +172,7 @@ public class ExtraView
 //		}
 
 //		if (!(block instanceof BlockDoor) && !(block instanceof BlockTrapDoor) && !(block instanceof BlockSnow))
-		if (iblockstate.isFullCube())
+		if (iblockstate.isFullCube() && enumfacing != null)
 		{
 //			Block block = blockAccess.getBlockState(pos.offset(side)).getBlock();
 //			if (block == (Object)this/* || block instanceof BlockLeaves*/ || (((Object)this instanceof BlockLeaves) && block != Blocks.AIR))
