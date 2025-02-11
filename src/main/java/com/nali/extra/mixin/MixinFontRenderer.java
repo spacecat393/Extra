@@ -4,6 +4,8 @@ import net.minecraft.client.gui.FontRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 //remove black
 @Mixin(FontRenderer.class)
@@ -17,16 +19,16 @@ public abstract class MixinFontRenderer
 		return this.drawString(text, (float)x, (float)y, color, true);
 	}
 
-//	@ModifyVariable(method = "drawString(Ljava/lang/String;FFIZ)I", at = @At("HEAD"), ordinal = 0)
-//	private int nali_extra_drawStringH(int color)
-//	{
-//		return ExtraColor.RGB_COLOR;
-////		if ((color & 0x00FFFFFF) == 0xFFFFFF)
-////		{
-////		return ExtraColor.GBW_COLOR;
-////		}
-////		return color;
-//	}
+	@ModifyVariable(method = "drawString(Ljava/lang/String;FFIZ)I", at = @At("HEAD"), ordinal = 0)
+	private int nali_extra_drawStringH(int color)
+	{
+		return color | 0x00C8C8C8;//200
+//		if ((color & 0x00FFFFFF) == 0xFFFFFF)
+//		{
+//		return ExtraColor.GBW_COLOR;
+//		}
+//		return color;
+	}
 
 //	@Inject(method = "drawString(Ljava/lang/String;FFIZ)I", at = @At(value = "HEAD"))
 //	private void nali_extra_drawStringH(String text, float x, float y, int color, boolean dropShadow, CallbackInfoReturnable<Integer> cir)

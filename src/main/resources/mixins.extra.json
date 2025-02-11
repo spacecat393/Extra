@@ -28,6 +28,7 @@
 		"MixinMovementInputFromOptions",
 		"MixinNetHandlerPlayClient",
 		"MixinOpenGlHelper",
+		"MixinParticleManager",
 		"MixinPlayerControllerMP",
 		"MixinRecipeBookClient",
 		"MixinRender",

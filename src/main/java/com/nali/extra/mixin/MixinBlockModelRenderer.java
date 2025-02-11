@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import javax.annotation.Nullable;
 import java.util.BitSet;
 import java.util.List;
 
@@ -38,12 +37,16 @@ public abstract class MixinBlockModelRenderer
 	@Overwrite
 	public boolean renderModel(IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, BufferBuilder buffer, boolean checkSides, long rand)
 	{
+//		if (checkSides == true)
+//		{
+//			return false;
+//		}
 //		return this.renderModelFlat(worldIn, modelIn, stateIn, posIn, buffer, true, rand);
 //		boolean flag = Minecraft.isAmbientOcclusionEnabled() && stateIn.getLightValue(worldIn, posIn) == 0 && modelIn.isAmbientOcclusion(stateIn);
 
 //		try
 //		{
-		return /*flag ? this.copyRenderModelSmooth(worldIn, modelIn, stateIn, posIn, buffer, checkSides, rand) : */this.copyRenderModelFlat(worldIn, modelIn, stateIn, posIn, buffer, rand);
+		return /*flag ? this.copyRenderModelSmooth(worldIn, modelIn, stateIn, posIn, buffer, checkSides, rand) : */this.copyRenderModelFlat(worldIn, modelIn, stateIn, posIn, buffer/*, checkSides*/, rand);
 //			return false;
 //		}
 //		catch (Throwable throwable)
@@ -86,7 +89,7 @@ public abstract class MixinBlockModelRenderer
 //		return flag;
 //	}
 
-	private boolean copyRenderModelFlat(IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, BufferBuilder buffer, long rand)
+	private boolean copyRenderModelFlat(IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, BufferBuilder buffer/*, boolean checkSides*/, long rand)
 	{
 //		return false;
 		boolean flag = false;
@@ -116,7 +119,7 @@ public abstract class MixinBlockModelRenderer
 	//				}
 	//			}
 
-				if (!list.isEmpty() && ExtraView.check(stateIn.getBlock(), posIn, worldIn, stateIn, enumfacing) && stateIn.shouldSideBeRendered(worldIn, posIn, enumfacing))
+				if (!list.isEmpty() && (/*!checkSides || */ExtraView.check(stateIn.getBlock(), posIn, worldIn, stateIn, enumfacing) && stateIn.shouldSideBeRendered(worldIn, posIn, enumfacing)))
 				{
 	//				int i = stateIn.getPackedLightmapCoords(worldIn, posIn.offset(enumfacing));
 	//				this.renderQuadsFlat(worldIn, stateIn, posIn, i, false, buffer, list, bitset);
@@ -129,11 +132,11 @@ public abstract class MixinBlockModelRenderer
 
 			if (!list1.isEmpty())
 			{
-				if (ExtraView.check(stateIn.getBlock(), posIn, worldIn, stateIn, null))
+				if (/*!checkSides || */ExtraView.check(stateIn.getBlock(), posIn, worldIn, stateIn, null))
 				{
 					this.renderQuadsFlat(worldIn, stateIn, posIn, -1, true, buffer, list1, bitset);
+					flag = true;
 				}
-				flag = true;
 			}
 		}
 		catch (Exception e)
