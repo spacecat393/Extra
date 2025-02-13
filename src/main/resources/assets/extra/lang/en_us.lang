@@ -4,3 +4,7 @@ tile.extra.glowshapedown.name=GlowShape Down
 tile.extra.glowshapedownb.name=GlowShape Down B
 tile.extra.glowshapeside.name=GlowShape Side
 tile.extra.glowshapesideb.name=GlowShape Side B
+tile.extra.cloud.name=Cloud
+tile.extra.cloudwater.name=Cloud Water
+tile.extra.cloudthunder.name=Cloud Thunder
+tile.extra.cloudsnow.name=Cloud Snow

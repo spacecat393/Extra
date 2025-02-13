@@ -1,0 +1,12 @@
+{
+	"variants":
+	{
+		"normal":
+		[
+			{ "model": "extra:cloudwater" },
+			{ "model": "extra:cloudwater", "y": 90 },
+			{ "model": "extra:cloudwater", "y": 180 },
+			{ "model": "extra:cloudwater", "y": 270 }
+		]
+	}
+}

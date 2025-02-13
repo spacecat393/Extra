@@ -21,6 +21,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Final;
@@ -778,5 +779,13 @@ public abstract class MixinEntityRenderer
 		Extra.PITCH = MathHelper.clamp(Extra.PITCH, -90.0F, 90.0F);
 		Extra.P_PITCH += Extra.PITCH - f;
 		Extra.P_YAW += Extra.YAW - f1;
+	}
+
+	//disable weather
+	private static float[] FOGCOLOR_FLOAT_ARRAY = new float[4];
+	@Redirect(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldProvider;calcSunriseSunsetColors(FF)[F"))
+	private float[] nali_extra_updateFogColor(WorldProvider instance, float f4, float v)
+	{
+		return FOGCOLOR_FLOAT_ARRAY;
 	}
 }

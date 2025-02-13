@@ -1,0 +1,12 @@
+{
+	"variants":
+	{
+		"normal":
+		[
+			{ "model": "extra:cloudsnow" },
+			{ "model": "extra:cloudsnow", "y": 90 },
+			{ "model": "extra:cloudsnow", "y": 180 },
+			{ "model": "extra:cloudsnow", "y": 270 }
+		]
+	}
+}

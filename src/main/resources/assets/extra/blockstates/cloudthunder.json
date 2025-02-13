@@ -1,0 +1,12 @@
+{
+	"variants":
+	{
+		"normal":
+		[
+			{ "model": "extra:cloudthunder" },
+			{ "model": "extra:cloudthunder", "y": 90 },
+			{ "model": "extra:cloudthunder", "y": 180 },
+			{ "model": "extra:cloudthunder", "y": 270 }
+		]
+	}
+}

@@ -7,6 +7,7 @@ import com.nali.list.render.RenderExtraBox;
 import com.nali.small.entity.EntityRegistry;
 import com.nali.small.entity.IMixE;
 import com.nali.small.entity.memo.server.ServerE;
+import com.nali.small.entity.memo.server.si.MixSIE;
 import com.nali.small.entity.memo.server.si.SIData;
 import com.nali.small.mix.item.ItemI;
 import com.nali.small.mix.item.ItemRegistry;
@@ -265,7 +266,7 @@ public class ExtraBox extends ItemI
 			if (entity instanceof IMixE)
 			{
 				ServerE s = ((ServerE)((IMixE)entity).getB());
-				if ((s.ms.state & 4) == 4)
+				if ((s.ms.flag & MixSIE.B_INIT) == MixSIE.B_INIT)
 				{
 					nbttagcompound.setByteArray("SIData", s.genSIData().byte_array);
 					s.remove();
