@@ -29,10 +29,14 @@ public abstract class MixinParticleManager
 	@Inject(method = "addEffect", at = @At("HEAD"), cancellable = true)
 	private void nali_extra_addEffect(Particle effect, CallbackInfo ci)
 	{
-		AxisAlignedBB axisalignedbb = effect.getBoundingBox();
-		if (!ExtraView.check(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ))
+		//avoid aether crash
+		if (effect != null)
 		{
-			ci.cancel();
+			AxisAlignedBB axisalignedbb = effect.getBoundingBox();
+			if (!ExtraView.check(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ))
+			{
+				ci.cancel();
+			}
 		}
 	}
 }

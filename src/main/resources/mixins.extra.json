@@ -20,6 +20,7 @@
 		"MixinGuiMainMenu",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
+		"MixinGuiTextField",
 		"MixinItemRenderer",
 		"MixinLayerArmorBase",
 		"MixinMinecraft",
