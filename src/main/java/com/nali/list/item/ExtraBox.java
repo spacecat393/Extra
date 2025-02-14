@@ -216,7 +216,8 @@ public class ExtraBox extends ItemI
 									if (sidata.byte_array.length != 0)
 									{
 										s.readSIData(sidata);
-										ServerE.S_MAP.put((long) world.provider.getDimension() << 32 | entity.getEntityId(), s);
+//										ServerE.S_MAP.put((long) world.provider.getDimension() << 32 | entity.getEntityId(), s);
+										MixSIE.MS_MAP.put((long)world.provider.getDimension() << 32 | entity.getEntityId(), s.ms);
 
 										if (count == 1)
 										{

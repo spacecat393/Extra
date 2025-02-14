@@ -6,7 +6,7 @@ import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
 import com.nali.small.SmallAttribute;
-import com.nali.small.entity.memo.server.ServerE;
+import com.nali.small.entity.memo.server.si.MixSIE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.Entity;
@@ -32,8 +32,9 @@ public class SDaAttribute
 		byte page = servermessage.data[3];
 		int attribute_size;
 
-		ServerE s = ServerE.S_MAP.get(ByteReader.getLong(servermessage.data, 4));
-		Entity e = s.i.getE();
+//		ServerE s = ServerE.S_MAP.get(ByteReader.getLong(servermessage.data, 4));
+		MixSIE ms = MixSIE.MS_MAP.get(ByteReader.getLong(servermessage.data, 4));
+		Entity e = ms.s.i.getE();
 
 		List<IAttributeInstance> list = null;
 		if (e instanceof EntityLivingBase)

@@ -28,6 +28,7 @@ public class SDaInv
 	public final static byte B_DELETE = 3;
 	public final static byte B_ADD = 4;
 
+	//can lock with player data
 	public static void run(EntityPlayerMP entityplayermp, ServerMessage servermessage)
 	{
 		File inv_file = new File(entityplayermp.world.getSaveHandler().getWorldDirectory(), "nali/inv");
@@ -116,6 +117,17 @@ public class SDaInv
 						file = new File(inv_file, "" + file_index);
 					}
 					new File(file, "nbt").mkdir();
+//					byte[] owner_byte_array = new byte[16 + 1];
+//					ByteWriter.set(owner_byte_array, entityplayermp.getUniqueID(), 0);
+//					owner_byte_array[16] |= 1;
+//					try
+//					{
+//						Files.write(new File(file, "owner").toPath(), owner_byte_array);
+//					}
+//					catch (IOException e)
+//					{
+//						Nali.error(e);
+//					}
 
 					servermessage.data[2] = B_FETCH;
 					++max_inv_file;

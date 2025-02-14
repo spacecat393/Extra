@@ -5,7 +5,7 @@ import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
-import com.nali.small.entity.memo.server.ServerE;
+import com.nali.small.entity.memo.server.si.MixSIE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.EntityList;
@@ -27,8 +27,9 @@ public class SDaSI
 	public static void run(EntityPlayerMP entityplayermp, ServerMessage servermessage)
 	{
 		byte page = servermessage.data[3];
-		ServerE s = ServerE.S_MAP.get(ByteReader.getLong(servermessage.data, 4));
-		List<Byte> si_byte_lsit = new ArrayList<Byte>(s.ms.si_map.keySet());
+//		ServerE s = ServerE.S_MAP.get(ByteReader.getLong(servermessage.data, 4));
+		MixSIE ms = MixSIE.MS_MAP.get(ByteReader.getLong(servermessage.data, 4));
+		List<Byte> si_byte_lsit = new ArrayList<Byte>(ms.si_map.keySet());
 		int si_size = si_byte_lsit.size();
 
 		if (servermessage.data[2] == B_MORE)
@@ -94,7 +95,7 @@ public class SDaSI
 			}
 //			}
 			//send back entity id
-			int id = EntityList.getID(s.i.getE().getClass());
+			int id = EntityList.getID(ms.s.i.getE().getClass());
 			ByteWriter.set(byte_array, id, byte_array_index);
 			byte_array_index += 4;
 

@@ -6,6 +6,7 @@ import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
 import com.nali.small.entity.memo.server.ServerE;
+import com.nali.small.entity.memo.server.si.MixSIE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.Entity;
@@ -28,12 +29,13 @@ public class SDaEntity
 	public static void run(EntityPlayerMP entityplayermp, ServerMessage servermessage)
 	{
 		int page = ByteReader.getInt(servermessage.data, 3);
-		int s_map_size = ServerE.S_MAP.size();
+//		int s_map_size = ServerE.S_MAP.size();
+		int ms_map_size = MixSIE.MS_MAP.size();
 
 		switch (servermessage.data[2])
 		{
 			case B_MORE:
-				if (((page + 1) * MAX_SIZE) < s_map_size)
+				if (((page + 1) * MAX_SIZE) < ms_map_size)
 				{
 					++page;
 					servermessage.data[2] = B_FETCH;
@@ -43,7 +45,7 @@ public class SDaEntity
 				int new_page = page - 1;
 				if (new_page != -1)
 				{
-					if ((new_page * MAX_SIZE) < s_map_size)
+					if ((new_page * MAX_SIZE) < ms_map_size)
 					{
 						--page;
 						servermessage.data[2] = B_FETCH;
@@ -53,13 +55,14 @@ public class SDaEntity
 			case B_RENAME:
 				long key = ByteReader.getLong(servermessage.data, 3+4);
 				String name = new String(servermessage.data, 3+4+8, servermessage.data.length - (3+4+8));
-				ServerE.S_MAP.get(key).i.getE().setCustomNameTag(name);
+//				ServerE.S_MAP.get(key).i.getE().setCustomNameTag(name);
+				MixSIE.MS_MAP.get(key).s.i.getE().setCustomNameTag(name);
 				servermessage.data[2] = B_FETCH;
 		}
 
 		if (servermessage.data[2] == B_FETCH)
 		{
-			int max_mix_page = (int)Math.ceil(s_map_size / (float)MAX_SIZE);
+			int max_mix_page = (int)Math.ceil(ms_map_size / (float)MAX_SIZE);
 			byte max_page;
 
 			if (max_mix_page > 0)
@@ -69,8 +72,8 @@ public class SDaEntity
 
 			if (page == max_mix_page)
 			{
-				byte left = (byte)(s_map_size % MAX_SIZE);
-				if (left == 0 && s_map_size > 0)
+				byte left = (byte)(ms_map_size % MAX_SIZE);
+				if (left == 0 && ms_map_size > 0)
 				{
 					max_page = MAX_SIZE;
 				}
@@ -86,14 +89,16 @@ public class SDaEntity
 
 			short byte_array_index = 2;
 			int new_page = page * MAX_SIZE;
-			ArrayList<Long> id_long_arraylist = new ArrayList(ServerE.S_MAP.keySet());
+//			ArrayList<Long> id_long_arraylist = new ArrayList(ServerE.S_MAP.keySet());
+			ArrayList<Long> id_long_arraylist = new ArrayList(MixSIE.MS_MAP.keySet());
 			List<byte[]> name_byte_array_list = new ArrayList();
 			int i_page = new_page + max_page;
 			int name_max_size = 0;
 			for (int i = new_page; i < i_page; ++i)
 			{
 				long id = id_long_arraylist.get(i);
-				ServerE s = ServerE.S_MAP.get(id);
+//				ServerE s = ServerE.S_MAP.get(id);
+				ServerE s = MixSIE.MS_MAP.get(id).s;
 				Entity e = s.i.getE();
 				byte[] name_byte_array = e.getName().getBytes();
 				name_byte_array_list.add(name_byte_array);

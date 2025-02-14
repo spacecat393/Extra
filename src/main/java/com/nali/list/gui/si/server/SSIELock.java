@@ -1,7 +1,7 @@
 package com.nali.list.gui.si.server;
 
-import com.nali.list.entity.si.SIEUseTo;
-import com.nali.list.gui.si.client.CSIEUseTo;
+import com.nali.list.entity.si.SIELock;
+import com.nali.list.gui.si.client.CSIELock;
 import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageSI;
@@ -10,7 +10,7 @@ import com.nali.small.entity.memo.server.si.MixSIE;
 import com.nali.system.bytes.ByteReader;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class SSIEUseTo
+public class SSIELock
 {
 	public static byte ID;
 
@@ -21,12 +21,12 @@ public class SSIEUseTo
 	{
 //		ServerE s = ServerE.S_MAP.get(ByteReader.getLong(servermessage.data, 3));
 		MixSIE ms = MixSIE.MS_MAP.get(ByteReader.getLong(servermessage.data, 3));
-		SIEUseTo sieuseto = (SIEUseTo)ms.getSI(entityplayermp, SIEUseTo.ID);
-		if (sieuseto != null)
+		SIELock sielock = (SIELock)ms.getSI(entityplayermp, SIELock.ID);
+		if (sielock != null)
 		{
 			if (servermessage.data[2] == B_SET)
 			{
-				sieuseto.flag ^= servermessage.data[3+8];
+				sielock.flag ^= servermessage.data[3+8];
 				servermessage.data[2] = B_FETCH;
 			}
 
@@ -34,8 +34,8 @@ public class SSIEUseTo
 			{
 				byte[] byte_array = new byte[1 + 1 + 1];
 				byte_array[0] = CPageSI.ID;
-				byte_array[1] = CSIEUseTo.ID;
-				byte_array[2] = sieuseto.flag;
+				byte_array[1] = CSIELock.ID;
+				byte_array[2] = sielock.flag;
 				NetworkRegistry.I.sendTo(new ClientMessage(byte_array), entityplayermp);
 			}
 		}
