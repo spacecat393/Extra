@@ -9,11 +9,11 @@ public class CDaAttribute
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageAttribute.STATE & 2) == 0)
+		if ((PageAttribute.ST & PageAttribute.B_LOCK_DRAW) == 0)
 		{
-			PageAttribute.STATE |= 2;
+			PageAttribute.ST |= PageAttribute.B_LOCK_DRAW;
 			PageAttribute.BYTE_ARRAY = clientmessage.data;
-			PageAttribute.STATE |= 4;
+			PageAttribute.ST |= PageAttribute.B_DRAW;
 		}
 	}
 }

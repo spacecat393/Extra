@@ -10,10 +10,10 @@ public class PageMap extends PageSelect
 	@Override
 	public void init()
 	{
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = 2;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 

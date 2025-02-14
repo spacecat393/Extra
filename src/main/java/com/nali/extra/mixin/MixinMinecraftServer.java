@@ -15,10 +15,6 @@ import java.util.Random;
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer
 {
-	@Shadow private int tickCounter;
-
-	@Shadow @Final private Random random;
-
 	@Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;applyServerIconToResponse(Lnet/minecraft/network/ServerStatusResponse;)V", shift = At.Shift.AFTER))
 	private void nali_extra_run(CallbackInfo ci)
 	{

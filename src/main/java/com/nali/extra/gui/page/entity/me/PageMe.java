@@ -34,39 +34,34 @@ public class PageMe extends PageEdit
 	public void init()
 	{
 		super.init();
-
-		String name_string = "NAME " + this.name;
-		if (name_string.length() > 20)
-		{
-			name_string = name_string.substring(0, 20) + "...";
-		}
 		this.boxtextall_array = new BoxTextAll[]
 		{
 			new BoxTextAll("ENTITY-ME".toCharArray()),
 			new BoxTextAll("MENU".toCharArray()),
 			//i
 			//d
-			new BoxTextAll(name_string.toCharArray()),
+			new BoxTextAll(this.getChar("NAME " + this.name)),
 			//hp
 			//mp
 			//edit inv in si
 			new BoxTextAll("ME-ATTRIBUTE".toCharArray()),
+			new BoxTextAll("ME-MIXSI".toCharArray()),
 			new BoxTextAll("ME-SI".toCharArray()),
 			new BoxTextAll("ME-INV".toCharArray()),
 //			new BoxTextAll("ME-MAP".toCharArray()),
 			new BoxTextAll("ME-EFFECT".toCharArray()),
 			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("DONE".toCharArray())
+			new BoxTextAll("BACK".toCharArray())
 		};
 
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
-		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
+		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
-			this.select = 8;
-			this.state |= 4;
+			this.select = 9;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 
@@ -76,7 +71,7 @@ public class PageMe extends PageEdit
 		switch (this.select)
 		{
 			case 2:
-				if ((this.state & 1) == 1)
+				if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 				{
 					this.name = this.input_stringbuilder.toString();
 
@@ -99,7 +94,7 @@ public class PageMe extends PageEdit
 					this.input_stringbuilder.append(this.name);
 					this.select_box = this.input_stringbuilder.length();
 				}
-				this.state ^= 1;
+				this.fl ^= BF_ENTER_MODE;
 				this.scroll = 0;
 				break;
 			case 3:
@@ -110,6 +105,11 @@ public class PageMe extends PageEdit
 			case 4:
 				PAGE_LIST.add(this);
 				KEY_LIST.add(Key.KEY);
+				this.set(new PageMixSI(), new KeySelect());
+				break;
+			case 5:
+				PAGE_LIST.add(this);
+				KEY_LIST.add(Key.KEY);
 				this.set(new PageSI(), new KeySelect());
 				break;
 //			case 5:
@@ -117,18 +117,18 @@ public class PageMe extends PageEdit
 //				KEY_LIST.add(Key.KEY);
 //				this.set(new PageInv(), new KeySelect());
 //				break;
-			case 5:
+			case 6:
 				PAGE_LIST.add(this);
 				KEY_LIST.add(Key.KEY);
 				//
 				this.set(new PageInv(), new KeySelect());
 				break;
-			case 6:
+			case 7:
 				PAGE_LIST.add(this);
 				KEY_LIST.add(Key.KEY);
 				this.set(new PageEffect(), new KeyEdit());
 				break;
-			case 8:
+			case 9:
 				this.back();
 				break;
 		}

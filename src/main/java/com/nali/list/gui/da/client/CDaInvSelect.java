@@ -9,11 +9,11 @@ public class CDaInvSelect
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageSelect.STATE & 2) == 0)
+		if ((PageSelect.ST & PageSelect.B_LOCK_DRAW) == 0)
 		{
-			PageSelect.STATE |= 2;
+			PageSelect.ST |= PageSelect.B_LOCK_DRAW;
 			PageSelect.BYTE_ARRAY = clientmessage.data;
-			PageSelect.STATE |= 4;
+			PageSelect.ST |= PageSelect.B_DRAW;
 		}
 	}
 }

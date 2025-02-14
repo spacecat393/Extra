@@ -1,5 +1,7 @@
 package com.nali.extra.mixin;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.nali.extra.Extra;
 import com.nali.small.Small;
 import com.nali.small.SmallConfig;
@@ -8,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,6 +21,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -32,6 +37,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 //*extra
 @Mixin(EntityRenderer.class)
@@ -53,7 +61,8 @@ public abstract class MixinEntityRenderer
 	@Shadow @Final private int[] lightmapColors;
 
 	@Shadow private float thirdPersonDistancePrev;
-//	private static float ROTATE_Y;
+	@Shadow private Entity pointedEntity;
+	//	private static float ROTATE_Y;
 	private static byte STATE;//1key 4swim 8blink
 	private static long LAST_TIME;
 	private static float PARTIALTICKS;
@@ -104,18 +113,61 @@ public abstract class MixinEntityRenderer
 		return this.mc.objectMouseOver != null && this.mc.objectMouseOver.getBlockPos() != null;
 	}
 
+	//better mouse
 	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 0))
 	private void nali_extra_getMouseOver(Minecraft instance, RayTraceResult value)
 	{
 		if (value != null)
 		{
 			this.mc.objectMouseOver = value;
-			if (value.typeOfHit == RayTraceResult.Type.MISS)
+			if (value.typeOfHit == RayTraceResult.Type.MISS/* || this.mc.objectMouseOver.entityHit == null*/)
 			{
 				value.typeOfHit = RayTraceResult.Type.BLOCK;
 			}
+//			value.typeOfHit = RayTraceResult.Type.MISS;
 		}
 	}
+
+	@Redirect(method = "getMouseOver", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
+	private List nali_extra_getMouseOver(WorldClient instance, Entity entity, AxisAlignedBB axisAlignedBB, Predicate predicate)
+	{
+		return instance.getEntitiesInAABBexcluding(entity, axisAlignedBB, Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>()
+		{
+			public boolean apply(@Nullable Entity entity)
+			{
+				return entity != null/* && entity.canBeCollidedWith()*/;
+			}
+		}));
+	}
+
+	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;pointedEntity:Lnet/minecraft/entity/Entity;", ordinal = 4))
+	private Entity nali_extra_getMouseOver(EntityRenderer instance)
+	{
+		Extra.POINT_ENTITY = this.pointedEntity;
+		if (this.pointedEntity != null && !this.pointedEntity.canBeCollidedWith())
+		{
+			this.pointedEntity = null;
+		}
+		return this.pointedEntity;
+	}
+
+//	@Inject(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 3, shift = At.Shift.AFTER))
+//	private void nali_extra_getMouseOver3(float partialTicks, CallbackInfo ci)
+//	{
+//		if (this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS/* || this.mc.objectMouseOver.entityHit == null*/)
+//		{
+//			this.mc.objectMouseOver.typeOfHit = RayTraceResult.Type.BLOCK;
+//		}
+//	}
+//
+//	@Inject(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 5, shift = At.Shift.AFTER))
+//	private void nali_extra_getMouseOver5(float partialTicks, CallbackInfo ci)
+//	{
+//		if (this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS/* || this.mc.objectMouseOver.entityHit == null*/)
+//		{
+//			this.mc.objectMouseOver.typeOfHit = RayTraceResult.Type.BLOCK;
+//		}
+//	}
 
 	//remove shader framebuffer
 	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 0))

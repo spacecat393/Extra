@@ -10,12 +10,12 @@ public class CDaInvSelectItem
 
 	public static void run(ClientMessage clientmessage)
 	{
-//		if ((PageItem.STATE & 2) == 0)
-//		{
+		if ((PageItem.ST & PageItem.B_LOCK_DRAW) == 0)
+		{
 //			PageItem.STATE |= 2;
 //			PageItem.BYTE_ARRAY = clientmessage.data;
-		PageItem.ITEM_SIZE = ByteReader.getLong(clientmessage.data, 2);
-		PageItem.STATE |= 4;
-//		}
+			PageItem.ITEM_SIZE = ByteReader.getLong(clientmessage.data, 2);
+			PageItem.ST |= PageItem.B_DRAW;
+		}
 	}
 }

@@ -9,11 +9,11 @@ public class CDaChunkList
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageList.STATE & 2) == 0)
+		if ((PageList.ST & PageList.B_LOCK_DRAW) == 0)
 		{
-			PageList.STATE |= 2;
+			PageList.ST |= PageList.B_LOCK_DRAW;
 			PageList.BYTE_ARRAY = clientmessage.data;
-			PageList.STATE |= 4;
+			PageList.ST |= PageList.B_DRAW;
 		}
 	}
 }

@@ -20,17 +20,17 @@ public class PageChunk extends PageSelect
 			new BoxTextAll("CHUNK-LIST".toCharArray()),
 			new BoxTextAll("CHUNK-MAP".toCharArray()),
 			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("DONE".toCharArray())
+			new BoxTextAll("BACK".toCharArray())
 		};
 
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[3 / 8] |= 1 << 3 % 8;
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = 2;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 

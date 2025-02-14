@@ -10,6 +10,9 @@ import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageConfig;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.key.ExtraPage;
+import com.nali.list.network.message.ServerMessage;
+import com.nali.list.network.method.server.SSyncChunk;
+import com.nali.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,17 +35,18 @@ public class PageExtra extends PageSelect
 			new BoxTextAll("CONFIG".toCharArray()),
 			new BoxTextAll("ACTION".toCharArray()),
 			new BoxTextAll("COMMAND".toCharArray()),
-			new BoxTextAll("DONE".toCharArray())
+			new BoxTextAll("SYNC_CHUNK".toCharArray()),
+			new BoxTextAll("BACK".toCharArray())
 		};
 
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = 2;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 
@@ -76,6 +80,9 @@ public class PageExtra extends PageSelect
 			case 8:
 				break;
 			case 9:
+				NetworkRegistry.I.sendToServer(new ServerMessage(new byte[]{SSyncChunk.ID}));
+				break;
+			case 10:
 				this.back();
 		}
 	}

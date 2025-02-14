@@ -9,12 +9,12 @@ public class CSIEArea
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageSIEArea.STATE & 2) == 0)
+		if ((PageSIEArea.ST & PageSIEArea.B_LOCK_DRAW) == 0)
 		{
-			PageSIEArea.STATE |= 2;
+			PageSIEArea.ST |= PageSIEArea.B_LOCK_DRAW;
 			PageSIEArea.FLAG = clientmessage.data[2];
 //			PageSIEArea.BYTE_ARRAY = clientmessage.data;
-			PageSIEArea.STATE |= 4;
+			PageSIEArea.ST |= PageSIEArea.B_DRAW;
 		}
 	}
 }

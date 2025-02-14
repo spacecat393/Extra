@@ -23,8 +23,10 @@ public class PageSI extends PageSelect
 {
 	public static byte[] BYTE_ARRAY;//1+1 (1)*?+? +1+1+1
 
+	public final static byte B_LOCK_DRAW = 2;
+	public final static byte B_DRAW = 4;
 	public static byte
-		STATE,//enter client init
+		ST,//enter client init
 		PAGE,//0-127
 		MAX_PAGE,//0-120
 		MAX_MIX_PAGE,
@@ -55,22 +57,17 @@ public class PageSI extends PageSelect
 //				int si_id = ByteReader.getInt(BYTE_ARRAY, i);
 //				i += 4;
 				byte si_id = BYTE_ARRAY[i++];
-				String si_string = si_id + " " + MixSIE.SI_CLASS_LIST.get(si_id).getName().substring(24);
-				if (si_string.length() > 20)
-				{
-					si_string = si_string.substring(0, 20) + "...";
-				}
-				this.boxtextall_array[index++] = new BoxTextAll(si_string.toCharArray());
+				this.boxtextall_array[index++] = new BoxTextAll(this.getChar(si_id + " " + MixSIE.SI_CLASS_LIST.get(si_id).getName().substring(24)));
 			}
 
 			this.boxtextall_array[index++] = new BoxTextAll("ACTION".toCharArray());
 			this.boxtextall_array[index++] = new BoxTextAll("MORE".toCharArray());
 			this.boxtextall_array[index++] = new BoxTextAll("LESS".toCharArray());
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = index;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 
 			this.boxtextall_array[index++] = new BoxTextAll("FETCH".toCharArray());
@@ -96,10 +93,10 @@ public class PageSI extends PageSelect
 			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = 4;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 		}
 	}
@@ -159,7 +156,7 @@ public class PageSI extends PageSelect
 				}
 //				byte select = (byte)(this.select - 2);
 //				this.set(new PageAttributeE(), new KeyEdit());
-				STATE &= 255-1;
+//				STATE &= 255-1;
 			}
 		}
 	}
@@ -167,14 +164,14 @@ public class PageSI extends PageSelect
 	@Override
 	public void draw()
 	{
-		if ((STATE & 4) == 4)
+		if ((ST & B_DRAW) == B_DRAW)
 		{
-			this.state &= 255-4;
+			this.fl &= 255 - BF_SET_SELECT;
 			this.clear();
 			this.init();
 
 			this.gen();
-			STATE &= 255-(2+4);
+			ST &= 255 - (B_LOCK_DRAW + B_DRAW);
 		}
 		super.draw();
 	}

@@ -44,17 +44,17 @@ public class PagePiece extends PageSelect
 				new BoxTextAll(("Z " + this.z).toCharArray()),
 				new BoxTextAll("ACTION".toCharArray()),
 				new BoxTextAll("DELETE".toCharArray()),
-				new BoxTextAll("DONE".toCharArray())
+				new BoxTextAll("BACK".toCharArray())
 			};
 
 			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 			this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = 6;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 
 			this.min_select = 6;
@@ -71,16 +71,16 @@ public class PagePiece extends PageSelect
 				new BoxTextAll(("Z " + this.z).toCharArray()),
 				new BoxTextAll("ACTION".toCharArray()),
 				new BoxTextAll("DELETE".toCharArray()),
-				new BoxTextAll("DONE".toCharArray())
+				new BoxTextAll("BACK".toCharArray())
 			};
 			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 			this.group_byte_array[5 / 8] |= 1 << 5 % 8;
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = 7;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 
 			this.min_select = 7;

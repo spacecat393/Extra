@@ -21,8 +21,10 @@ public class PageEntity extends PageSelect
 	public static byte[] BYTE_ARRAY;//1+1 (8+4)*?+? +1+1+1
 	public static String[] NAME_STRING_ARRAY;
 
+	public final static byte B_LOCK_DRAW = 2;
+	public final static byte B_DRAW = 4;
 	public static byte
-		STATE,//enter client init
+		ST,//enter client init
 		MAX_PAGE;//0-119
 	public static int
 		PAGE,
@@ -60,23 +62,18 @@ public class PageEntity extends PageSelect
 				String name_string = new String(BYTE_ARRAY, i, name_length);
 				ID_LONG_ARRAY[n_index] = id;
 				NAME_STRING_ARRAY[n_index++] = name_string;
-				String text_string = (int)id + " " + name_string;
-				if (text_string.length() > 20)
-				{
-					text_string = text_string.substring(0, 20) + "...";
-				}
 				i += name_length;
-				this.boxtextall_array[index++] = new BoxTextAll(text_string.toCharArray());
+				this.boxtextall_array[index++] = new BoxTextAll(this.getChar((int)id + " " + name_string));
 			}
 
 			this.boxtextall_array[index++] = new BoxTextAll("ACTION".toCharArray());
 			this.boxtextall_array[index++] = new BoxTextAll("MORE".toCharArray());
 			this.boxtextall_array[index++] = new BoxTextAll("LESS".toCharArray());
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = index;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 
 			this.boxtextall_array[index++] = new BoxTextAll("FETCH".toCharArray());
@@ -103,10 +100,10 @@ public class PageEntity extends PageSelect
 			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = 4;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 		}
 	}
@@ -156,7 +153,7 @@ public class PageEntity extends PageSelect
 				KEY_LIST.add(Key.KEY);
 				byte select = (byte)(this.select - 3);
 				this.set(new PageMe(ID_LONG_ARRAY[select], NAME_STRING_ARRAY[select]), new KeyEdit());
-				STATE &= 255-1;
+//				STATE &= 255-1;
 			}
 		}
 	}
@@ -164,14 +161,14 @@ public class PageEntity extends PageSelect
 	@Override
 	public void draw()
 	{
-		if ((STATE & 4) == 4)
+		if ((ST & B_DRAW) == B_DRAW)
 		{
-			this.state &= 255-4;
+			this.fl &= 255 - BF_SET_SELECT;
 			this.clear();
 			this.init();
 
 			this.gen();
-			STATE &= 255-(2+4);
+			ST &= 255 - (B_LOCK_DRAW + B_DRAW);
 		}
 		super.draw();
 	}

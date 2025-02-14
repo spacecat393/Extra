@@ -18,10 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class PageInv extends PageEdit
 {
+//	public final static byte B_ENTER = 1;
+	public final static byte B_LOCK_DRAW = 2;
+	public final static byte B_DRAW = 4;
 	public static byte[] BYTE_ARRAY;//1+1 4*? +1+1+1
 
 	public static byte
-		STATE,//enter client init
+		ST,//enter client init
 		MAX_PAGE,//0-118
 		SELECT;
 	public static int
@@ -63,10 +66,10 @@ public class PageInv extends PageEdit
 			this.boxtextall_array[index++] = new BoxTextAll("MORE".toCharArray());
 			this.boxtextall_array[index++] = new BoxTextAll("LESS".toCharArray());
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = index;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 
 			this.boxtextall_array[index++] = new BoxTextAll("FETCH".toCharArray());
@@ -95,10 +98,10 @@ public class PageInv extends PageEdit
 			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = 4;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 		}
 	}
@@ -160,7 +163,7 @@ public class PageInv extends PageEdit
 //				INV = ByteReader.getShort(BYTE_ARRAY, (this.select - 3) * 2 + 2);
 //				INV = ByteReader.getInt(BYTE_ARRAY, 2 + (this.select - 3) * 4);
 				this.set(new PageSelect(), new KeySelect());
-				STATE &= 255-1;
+//				STATE &= 255-1;
 			}
 		}
 //			STATE &= 255-1;
@@ -170,14 +173,14 @@ public class PageInv extends PageEdit
 	@Override
 	public void draw()
 	{
-		if ((STATE & 4) == 4)
+		if ((ST & B_DRAW) == B_DRAW)
 		{
-			this.state &= 255-4;
+			this.fl &= 255 - BF_SET_SELECT;
 			this.clear();
 			this.init();
 
 			this.gen();
-			STATE &= 255-(2+4);
+			ST &= 255 - (B_LOCK_DRAW + B_DRAW);
 		}
 		super.draw();
 	}

@@ -21,8 +21,10 @@ public class PageItem extends PageEdit
 {
 //	public static byte[] BYTE_ARRAY;//1+1 4*? +1+1+1
 
+	public final static byte B_LOCK_DRAW = 2;
+	public final static byte B_DRAW = 4;
 	public static byte
-		STATE;//4init
+		ST;//4init
 //		PAGE,//0-127
 //		MAX_PAGE,//0-119
 //		MAX_MIX_PAGE;//0-127
@@ -46,46 +48,31 @@ public class PageItem extends PageEdit
 		super.init();
 
 		this.item_name = new ItemStack(Item.getItemById(this.item_id)).getDisplayName();
-		String item_size_string = "SIZE " + ITEM_SIZE;
-		if (item_size_string.length() > 20)
-		{
-			item_size_string = item_size_string.substring(0, 20) + "...";
-		}
-		String name_string = "NAME " + this.item_name;
-		if (name_string.length() > 20)
-		{
-			name_string = name_string.substring(0, 20) + "...";
-		}
-		String nbt_string = "NBT " + this.nbt;
-		if (nbt_string.length() > 20)
-		{
-			nbt_string = nbt_string.substring(0, 20) + "...";
-		}
 		this.boxtextall_array = new BoxTextAll[]
 		{
 			new BoxTextAll("SELECT-ITEM".toCharArray()),
 			new BoxTextAll("MENU".toCharArray()),
 			new BoxTextAll(("ID " + this.item_id).toCharArray()),
-			new BoxTextAll(name_string.toCharArray()),
+			new BoxTextAll(this.getChar("NAME " + this.item_name)),
 			//size
-			new BoxTextAll(item_size_string.toCharArray()),
+			new BoxTextAll(this.getChar("SIZE " + ITEM_SIZE)),
 
-			new BoxTextAll(nbt_string.toCharArray()),
+			new BoxTextAll(this.getChar("NBT " + this.nbt)),
 			new BoxTextAll("ITEM-NBT".toCharArray()),
 			new BoxTextAll("ACTION".toCharArray()),
 			new BoxTextAll("MOVE".toCharArray()),
 			new BoxTextAll("DELETE".toCharArray()),
-			new BoxTextAll("DONE".toCharArray())
+			new BoxTextAll("BACK".toCharArray())
 		};
 
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = 10;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 
@@ -99,23 +86,23 @@ public class PageItem extends PageEdit
 		switch (this.select)
 		{
 			case 2:
-				if ((this.state & 1) == 0)
+				if ((this.fl & BF_ENTER_MODE) == 0)
 				{
 					this.input_stringbuilder.setLength(0);
 					this.input_stringbuilder.append(this.item_id);
 					this.select_box = this.input_stringbuilder.length();
 				}
-				this.state ^= 1;
+				this.fl ^= BF_ENTER_MODE;
 				this.scroll = 0;
 				break;
 			case 3:
-				if ((this.state & 1) == 0)
+				if ((this.fl & BF_ENTER_MODE) == 0)
 				{
 					this.input_stringbuilder.setLength(0);
 					this.input_stringbuilder.append(this.item_name);
 					this.select_box = this.input_stringbuilder.length();
 				}
-				this.state ^= 1;
+				this.fl ^= BF_ENTER_MODE;
 				this.scroll = 0;
 				break;
 			case 4://size
@@ -163,14 +150,14 @@ public class PageItem extends PageEdit
 	@Override
 	public void draw()
 	{
-		if ((STATE & 4) == 4)
+		if ((ST & B_DRAW) == B_DRAW)
 		{
-			this.state &= 255-4;
+			this.fl &= 255 - BF_SET_SELECT;
 			this.clear();
 			this.init();
 
 			this.gen();
-			STATE &= 255-(2+4);
+			ST &= 255 - (B_LOCK_DRAW + B_DRAW);
 		}
 		super.draw();
 	}

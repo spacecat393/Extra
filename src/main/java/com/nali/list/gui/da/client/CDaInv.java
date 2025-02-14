@@ -9,11 +9,11 @@ public class CDaInv
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageInv.STATE & 2) == 0)
+		if ((PageInv.ST & PageInv.B_LOCK_DRAW) == 0)
 		{
-			PageInv.STATE |= 2;
+			PageInv.ST |= PageInv.B_LOCK_DRAW;
 			PageInv.BYTE_ARRAY = clientmessage.data;
-			PageInv.STATE |= 4;
+			PageInv.ST |= PageInv.B_DRAW;
 		}
 	}
 }

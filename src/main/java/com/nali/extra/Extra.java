@@ -1,5 +1,6 @@
 package com.nali.extra;
 
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,4 +20,7 @@ public class Extra
 
 		P_YAW,
 		P_PITCH;
+
+	@SideOnly(Side.CLIENT)
+	public static Entity POINT_ENTITY;
 }

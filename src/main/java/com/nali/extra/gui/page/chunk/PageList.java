@@ -19,8 +19,10 @@ public class PageList extends PageSelect
 {
 	public static byte[] BYTE_ARRAY;//1+1 4*2*? +1+1+1
 
+	public final static byte B_LOCK_DRAW = 2;
+	public final static byte B_DRAW = 4;
 	public static byte
-		STATE,//enter client init
+		ST,//enter client init
 		MAX_PAGE,//0-118
 		SELECT;
 	public static int
@@ -56,10 +58,10 @@ public class PageList extends PageSelect
 			this.boxtextall_array[index++] = new BoxTextAll("MORE".toCharArray());
 			this.boxtextall_array[index++] = new BoxTextAll("LESS".toCharArray());
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = index;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 
 			this.boxtextall_array[index++] = new BoxTextAll("FETCH".toCharArray());
@@ -86,10 +88,10 @@ public class PageList extends PageSelect
 			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 
-			if ((this.state & 4) == 0)
+			if ((this.fl & BF_SET_SELECT) == 0)
 			{
 				this.select = 4;
-				this.state |= 4;
+				this.fl |= BF_SET_SELECT;
 			}
 		}
 	}
@@ -144,7 +146,7 @@ public class PageList extends PageSelect
 				SELECT = (byte)(this.select - 3);
 				int new_index = 2 + SELECT * 2 * 4;
 				this.set(new PagePiece(ByteReader.getInt(BYTE_ARRAY, new_index), ByteReader.getInt(BYTE_ARRAY, new_index + 4)), new KeySelect());
-				STATE &= 255-1;
+//				STATE &= 255-1;
 			}
 		}
 	}
@@ -152,14 +154,14 @@ public class PageList extends PageSelect
 	@Override
 	public void draw()
 	{
-		if ((STATE & 4) == 4)
+		if ((ST & B_DRAW) == B_DRAW)
 		{
-			this.state &= 255-4;
+			this.fl &= 255 - BF_SET_SELECT;
 			this.clear();
 			this.init();
 
 			this.gen();
-			STATE &= 255-(2+4);
+			ST &= 255 - (B_LOCK_DRAW + B_DRAW);
 		}
 		super.draw();
 	}

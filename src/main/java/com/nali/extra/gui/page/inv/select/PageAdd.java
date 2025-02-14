@@ -18,7 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class PageAdd extends PageEdit
 {
-	public static byte STATE;//enter client init
+	public final static byte B_LOCK_DRAW = 2;
+	public final static byte B_DRAW = 4;
+	public static byte ST;//enter client init
 
 	@Override
 	public void init()
@@ -34,20 +36,14 @@ public class PageAdd extends PageEdit
 		for (byte i = 0; i < inventoryplayer_size; ++i)
 		{
 			ItemStack itemstack = inventoryplayer.getStackInSlot(i);
-			String text_string = i + " " + itemstack.getDisplayName();
-//			Nali.warn(text_string);
-			if (text_string.length() > 20)
-			{
-				text_string = text_string.substring(0, 20) + "...";
-			}
-			this.boxtextall_array[index++] = new BoxTextAll(text_string.toCharArray());
+			this.boxtextall_array[index++] = new BoxTextAll(this.getChar(i + " " + itemstack.getDisplayName()));
 		}
 		this.boxtextall_array[index++] = new BoxTextAll("ACTION".toCharArray());
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = index;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 
 		this.boxtextall_array[index] = new BoxTextAll("BACK".toCharArray());
@@ -90,14 +86,14 @@ public class PageAdd extends PageEdit
 	@Override
 	public void draw()
 	{
-		if ((STATE & 4) == 4)
+		if ((ST & B_DRAW) == B_DRAW)
 		{
-			this.state &= 255-4;
+			this.fl &= 255 - BF_SET_SELECT;
 			this.clear();
 			this.init();
 
 			this.gen();
-			STATE &= 255-(2+4);
+			ST &= 255 - (B_LOCK_DRAW + B_DRAW);
 		}
 		super.draw();
 	}

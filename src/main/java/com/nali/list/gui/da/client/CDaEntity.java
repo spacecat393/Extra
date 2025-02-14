@@ -9,11 +9,11 @@ public class CDaEntity
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageEntity.STATE & 2) == 0)
+		if ((PageEntity.ST & PageEntity.B_LOCK_DRAW) == 0)
 		{
-			PageEntity.STATE |= 2;
+			PageEntity.ST |= PageEntity.B_LOCK_DRAW;
 			PageEntity.BYTE_ARRAY = clientmessage.data;
-			PageEntity.STATE |= 4;
+			PageEntity.ST |= PageEntity.B_DRAW;
 		}
 	}
 }

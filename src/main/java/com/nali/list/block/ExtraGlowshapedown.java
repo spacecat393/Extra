@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 public class ExtraGlowshapedown extends BlockB implements ITileEntityProvider
 {
 	public static int ID;
-	public static final AxisAlignedBB AXISALIGNEDBB = new AxisAlignedBB(0.0D, 0.10D, 0.0D, 1.0D, 0.40D, 1.0D);
+	public final static AxisAlignedBB AXISALIGNEDBB = new AxisAlignedBB(0.0D, 0.10D, 0.0D, 1.0D, 0.40D, 1.0D);
 
 	public ExtraGlowshapedown(String[] string_array)
 	{

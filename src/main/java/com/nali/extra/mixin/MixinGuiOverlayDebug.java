@@ -1,5 +1,6 @@
 package com.nali.extra.mixin;
 
+import com.nali.extra.Extra;
 import com.nali.small.Small;
 import com.nali.small.SmallConfig;
 import net.minecraft.block.Block;
@@ -61,6 +62,7 @@ public abstract class MixinGuiOverlayDebug
 	private void nali_extra_getDebugInfoRight(CallbackInfoReturnable<List<String>> cir)
 	{
 		List list = cir.getReturnValue();
+
 		if (IBLOCKSTATE != null)
 		{
 			Block block = IBLOCKSTATE.getBlock();
@@ -114,7 +116,22 @@ public abstract class MixinGuiOverlayDebug
 			list.add("DestroySpeed " + itemstack.getDestroySpeed(IBLOCKSTATE));
 	//		cir.setReturnValue(list);
 		}
+
+		if (Extra.POINT_ENTITY != null)
+		{
+			list.add("");
+			list.add("Entity " + Extra.POINT_ENTITY.getClass().getName());
+			list.add("EntityId " + Extra.POINT_ENTITY.getEntityId());
+			if (Extra.POINT_ENTITY instanceof EntityLivingBase)
+			{
+				EntityLivingBase entitylivingbase = (EntityLivingBase)Extra.POINT_ENTITY;
+				list.add("Health " + entitylivingbase.getHealth());
+				list.add("MaxHealth " + entitylivingbase.getMaxHealth());
+			}
+		}
+
 		IBLOCKSTATE = null;
+		Extra.POINT_ENTITY = null;
 	}
 
 	@Inject(method = "call", at = @At("RETURN"))

@@ -9,11 +9,11 @@ public class CSIEOwner
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageSIEOwner.STATE & 2) == 0)
+		if ((PageSIEOwner.ST & PageSIEOwner.B_LOCK_DRAW) == 0)
 		{
-			PageSIEOwner.STATE |= 2;
+			PageSIEOwner.ST |= PageSIEOwner.B_LOCK_DRAW;
 			PageSIEOwner.OWNER_NAME = new String(clientmessage.data, 2, clientmessage.data.length - 2);
-			PageSIEOwner.STATE |= 4;
+			PageSIEOwner.ST |= PageSIEOwner.B_DRAW;
 		}
 	}
 }

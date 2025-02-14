@@ -9,11 +9,11 @@ public class CDaChunkMap
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageMap.STATE & 2) == 0)
+		if ((PageMap.ST & PageMap.B_LOCK_DRAW) == 0)
 		{
-			PageMap.STATE |= 2;
+			PageMap.ST |= PageMap.B_LOCK_DRAW;
 			PageMap.BYTE_ARRAY = clientmessage.data;
-			PageMap.STATE |= 4;
+			PageMap.ST |= PageMap.B_DRAW;
 		}
 	}
 }

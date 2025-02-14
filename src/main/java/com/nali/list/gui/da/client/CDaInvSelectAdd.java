@@ -9,10 +9,10 @@ public class CDaInvSelectAdd
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageAdd.STATE & 2) == 0)
+		if ((PageAdd.ST & PageAdd.B_LOCK_DRAW) == 0)
 		{
-			PageAdd.STATE |= 2;
-			PageAdd.STATE |= 4;
+			PageAdd.ST |= PageAdd.B_LOCK_DRAW;
+			PageAdd.ST |= PageAdd.B_DRAW;
 		}
 	}
 }

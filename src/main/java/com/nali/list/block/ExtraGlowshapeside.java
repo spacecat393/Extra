@@ -33,8 +33,8 @@ import javax.annotation.Nullable;
 public class ExtraGlowshapeside extends BlockB implements ITileEntityProvider
 {
 	public static int ID;
-	public static final AxisAlignedBB AXISALIGNEDBB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
+	public final static AxisAlignedBB AXISALIGNEDBB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	public final static PropertyDirection FACING = BlockHorizontal.FACING;
 
 //	public IBothB ibothb;
 

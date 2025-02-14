@@ -9,11 +9,11 @@ public class CDaSI
 
 	public static void run(ClientMessage clientmessage)
 	{
-		if ((PageSI.STATE & 2) == 0)
+		if ((PageSI.ST & PageSI.B_LOCK_DRAW) == 0)
 		{
-			PageSI.STATE |= 2;
+			PageSI.ST |= PageSI.B_LOCK_DRAW;
 			PageSI.BYTE_ARRAY = clientmessage.data;
-			PageSI.STATE |= 4;
+			PageSI.ST |= PageSI.B_DRAW;
 		}
 	}
 }
