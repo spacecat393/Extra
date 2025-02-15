@@ -46,6 +46,7 @@
 		"MixinCreativeTabs",
 		"MixinEntity",
 		"MixinEntityEgg",
+		"MixinEntityFallingBlock",
 		"MixinEntityItem",
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",

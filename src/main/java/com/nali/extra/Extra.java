@@ -39,4 +39,13 @@ public class Extra
 //		File world_file = DimensionManager.getCurrentSaveRootDirectory();
 //		PlayerDataInv.write(world_file);
 //	}
+
+//	@Mod.EventHandler
+//	public void onFMLInitializationEvent(FMLInitializationEvent event)
+//	{
+//		if (event.getSide() == Side.CLIENT)
+//		{
+//			ExtraCloud.registerBlockColors();
+//		}
+//	}
 }

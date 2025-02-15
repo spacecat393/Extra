@@ -1,8 +1,10 @@
 package com.nali.extra.mixin;
 
+import com.nali.list.block.ExtraCloud;
 import com.nali.list.item.ExtraBox;
 import com.nali.small.entity.EntityMath;
 import com.nali.small.entity.EntityRegistry;
+import com.nali.small.mix.block.BlockRegistry;
 import com.nali.small.mix.item.ItemRegistry;
 import com.nali.small.mixin.IMixinWorldServer;
 import net.minecraft.entity.Entity;
@@ -73,11 +75,18 @@ public abstract class MixinEntityItem extends Entity
 							{
 								if (itemstack.getTagCompound() == null)
 								{
-									if (itemstack.getCount() == 1 && !EntityRegistry.ENTITIES_CLASS_LIST.isEmpty())
+									if (this.rand.nextBoolean())
 									{
-										ExtraBox.randomToBox(this.world, itemstack);
-										entityitem_itemstack.shrink(1);
+										if (itemstack.getCount() == 1 && !EntityRegistry.ENTITIES_CLASS_LIST.isEmpty())
+										{
+											ExtraBox.randomToBox(this.world, itemstack);
+										}
 									}
+									else
+									{
+										this.world.spawnEntity(new EntityItem(this.world, this.posX, this.posY, this.posZ, new ItemStack(BlockRegistry.ITEM_ARRAY[ExtraCloud.ID], 64)));
+									}
+									entityitem_itemstack.shrink(64);
 								}
 //								else
 //								{

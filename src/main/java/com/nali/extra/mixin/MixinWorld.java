@@ -4,7 +4,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -37,14 +36,14 @@ public abstract class MixinWorld
 //		return 0;
 //	}
 
-	//disable weather
-	@Overwrite
-	protected void calculateInitialWeather()
-	{
-	}
-
-	@Overwrite
-	protected void updateWeather()
-	{
-	}
+//	//disable weather
+//	@Overwrite
+//	protected void calculateInitialWeather()
+//	{
+//	}
+//
+//	@Overwrite
+//	protected void updateWeather()
+//	{
+//	}
 }

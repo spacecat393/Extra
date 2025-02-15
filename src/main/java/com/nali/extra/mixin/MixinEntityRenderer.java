@@ -525,17 +525,17 @@ public abstract class MixinEntityRenderer
 	{
 	}
 
-	//disable weather
-	@Overwrite
-	private void addRainParticles()
-	{
-	}
-
 //	//disable update
 //	@Overwrite
 //	public void updateRenderer()
 //	{
 //	}
+
+	//disable weather
+	@Overwrite
+	private void addRainParticles()
+	{
+	}
 
 	//disable weather
 	@Overwrite
