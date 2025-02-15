@@ -6,6 +6,7 @@ import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
+import com.nali.small.entity.inv.InvE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,7 +20,9 @@ import java.util.stream.Stream;
 public class SDaInv
 {
 	public static byte ID;
-	public static byte STATE;//delete/add
+
+//	public final static byte BS_LOCK = 1;
+//	public static byte ST/* = BS_LOCK*/;//delete/add
 
 	public final static byte MAX_SIZE = 118;
 	public final static byte B_MORE = 0;
@@ -28,7 +31,6 @@ public class SDaInv
 	public final static byte B_DELETE = 3;
 	public final static byte B_ADD = 4;
 
-	//can lock with player data
 	public static void run(EntityPlayerMP entityplayermp, ServerMessage servermessage)
 	{
 		File inv_file = new File(entityplayermp.world.getSaveHandler().getWorldDirectory(), "nali/inv");
@@ -68,9 +70,9 @@ public class SDaInv
 				}
 				break;
 			case B_DELETE:
-				if ((STATE & 1) == 0)
+				if ((InvE.ST & InvE.BS_LOCK) == 0)
 				{
-					STATE |= 1;
+					InvE.ST |= InvE.BS_LOCK;
 					int index = servermessage.data[4] + page * MAX_SIZE;
 
 					File inv_i_file = inv_file.listFiles()[index];
@@ -101,13 +103,13 @@ public class SDaInv
 					servermessage.data[2] = B_FETCH;
 					--max_inv_file;
 
-					STATE &= 255-1;
+					InvE.ST &= 255 - InvE.BS_LOCK;
 				}
 				break;
 			case B_ADD:
-				if ((STATE & 1) == 0)
+				if ((InvE.ST & InvE.BS_LOCK) == 0)
 				{
-					STATE |= 1;
+					InvE.ST |= InvE.BS_LOCK;
 
 					int file_index = 0;
 					File file = new File(inv_file, "" + file_index);
@@ -131,7 +133,7 @@ public class SDaInv
 
 					servermessage.data[2] = B_FETCH;
 					++max_inv_file;
-					STATE &= 255-1;
+					InvE.ST &= 255 - InvE.BS_LOCK;
 				}
 		}
 

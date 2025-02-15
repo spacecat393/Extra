@@ -23,4 +23,20 @@ public class Extra
 
 	@SideOnly(Side.CLIENT)
 	public static Entity POINT_ENTITY;
+
+//	@Mod.EventHandler
+//	public void onFMLServerStartedEvent(FMLServerStartedEvent event)
+//	{
+////		WorldServer[] worldserver_array = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
+////		File world_file = worldserver_array[0].getSaveHandler().getWorldDirectory();
+//		File world_file = DimensionManager.getCurrentSaveRootDirectory();
+//		PlayerDataInv.read(world_file);
+//	}
+//
+//	@Mod.EventHandler
+//	public void onFMLServerStoppingEvent(FMLServerStoppingEvent event)
+//	{
+//		File world_file = DimensionManager.getCurrentSaveRootDirectory();
+//		PlayerDataInv.write(world_file);
+//	}
 }

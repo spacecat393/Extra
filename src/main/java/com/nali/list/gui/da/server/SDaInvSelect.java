@@ -6,6 +6,7 @@ import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
+import com.nali.small.entity.inv.InvE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.item.EntityItem;
@@ -24,8 +25,8 @@ public class SDaInvSelect
 {
 	public static byte ID;
 
-	public final static byte BS_LOCK = 1;
-	public static byte FLAG;//delete/add/move
+//	public final static byte BS_LOCK = 1;
+//	public static byte FLAG;//delete/add/move
 
 	public static byte[] BYTE_ARRAY;
 	public static File INV_FILE;
@@ -78,9 +79,9 @@ public class SDaInvSelect
 				}
 				break;
 			case B_DELETE:
-				if ((FLAG & BS_LOCK) == 0)
+				if ((InvE.ST & InvE.BS_LOCK) == 0)
 				{
-					FLAG |= BS_LOCK;
+					InvE.ST |= InvE.BS_LOCK;
 					int delete_item_id = ByteReader.getInt(servermessage.data, 3+4+4);
 					File file = new File(inv_file, "" + delete_item_id);
 					File nbt_n_file = new File(inv_file, "nbt/" + delete_item_id);
@@ -96,15 +97,15 @@ public class SDaInvSelect
 					file.delete();
 
 //			servermessage.data[2] = B_FETCH;
-					FLAG &= 255 - BS_LOCK;
+					InvE.ST &= 255 - InvE.BS_LOCK;
 				}
 				break;
 			case B_MOVE:
 //				RUNNABLE_LIST.add(() ->
 //				{
-				if ((FLAG & BS_LOCK) == 0)
+				if ((InvE.ST & InvE.BS_LOCK) == 0)
 				{
-					FLAG |= BS_LOCK;
+					InvE.ST |= InvE.BS_LOCK;
 					BYTE_ARRAY = servermessage.data;
 //					int length = servermessage.data.length;
 //					BYTE_ARRAY = new byte[length];
@@ -255,7 +256,7 @@ public class SDaInvSelect
 			SDaInvSelect.BYTE_ARRAY = null;
 			SDaInvSelect.INV_FILE = null;
 			SDaInvSelect.ENTITYPLAYERMP = null;
-			SDaInvSelect.FLAG &= 255 - SDaInvSelect.BS_LOCK;
+			InvE.ST &= 255 - InvE.BS_LOCK;
 		}
 	}
 }

@@ -6,6 +6,7 @@ import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
+import com.nali.small.entity.inv.InvE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,11 +19,12 @@ public class SDaInvSelectItem
 {
 	public static byte ID;
 
+	//count
 	public static void run(EntityPlayerMP entityplayermp, ServerMessage servermessage)
 	{
-		if ((SDaInvSelect.FLAG & SDaInvSelect.BS_LOCK) == 0)
+		if ((InvE.ST & InvE.BS_LOCK) == 0)
 		{
-			SDaInvSelect.FLAG |= SDaInvSelect.BS_LOCK;
+			InvE.ST |= InvE.BS_LOCK;
 			int inv = ByteReader.getInt(servermessage.data, 2);
 			int item_id = ByteReader.getInt(servermessage.data, 2+4);
 
@@ -41,7 +43,7 @@ public class SDaInvSelectItem
 			{
 				Nali.warn(e);
 			}
-			SDaInvSelect.FLAG &= 255 - SDaInvSelect.BS_LOCK;
+			InvE.ST &= 255 - InvE.BS_LOCK;
 		}
 	}
 }
