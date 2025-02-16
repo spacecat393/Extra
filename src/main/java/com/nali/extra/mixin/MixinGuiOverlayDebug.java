@@ -3,6 +3,9 @@ package com.nali.extra.mixin;
 import com.nali.extra.Extra;
 import com.nali.small.Small;
 import com.nali.small.SmallConfig;
+import com.nali.small.entity.IMixE;
+import com.nali.small.entity.memo.client.ClientE;
+import com.nali.small.entity.memo.client.box.hit.HitE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -127,6 +131,23 @@ public abstract class MixinGuiOverlayDebug
 				EntityLivingBase entitylivingbase = (EntityLivingBase)Extra.POINT_ENTITY;
 				list.add("Health " + entitylivingbase.getHealth());
 				list.add("MaxHealth " + entitylivingbase.getMaxHealth());
+				if (Extra.POINT_ENTITY instanceof IMixE)
+				{
+					IMixE i = (IMixE)Extra.POINT_ENTITY;
+					ClientE c = (ClientE)i.getB();
+					EntityPlayerSP entityplayersp = this.mc.player;
+					Vec3d player_vec3d = entityplayersp.getPositionEyes(1.0F);
+					Vec3d look_vec3d = entityplayersp.getLookVec();
+					HitE hite = c.mb.isOn(entityplayersp, player_vec3d, look_vec3d, false);
+					if (hite == null)
+					{
+						list.add("HIT " + hite);
+					}
+					else
+					{
+						list.add("HIT " + hite.getClass().getSimpleName());
+					}
+				}
 			}
 		}
 

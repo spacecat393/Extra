@@ -1,5 +1,8 @@
 package com.nali.extra;
 
+import com.nali.Nali;
+import com.nali.system.bytes.ByteReader;
+import com.nali.system.bytes.ByteWriter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -10,6 +13,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.File;
+import java.nio.file.Files;
+
 @SideOnly(Side.CLIENT)
 public class ExtraView
 {
@@ -19,9 +25,12 @@ public class ExtraView
 	public static long TIME;
 
 //	public final static float BLOCK_DISTANCE_EPSILON = 4.0F;
-	public final static float YAW_BLOCK_EPSILON = 80.0F;//75.0F
-	public final static float PITCH_BLOCK_EPSILON = 80.0F;//45.0F
-	public final static float CHUNK_EPSILON = 45.0F;//90.0F
+//	public final static float YAW_BLOCK_EPSILON = 80.0F;//75.0F
+//	public final static float PITCH_BLOCK_EPSILON = 80.0F;//45.0F
+//	public final static float CHUNK_EPSILON = 45.0F;//90.0F
+	public static float YAW_BLOCK_EPSILON = 80.0F;
+	public static float PITCH_BLOCK_EPSILON = 80.0F;
+	public static float CHUNK_EPSILON = 45.0F;
 
 	public static boolean check(Block block, BlockPos blockpos, IBlockAccess iblockaccess, IBlockState iblockstate, EnumFacing enumfacing)
 	{
@@ -372,5 +381,38 @@ public class ExtraView
 		return false;
 //		return this.clippingHelper.isBoxInFrustum(minx, miny, minz, maxx, maxy, maxz);
 //		return true;
+	}
+
+	public static void init()
+	{
+		File file = new File("nali/nali/tmp/config_extra_view");
+
+		if (file.isFile())
+		{
+			try
+			{
+				set(Files.readAllBytes(file.toPath()));
+			}
+			catch (Exception e)
+			{
+				Nali.error(e);
+			}
+		}
+	}
+
+	public static byte[] getByteArray()
+	{
+		byte[] byte_array = new byte[4 + 4 + 4];
+		ByteWriter.set(byte_array, YAW_BLOCK_EPSILON, 0);
+		ByteWriter.set(byte_array, PITCH_BLOCK_EPSILON, 4);
+		ByteWriter.set(byte_array, CHUNK_EPSILON, 4+4);
+		return byte_array;
+	}
+
+	public static void set(byte[] byte_array)
+	{
+		YAW_BLOCK_EPSILON = ByteReader.getFloat(byte_array, 0);
+		PITCH_BLOCK_EPSILON = ByteReader.getFloat(byte_array, 4);
+		CHUNK_EPSILON = ByteReader.getFloat(byte_array, 4+4);
 	}
 }

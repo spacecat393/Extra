@@ -17,6 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -85,19 +86,21 @@ public class ExtraCloud extends Block
 		pos = pos.down();
 		if (worldIn.isAirBlock(pos) && rand.nextInt(40) == 0)
 		{
-			if (worldIn.isRaining())
+			Biome biome = worldIn.getBiome(pos);
+
+			if ((biome.canRain() || biome.getEnableSnow()) && worldIn.isRaining())
 			{
 				if (worldIn.canSnowAt(pos, false))
 				{
 					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, Blocks.SNOW_LAYER.getDefaultState());
-					entityfallingblock.motionY = -0.5D;
+//					entityfallingblock.motionY = -0.5D;
 					entityfallingblock.fallTime = Integer.MIN_VALUE;
 					worldIn.spawnEntity(entityfallingblock);
 				}
 				else
 				{
 					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, Blocks.ICE.getDefaultState());
-					entityfallingblock.motionY = -0.5D;
+//					entityfallingblock.motionY = -0.5D;
 					entityfallingblock.fallTime = Integer.MIN_VALUE;
 					worldIn.spawnEntity(entityfallingblock);
 				}

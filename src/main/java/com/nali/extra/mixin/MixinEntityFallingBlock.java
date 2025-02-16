@@ -2,6 +2,7 @@ package com.nali.extra.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,7 +40,7 @@ public abstract class MixinEntityFallingBlock extends Entity
 				this.extra = true;
 			}
 
-			if (this.extra && this.onGround)
+			if (this.extra && this.onGround || this.posY < 0 || this.posY > 256)
 			{
 				this.setDead();
 				ci.cancel();
@@ -48,8 +49,25 @@ public abstract class MixinEntityFallingBlock extends Entity
 	}
 
 	@Redirect(method = "onUpdate", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isRemote:Z", ordinal = 1))
-	private boolean nali_extra_onUpdateT(World instance)
+	private boolean nali_extra_onUpdate(World instance)
 	{
 		return instance.isRemote || this.extra;
+	}
+
+//	@Inject(method = "readEntityFromNBT", at = @At("TAIL"))
+	@Inject(method = "readEntityFromNBT", at = @At("HEAD"))
+	private void nali_extra_readEntityFromNBT(NBTTagCompound compound, CallbackInfo ci)
+	{
+//		if (this.fallTime == Integer.MIN_VALUE)
+//		{
+//			this.extra = true;
+//		}
+		this.extra = compound.getBoolean("extra");
+	}
+
+	@Inject(method = "writeEntityToNBT", at = @At("HEAD"))
+	private void nali_extra_writeEntityToNBT(NBTTagCompound compound, CallbackInfo ci)
+	{
+		compound.setBoolean("extra", this.extra);
 	}
 }

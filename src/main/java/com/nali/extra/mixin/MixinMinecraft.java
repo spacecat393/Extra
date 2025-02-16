@@ -89,6 +89,7 @@ public abstract class MixinMinecraft
 	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader/Framebuffer;setFramebufferColor(FFFF)V", shift = At.Shift.AFTER))
 	private void nali_extra_init(CallbackInfo callbackinfo)
 	{
+		ExtraView.init();
 		Display.sync(this.getLimitFramerate());
 		RenderExtraSky.RENDEREXTRASKY = new RenderExtraSky();
 //		if (!ExtraConfig.RAW_FPS)

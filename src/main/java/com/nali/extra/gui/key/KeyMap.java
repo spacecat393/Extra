@@ -1,20 +1,15 @@
-//package com.nali.small.gui.page.entity.me;
+//package com.nali.extra.gui.key;
 //
-//import com.nali.gui.page.PageSelect;
+//import com.nali.gui.key.Key;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //@SideOnly(Side.CLIENT)
-//public class PageInv extends PageSelect
+//public class KeyMap extends Key
 //{
-//	@Override
-//	public void init()
-//	{
-//	}
-//
 //	@Override
 //	public void enter()
 //	{
-//
+//		super.enter();
 //	}
 //}
