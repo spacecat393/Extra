@@ -1,5 +1,6 @@
 package com.nali.extra.gui.page.map;
 
+import com.nali.extra.ExtraColor;
 import com.nali.gui.box.BoxColor;
 import com.nali.gui.page.Page;
 import com.nali.list.data.NaliData;
@@ -15,21 +16,76 @@ import org.lwjgl.opengl.GL20;
 @SideOnly(Side.CLIENT)
 public class PageMap extends Page
 {
-	public BoxColor boxcolor = new BoxColor();
+	public BoxColor[] boxcolor_array;
+	public float[] vs_float_array = new float[2];
+	public float[] cw_float_array = new float[]{1, 1, 1, 0.5F};
+	public float[] cb_float_array = new float[]{0, 0, 0, 0.5F};
+
+	public PageMap()
+	{
+		this.c_float_array[3] = 0.5F;
+	}
 
 	@Override
 	public void init()
 	{
-		this.boxcolor.x1 = WIDTH / 16;
-		this.boxcolor.y1 = HEIGHT / 16;
+//		float size = WIDTH / 16.0F;
+		int min = Math.min(WIDTH, HEIGHT);
+		float size = min / 16.0F;
+		this.boxcolor_array = new BoxColor[16*16+1];
+		float x, y;
+		float fixx, fixy;
+		if (min == WIDTH)
+		{
+			fixy = (HEIGHT - WIDTH) / 2.0F;
+			y = fixy;
+			fixx = 0;
+			x = 0;
+		}
+		else
+		{
+			fixy = 0;
+			y = 0;
+			fixx = (WIDTH - HEIGHT) / 2.0F;
+			x = fixx;
+		}
+
+		for (int i = 0; i < 16*16; ++i)
+		{
+			if (i != 0 && i % 16 == 0)
+			{
+				x = fixx;
+				y += size;
+			}
+
+			BoxColor boxcolor = new BoxColor();
+			boxcolor.x0 = x;
+			boxcolor.y0 = y;
+			boxcolor.x1 = x + size;
+			boxcolor.y1 = y + size;
+			this.boxcolor_array[i] = boxcolor;
+
+			x += size;
+		}
+
+		BoxColor boxcolor = new BoxColor();
+		float h2_size = size / 4.0F;
+		boxcolor.x0 = fixx + h2_size;
+		boxcolor.y0 = fixy + h2_size;
+		boxcolor.x1 = fixx + size - h2_size;
+		boxcolor.y1 = fixy + size - h2_size;
+		this.boxcolor_array[16*16] = boxcolor;
 	}
 
 	@Override
 	public void gen()
 	{
-		this.boxcolor.v_width = WIDTH;
-		this.boxcolor.v_height = HEIGHT;
-		this.boxcolor.gen();
+		for (BoxColor boxcolor : this.boxcolor_array)
+		{
+			boxcolor.v_width = WIDTH;
+			boxcolor.v_height = HEIGHT;
+			boxcolor.gen();
+		}
 	}
 
 	@Override
@@ -47,7 +103,31 @@ public class PageMap extends Page
 		OpenGlHelper.glUseProgram(rs.program);
 		int v = rs.attriblocation_int_array[0];
 		GL20.glEnableVertexAttribArray(v);
-		this.boxcolor.draw(rs, new float[2], new float[]{1, 1, 1, 1});
+		byte b = 0;
+		byte bb = 0;
+//		byte bb = 0;
+		for (int i = 0; i < 16*16; ++i)
+		{
+			BoxColor boxcolor = this.boxcolor_array[i];
+			boxcolor.draw(rs, this.v_float_array, (b++ + bb) % 2 == 0 ? this.cb_float_array : this.cw_float_array);
+			if (b % 16 == 0)
+			{
+				bb ^= 1;
+//				if ((bb & 1) == 1)
+//				{
+//					b = -1;
+//				}
+//				else
+//				{
+//					b = 1;
+//				}
+//				bb ^= 1;
+			}
+		}
+		this.c_float_array[0] = ExtraColor.RED;
+		this.c_float_array[1] = ExtraColor.GREEN;
+		this.c_float_array[2] = ExtraColor.BLUE;
+		this.boxcolor_array[16*16].draw(rs, this.vs_float_array, this.c_float_array);
 		GL20.glDisableVertexAttribArray(v);
 
 //		GL11.glColor4f(r, g, b, a);
@@ -56,7 +136,10 @@ public class PageMap extends Page
 	@Override
 	public void clear()
 	{
-		OpenGlHelper.glDeleteBuffers(this.boxcolor.array_buffer);
+		for (BoxColor boxcolor : this.boxcolor_array)
+		{
+			OpenGlHelper.glDeleteBuffers(boxcolor.array_buffer);
+		}
 	}
 
 	@Override
@@ -72,6 +155,7 @@ public class PageMap extends Page
 			WIDTH = width;
 			HEIGHT = height;
 			GL11.glViewport(0, 0, width, height);
+			this.init();
 			this.gen();
 		}
 

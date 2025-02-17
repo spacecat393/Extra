@@ -554,7 +554,7 @@ public abstract class MixinEntityRenderer
 				EntityPlayerSP entityplayersp = this.mc.player;
 
 				//support aquaacrobatics
-				boolean swim = /*((IMixinEntity)entityplayersp).GOgetFlag(2) || */((IMixinEntity)entityplayersp).GOgetFlag(4) || entityplayersp.height < 1.8F / 2.0F;
+				boolean swim = /*((IMixinEntity)entityplayersp).GOgetFlag(2) || */((IMixinEntity)entityplayersp).GOgetFlag(4) || entityplayersp.height < 1.8F / 2.0F/* || entityplayersp.portalCounter != 0*/;
 				STATE |= swim ? 4 : 0;
 				if ((STATE & 4) == 4)
 				{
@@ -581,7 +581,21 @@ public abstract class MixinEntityRenderer
 					Extra.FP |= 1;
 //					GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
 //					GlStateManager.bindTexture(0);
-					this.mc.getRenderManager().renderEntity(this.mc.getRenderViewEntity(), 0, 0, 0, 0, PARTIALTICKS, false);
+					//fix first pause didn't update yaw
+					if (!this.mc.isGamePaused() || Extra.UPDATE == -1)
+					{
+						if (Extra.UPDATE == 0 || Extra.UPDATE == -1)
+						{
+//							Nali.warn("update");
+							entityplayersp.onUpdate();
+						}
+						else
+						{
+							--Extra.UPDATE;
+						}
+					}
+
+					this.mc.getRenderManager().renderEntity(entityplayersp, 0, 0, 0, 0, PARTIALTICKS, false);
 					Extra.FP &= 255-1;
 				}
 //				Extra.FP ^= 2;

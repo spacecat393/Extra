@@ -8,6 +8,7 @@
 	"client": [
 		"MixinBlockFluidRenderer",
 		"MixinBlockModelRenderer",
+		"MixinEntityPlayerSP",
 		"MixinEntityRenderer",
 		"MixinFontRenderer",
 		"MixinFrustum",
