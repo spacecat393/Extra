@@ -6,7 +6,9 @@ import com.nali.gui.page.Page;
 import com.nali.list.data.NaliData;
 import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoS;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.Display;
@@ -21,9 +23,23 @@ public class PageMap extends Page
 	public float[] cw_float_array = new float[]{1, 1, 1, 0.5F};
 	public float[] cb_float_array = new float[]{0, 0, 0, 0.5F};
 
+//	public final static byte BS_ENTER_MODE = 1;
+//	public byte state;
+
+	public final static byte B_XZ = 0;
+	public final static byte B_XY = 1;
+	public final static byte B_ZY = 2;
+	public byte xyz;
+
+	public BlockPos blockpos;
+
 	public PageMap()
 	{
 		this.c_float_array[3] = 0.5F;
+		if (this.blockpos == null)
+		{
+			this.blockpos = Minecraft.getMinecraft().player.getPosition();
+		}
 	}
 
 	@Override

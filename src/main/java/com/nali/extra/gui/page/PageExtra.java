@@ -1,5 +1,6 @@
 package com.nali.extra.gui.page;
 
+import com.nali.extra.gui.key.KeyMap;
 import com.nali.extra.gui.page.chunk.PageChunk;
 import com.nali.extra.gui.page.entity.PageEntity;
 import com.nali.extra.gui.page.inv.PageInv;
@@ -64,7 +65,7 @@ public class PageExtra extends PageSelect
 			case 3:
 				PAGE_LIST.add(this);
 				KEY_LIST.add(Key.KEY);
-				this.set(new PageMap(), new Key());
+				this.set(new PageMap(), new KeyMap());
 				break;
 			case 4:
 				PAGE_LIST.add(this);

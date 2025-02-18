@@ -11,6 +11,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.server.integrated.IntegratedServer;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -215,5 +216,12 @@ public abstract class MixinMinecraft
 	private int nali_extra_processKeyBinds(int constant)
 	{
 		return 1;
+	}
+
+	//clean gui
+	@Redirect(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;getUserMessage()Ljava/lang/String;"))
+	public String nali_extra_launchIntegratedServer(IntegratedServer instance)
+	{
+		return null;
 	}
 }

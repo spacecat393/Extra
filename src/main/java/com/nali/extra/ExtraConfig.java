@@ -1,12 +1,13 @@
-//package com.nali.extra;
-//
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
-//
-//@SideOnly(Side.CLIENT)
-////@Config(modid = Extra.ID)
-//public class ExtraConfig
-//{
+package com.nali.extra;
+
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+//@Config(modid = Extra.ID)
+public class ExtraConfig
+{
+	public final static boolean DEBUG_THREAD = false;
 //	public final static boolean RAW_FPS = true;
 ////	public final static boolean TRANSLUCENT_BLINK = true;
 ////	public final static boolean CLEAN = true;
@@ -31,4 +32,4 @@
 ////			}
 ////		}
 ////	}
-//}
+}
