@@ -24,8 +24,8 @@ public class Extra
 	@SideOnly(Side.CLIENT)
 	public static Entity POINT_ENTITY;
 
-	@SideOnly(Side.CLIENT)
-	public static byte UPDATE = -1;
+//	@SideOnly(Side.CLIENT)
+//	public static byte UPDATE = -1;
 
 //	@Mod.EventHandler
 //	public void onFMLServerStartedEvent(FMLServerStartedEvent event)

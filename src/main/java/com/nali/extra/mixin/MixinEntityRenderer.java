@@ -544,6 +544,7 @@ public abstract class MixinEntityRenderer
 	}
 
 	//fp
+//	private static EntityPlayerSP ENTITYPLAYERSP;
 	@Redirect(method = "renderWorldPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z"))
 	private boolean renderWorldPass(EntityRenderer instance)
 	{
@@ -579,22 +580,10 @@ public abstract class MixinEntityRenderer
 				{
 					GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 					Extra.FP |= 1;
-//					GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
-//					GlStateManager.bindTexture(0);
-					//fix first pause didn't update yaw
-					if (!this.mc.isGamePaused() || Extra.UPDATE == -1)
-					{
-						if (Extra.UPDATE == 0 || Extra.UPDATE == -1)
-						{
-//							Nali.warn("update");
-							entityplayersp.onUpdate();
-						}
-						else
-						{
-							--Extra.UPDATE;
-						}
-					}
-
+					entityplayersp.renderYawOffset = entityplayersp.rotationYaw;
+					entityplayersp.prevRenderYawOffset = entityplayersp.prevRotationYaw;
+//					entityplayersp.renderYawOffset = ExtraView.YAW;
+//					entityplayersp.prevRenderYawOffset = ExtraView.YAW;
 					this.mc.getRenderManager().renderEntity(entityplayersp, 0, 0, 0, 0, PARTIALTICKS, false);
 					Extra.FP &= 255-1;
 				}
