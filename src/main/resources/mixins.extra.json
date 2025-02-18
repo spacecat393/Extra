@@ -40,7 +40,6 @@
 	],
 	"mixins": [
 		"IMixinEntity",
-		"IMixinEntityLivingBase",
 		"MixinBlockLeaves",
 		"MixinBlockPos",
 		"MixinChunkCache",
