@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer
 {
-////	private static int WORLD_ID;
-//	@Shadow private int tickCounter;
+//	private static int SIZE;
+////	private static Integer[] INTEGER_ARRAY;
 
 	@Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;applyServerIconToResponse(Lnet/minecraft/network/ServerStatusResponse;)V", shift = At.Shift.AFTER))
 	private void nali_extra_run(CallbackInfo ci)
@@ -25,22 +25,17 @@ public abstract class MixinMinecraftServer
 //		{
 //		}
 //		int d_size = DimensionManager.getRegisteredDimensions().size();
-////		ExtraThread.TICK_WORLDSERVER_ARRAY = new WorldServer[d_size];
-////		ExtraThread.ENTITY_WORLDSERVER_ARRAY = new WorldServer[d_size];
-//		ExtraThread.MINECRAFTSERVER_ARRAY = new MinecraftServer[d_size];
-////		ExtraThread.THREAD |= ExtraThread.TICKWORLDS | ExtraThread.UPDATEENTITIES;
-////		ExtraThread.THREAD |= ExtraThread.TICKPLAYER | ExtraThread.UPDATEENTITIES;
-//		ExtraThread.THREAD |= ExtraThread.TICKWORLDS;
-////		new Thread(ExtraThread::tickPlayer).start();
-//		for (int i = 0; i < d_size; ++i)
+//		SIZE = d_size;
+//		ExtraThread.TICK_WORLDSERVER_ARRAY = new WorldServer[d_size];
+//		ExtraThread.ENTITY_WORLDSERVER_ARRAY = new WorldServer[d_size];
+////		ExtraThread.STOP_THREAD = new byte[(int)Math.ceil(d_size / 8.0F)];
+//		ExtraThread.THREAD |= ExtraThread.TICKWORLDS | ExtraThread.UPDATEENTITIES;
+////		for (int i = 0; i < d_size; ++i)
+//		for (int i = 0; i < 1; ++i)
 //		{
 //			final int id = i;
-////			if (!ExtraConfig.DEBUG_THREAD)
-////			{
-////				new Thread(() -> ExtraThread.tickWorlds(id)).start();
-////				new Thread(() -> ExtraThread.tickEntities(id)).start();
-//			new Thread(() -> ExtraThread.test(id)).start();
-////			}
+//			new Thread(() -> ExtraThread.tickWorlds(id)).start();
+//			new Thread(() -> ExtraThread.tickEntities(id)).start();
 //		}
 	}
 
@@ -61,75 +56,63 @@ public abstract class MixinMinecraftServer
 	}
 
 //	//force multi thread
+//	private static int WORLD_ID;
 //	@Inject(method = "run", at = @At(value = "TAIL"))
 //	private void nali_extra_runT(CallbackInfo ci)
 //	{
-////		ExtraThread.THREAD &= 255 - (ExtraThread.TICKPLAYER + ExtraThread.UPDATEENTITIES);
-////		ExtraThread.THREAD &= 255 - (ExtraThread.TICKWORLDS + ExtraThread.UPDATEENTITIES);
-//		ExtraThread.THREAD &= 255 - ExtraThread.TICKWORLDS;
+//		ExtraThread.THREAD &= 255 - (ExtraThread.TICKWORLDS + ExtraThread.UPDATEENTITIES);
 //	}
 //
-//	private static Integer[] INTEGER_ARRAY = new Integer[0];
 //	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/DimensionManager;getIDs(Z)[Ljava/lang/Integer;"))
-//	private Integer[] nali_extra_updateTimeLightAndEntitiesTick(boolean w)
+//	private Integer[] nali_extra_updateTimeLightAndEntitiesH(boolean w)
 //	{
-//		ExtraThread.INTEGER_ARRAY = DimensionManager.getIDs(this.tickCounter % 200 == 0);
-//		for (int x = 0; x < INTEGER_ARRAY.length; x++)
-//		{
-//			ExtraThread.MINECRAFTSERVER_ARRAY[x] = (MinecraftServer)(Object)this;
-//		}
-//
+//		WORLD_ID = 0;
+//		INTEGER_ARRAY = DimensionManager.getIDs(w);
+//		SIZE = INTEGER_ARRAY.length;
 //		return INTEGER_ARRAY;
 //	}
-////	@Inject(method = "updateTimeLightAndEntities", at = @At(value = "HEAD"))
-////	private void nali_extra_updateTimeLightAndEntitiesH(CallbackInfo ci)
-////	{
-////		WORLD_ID = 0;
-////	}
 //
-////	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;tick()V"))
-////	private void nali_extra_updateTimeLightAndEntitiesTick(WorldServer instance)
+//	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;tick()V"))
+//	private void nali_extra_updateTimeLightAndEntitiesTick(WorldServer instance)
+//	{
+//		ExtraThread.TICK_WORLDSERVER_ARRAY[WORLD_ID] = instance;
+//	}
+//
+//	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;updateEntities()V"))
+//	private void nali_extra_updateTimeLightAndEntitiesLightE(WorldServer instance)
+//	{
+//		ExtraThread.ENTITY_WORLDSERVER_ARRAY[WORLD_ID] = instance;
+//	}
+//
+//	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Ljava/lang/System;nanoTime()J", ordinal = 1))
+//	private long nali_extra_updateTimeLightAndEntities()
+//	{
+//		++WORLD_ID;
+//		return System.nanoTime();
+//	}
+//
+////	@Inject(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/DimensionManager;unloadWorlds(Ljava/util/Hashtable;)V", shift = At.Shift.BEFORE))
+////	private void nali_extra_updateTimeLightAndEntities(CallbackInfo ci)
 ////	{
-////		ExtraThread.TICK_WORLDSERVER_ARRAY[WORLD_ID] = instance;
-////		if (ExtraConfig.DEBUG_THREAD)
+////		int s = INTEGER_ARRAY.length;
+////		int e = ;
+////
+////		for (int i = 0; i < ExtraThread.TICK_WORLDSERVER_ARRAY.length; ++i)
 ////		{
-////			instance.tick();
+////			int index = i / 8;
+////			if (SIZE - i != 0)
+////			{
+////				ExtraThread.STOP_THREAD[i / 8] |= 1;
+////			}
+////			else
+////			{
+////				ExtraThread.STOP_THREAD[i / 8] &= 255 - 1;
+////			}
 ////		}
-////	}
-//
-////	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;updateEntities()V"))
-////	private void nali_extra_updateTimeLightAndEntitiesLightE(WorldServer instance)
-////	{
-//////		if (ExtraThread.WORLD_ID == 0)
-//////		{
-//////			ExtraThread.WORLDSERVER = instance;
-//////		}
-//////		else
-//////		{
-//////			instance.updateEntities();
-//////		}
-////		ExtraThread.ENTITY_WORLDSERVER_ARRAY[WORLD_ID] = instance;
-////		if (ExtraConfig.DEBUG_THREAD)
-////		{
-////			instance.updateEntities();
-////		}
-////	}
-//
-////	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Ljava/lang/System;nanoTime()J", ordinal = 1))
-////	private long nali_extra_updateTimeLightAndEntities()
-////	{
-////		++WORLD_ID;
-////		return System.nanoTime();
-////	}
-//
-////	@Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/management/PlayerList;onTick()V"))
-////	private void nali_extra_updateTimeLightAndEntities(PlayerList instance)
-////	{
-////		ExtraThread.PLAYERLIST = instance;
 ////	}
 //
 ////	private static byte TICK = 0;
-//
+////
 ////	//add cloud
 ////	@Inject(method = "tick", at = @At("HEAD"))
 ////	public void nali_extra_tick(CallbackInfo ci)

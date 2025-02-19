@@ -1,314 +1,55 @@
 //package com.nali.extra.mixin;
 //
-//import com.nali.Nali;
-//import com.nali.extra.ExtraConfig;
+//import com.nali.extra.array.ExtraArrayList;
+//import com.nali.extra.array.ExtraHashSet;
+//import com.nali.extra.array.ExtraLinkedList;
+//import com.nali.extra.array.ExtraLong2ObjectOpenHashMap;
+//import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 //import net.minecraft.entity.player.EntityPlayerMP;
 //import net.minecraft.server.management.PlayerChunkMap;
 //import net.minecraft.server.management.PlayerChunkMapEntry;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.chunk.Chunk;
+//import net.minecraft.world.WorldServer;
+//import org.spongepowered.asm.mixin.Final;
 //import org.spongepowered.asm.mixin.Mixin;
-//import org.spongepowered.asm.mixin.Unique;
+//import org.spongepowered.asm.mixin.Mutable;
+//import org.spongepowered.asm.mixin.Shadow;
 //import org.spongepowered.asm.mixin.injection.At;
 //import org.spongepowered.asm.mixin.injection.Inject;
 //import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //
-//import java.util.Iterator;
+//import java.util.List;
+//import java.util.Set;
 //
 ////force multi thread
-//@Mixin(value = PlayerChunkMap.class)
+//@Mixin(PlayerChunkMap.class)
 //public abstract class MixinPlayerChunkMap
 //{
-//	private final static byte B_LOCK = 1;
-//	private final static byte B_LOCK_IN_ISPLAYERWATCHINGCHUNK = 2;
-//	private final static byte B_LOCK_IN_UPDATEMOVINGPLAYER = 4;
-//	private final static byte B_LOCK_IN_REMOVEPLAYER = 8;
-//	private final static byte B_MARKBLOCKFORUPDATE = 16;
-//	private final static byte B_LOCK_IN_SETPLAYERVIEWRADIUS = 32;
-//	private final static byte B_LOCK_IN_ADDPLAYER = 64;
-//	private final static short B_LOCK_IN_TICK = 128;
-//	@Unique
-//	private byte extra$state;
+//	@Mutable
+//	@Shadow @Final private List<EntityPlayerMP> players;
 //
-//	@Inject(method = "getChunkIterator", at = @At(value = "HEAD"))
-//	private void nali_extra_getChunkIteratorH(CallbackInfoReturnable<Iterator<Chunk>> cir)
+//	@Mutable
+//	@Shadow @Final private List<PlayerChunkMapEntry> entries;
+//
+//	@Mutable
+//	@Shadow @Final private List<PlayerChunkMapEntry> pendingSendToPlayers;
+//
+//	@Mutable
+//	@Shadow @Final private List<PlayerChunkMapEntry> entriesWithoutChunks;
+//
+//	@Mutable
+//	@Shadow @Final private Set<PlayerChunkMapEntry> dirtyEntries;
+//
+//	@Mutable
+//	@Shadow @Final private Long2ObjectMap<PlayerChunkMapEntry> entryMap;
+//
+//	@Inject(method = "<init>", at = @At("TAIL"))
+//	public void nali_extra_init(WorldServer theWorldIn, CallbackInfo ci)
 //	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK;
-//	}
-//
-//	@Inject(method = "getChunkIterator", at = @At(value = "TAIL"))
-//	private void nali_extra_getChunkIteratorT(CallbackInfoReturnable<Iterator<Chunk>> cir)
-//	{
-//		this.extra$state &= 255 - B_LOCK;
-//	}
-//
-//	@Inject(method = "tick", at = @At(value = "HEAD"))
-//	private void nali_extra_tickH(CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_LOCK_IN_TICK;
-//	}
-//
-//	@Inject(method = "tick", at = @At(value = "TAIL"))
-//	private void nali_extra_tickT(CallbackInfo ci)
-//	{
-//		this.extra$state &= 255 - (B_LOCK + B_LOCK_IN_TICK);
-//	}
-//
-//	@Inject(method = "contains", at = @At(value = "HEAD"))
-//	private void nali_extra_containsH(int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir)
-//	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK;
-//	}
-//
-//	@Inject(method = "contains", at = @At(value = "TAIL"))
-//	private void nali_extra_containsT(int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir)
-//	{
-//		this.extra$state &= 255 - B_LOCK;
-//	}
-//
-//	@Inject(method = "getEntry", at = @At(value = "HEAD"))
-//	private void nali_extra_getEntryH(int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir)
-//	{
-//		while ((this.extra$state & B_LOCK + B_LOCK_IN_ISPLAYERWATCHINGCHUNK + B_LOCK_IN_UPDATEMOVINGPLAYER + B_LOCK_IN_REMOVEPLAYER + B_MARKBLOCKFORUPDATE) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK;
-//	}
-//
-//	@Inject(method = "getEntry", at = @At(value = "TAIL"))
-//	private void nali_extra_getEntryT(int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir)
-//	{
-//		if ((this.extra$state & B_LOCK + B_LOCK_IN_ISPLAYERWATCHINGCHUNK + B_LOCK_IN_UPDATEMOVINGPLAYER + B_LOCK_IN_REMOVEPLAYER + B_MARKBLOCKFORUPDATE) == B_LOCK)
-//		{
-//			this.extra$state &= 255 - B_LOCK;
-//		}
-//	}
-//
-//	@Inject(method = "getOrCreateEntry", at = @At(value = "HEAD"))
-//	private void nali_extra_getOrCreateEntryH(int chunkX, int chunkZ, CallbackInfoReturnable<PlayerChunkMapEntry> cir)
-//	{
-//		while ((this.extra$state & B_LOCK + B_LOCK_IN_SETPLAYERVIEWRADIUS + B_LOCK_IN_UPDATEMOVINGPLAYER + B_LOCK_IN_ADDPLAYER) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK;
-//	}
-//
-//	@Inject(method = "getOrCreateEntry", at = @At(value = "TAIL"))
-//	private void nali_extra_getOrCreateEntryT(int chunkX, int chunkZ, CallbackInfoReturnable<PlayerChunkMapEntry> cir)
-//	{
-//		if ((this.extra$state & B_LOCK + B_LOCK_IN_SETPLAYERVIEWRADIUS + B_LOCK_IN_UPDATEMOVINGPLAYER + B_LOCK_IN_ADDPLAYER) == B_LOCK)
-//		{
-//			this.extra$state &= 255 - B_LOCK;
-//		}
-//	}
-//
-//	@Inject(method = "markBlockForUpdate", at = @At(value = "HEAD"))
-//	private void nali_extra_markBlockForUpdateH(BlockPos pos, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK + B_LOCK_IN_TICK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_MARKBLOCKFORUPDATE;
-//	}
-//
-//	@Inject(method = "markBlockForUpdate", at = @At(value = "TAIL"))
-//	private void nali_extra_markBlockForUpdateT(BlockPos pos, CallbackInfo ci)
-//	{
-//		if ((this.extra$state & B_LOCK + B_LOCK_IN_TICK) == B_LOCK)
-//		{
-//			this.extra$state &= 255 - B_LOCK;
-//		}
-//		this.extra$state &= 255 - B_MARKBLOCKFORUPDATE;
-//	}
-//
-//	@Inject(method = "addPlayer", at = @At(value = "HEAD"))
-//	private void nali_extra_addPlayerH(EntityPlayerMP player, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_LOCK_IN_ADDPLAYER;
-//	}
-//
-//	@Inject(method = "addPlayer", at = @At(value = "TAIL"))
-//	private void nali_extra_addPlayerT(EntityPlayerMP player, CallbackInfo ci)
-//	{
-//		this.extra$state &= 255 - (B_LOCK + B_LOCK_IN_ADDPLAYER);
-//	}
-//
-//	@Inject(method = "removePlayer", at = @At(value = "HEAD"))
-//	private void nali_extra_removePlayerH(EntityPlayerMP player, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_LOCK_IN_REMOVEPLAYER;
-//	}
-//
-//	@Inject(method = "removePlayer", at = @At(value = "TAIL"))
-//	private void nali_extra_removePlayerT(EntityPlayerMP player, CallbackInfo ci)
-//	{
-//		this.extra$state &= 255 - (B_LOCK + B_LOCK_IN_REMOVEPLAYER);
-//	}
-//
-//	@Inject(method = "updateMovingPlayer", at = @At(value = "HEAD"))
-//	private void nali_extra_updateMovingPlayerH(EntityPlayerMP player, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_LOCK_IN_UPDATEMOVINGPLAYER;
-//	}
-//
-//	@Inject(method = "updateMovingPlayer", at = @At(value = "TAIL"))
-//	private void nali_extra_updateMovingPlayerT(EntityPlayerMP player, CallbackInfo ci)
-//	{
-//		this.extra$state &= 255 - (B_LOCK + B_LOCK_IN_UPDATEMOVINGPLAYER);
-//	}
-//
-//	@Inject(method = "isPlayerWatchingChunk", at = @At(value = "HEAD"))
-//	private void nali_extra_isPlayerWatchingChunkH(EntityPlayerMP player, int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir)
-//	{
-//		while ((this.extra$state & B_LOCK + B_LOCK_IN_TICK + B_LOCK_IN_UPDATEMOVINGPLAYER) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_LOCK_IN_ISPLAYERWATCHINGCHUNK;
-//	}
-//
-//	@Inject(method = "isPlayerWatchingChunk", at = @At(value = "TAIL"))
-//	private void nali_extra_isPlayerWatchingChunkT(EntityPlayerMP player, int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir)
-//	{
-//		if ((this.extra$state & B_LOCK + B_LOCK_IN_TICK + B_LOCK_IN_UPDATEMOVINGPLAYER) == B_LOCK)
-//		{
-//			this.extra$state &= 255 - B_LOCK;
-//		}
-//
-//		this.extra$state &= 255 - B_LOCK_IN_ISPLAYERWATCHINGCHUNK;
-//	}
-//
-//	@Inject(method = "setPlayerViewRadius", at = @At(value = "HEAD"))
-//	private void nali_extra_setPlayerViewRadiusH(int radius, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK | B_LOCK_IN_SETPLAYERVIEWRADIUS;
-//	}
-//
-//	@Inject(method = "setPlayerViewRadius", at = @At(value = "TAIL"))
-//	private void nali_extra_setPlayerViewRadiusT(int radius, CallbackInfo ci)
-//	{
-//		this.extra$state &= 255 - (B_LOCK + B_LOCK_IN_SETPLAYERVIEWRADIUS);
-//	}
-//
-//	@Inject(method = "entryChanged", at = @At(value = "HEAD"))
-//	private void nali_extra_entryChangedH(PlayerChunkMapEntry entry, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK + B_MARKBLOCKFORUPDATE) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK;
-//	}
-//
-//	@Inject(method = "entryChanged", at = @At(value = "TAIL"))
-//	private void nali_extra_entryChangedT(PlayerChunkMapEntry entry, CallbackInfo ci)
-//	{
-//		if ((this.extra$state & B_LOCK + B_MARKBLOCKFORUPDATE) == B_LOCK)
-//		{
-//			this.extra$state &= 255 - B_LOCK;
-//		}
-//	}
-//
-//	@Inject(method = "removeEntry", at = @At(value = "HEAD"))
-//	private void nali_extra_removeEntryH(PlayerChunkMapEntry entry, CallbackInfo ci)
-//	{
-//		while ((this.extra$state & B_LOCK + B_LOCK_IN_UPDATEMOVINGPLAYER + B_LOCK_IN_REMOVEPLAYER) == B_LOCK)
-//		{
-//			if (ExtraConfig.DEBUG_THREAD)
-//			{
-//				Nali.error("");
-//			}
-//		}
-//
-//		this.extra$state |= B_LOCK;
-//	}
-//
-//	@Inject(method = "removeEntry", at = @At(value = "TAIL"))
-//	private void nali_extra_removeEntryT(PlayerChunkMapEntry entry, CallbackInfo ci)
-//	{
-//		if ((this.extra$state & B_LOCK + B_LOCK_IN_UPDATEMOVINGPLAYER + B_LOCK_IN_REMOVEPLAYER) == B_LOCK)
-//		{
-//			this.extra$state &= 255 - B_LOCK;
-//		}
+//		this.players = new ExtraArrayList();
+//		this.entries = new ExtraArrayList();
+//		this.pendingSendToPlayers = new ExtraLinkedList();
+//		this.entriesWithoutChunks = new ExtraLinkedList();
+//		this.dirtyEntries = new ExtraHashSet();
+//		this.entryMap = new ExtraLong2ObjectOpenHashMap(4096);
 //	}
 //}
