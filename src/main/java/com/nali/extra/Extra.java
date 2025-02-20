@@ -1,7 +1,9 @@
 package com.nali.extra;
 
+import com.nali.extra.patch.PatchTombstone;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -43,12 +45,16 @@ public class Extra
 //		PlayerDataInv.write(world_file);
 //	}
 
-//	@Mod.EventHandler
-//	public void onFMLInitializationEvent(FMLInitializationEvent event)
-//	{
+	@Mod.EventHandler
+	public void onFMLInitializationEvent(FMLInitializationEvent event)
+	{
+		if (ExtraConfig.PATCH_TOMBSTONE)
+		{
+			PatchTombstone.init();
+		}
 //		if (event.getSide() == Side.CLIENT)
 //		{
 //			ExtraCloud.registerBlockColors();
 //		}
-//	}
+	}
 }

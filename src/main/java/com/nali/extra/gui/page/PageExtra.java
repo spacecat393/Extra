@@ -2,6 +2,7 @@ package com.nali.extra.gui.page;
 
 import com.nali.extra.gui.key.KeyMap;
 import com.nali.extra.gui.page.chunk.PageChunk;
+import com.nali.extra.gui.page.chunk.PageCostume;
 import com.nali.extra.gui.page.entity.PageEntity;
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.map.PageMap;
@@ -34,6 +35,7 @@ public class PageExtra extends PageSelect
 			new BoxTextAll("MAP".toCharArray()),
 			new BoxTextAll("ENTITY".toCharArray()),
 			new BoxTextAll("CHUNK".toCharArray()),
+			new BoxTextAll("COSTUME".toCharArray()),
 			new BoxTextAll("CONFIG".toCharArray()),
 			new BoxTextAll("ACTION".toCharArray()),
 			new BoxTextAll("COMMAND".toCharArray()),
@@ -43,7 +45,7 @@ public class PageExtra extends PageSelect
 
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
-		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
+		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
 
 		if ((this.fl & BF_SET_SELECT) == 0)
 		{
@@ -80,14 +82,19 @@ public class PageExtra extends PageSelect
 			case 6:
 				PAGE_LIST.add(this);
 				KEY_LIST.add(Key.KEY);
+				this.set(new PageCostume(), new KeySelect());
+				break;
+			case 7:
+				PAGE_LIST.add(this);
+				KEY_LIST.add(Key.KEY);
 				this.set(new PageConfig(), new KeySelect());
 				break;
-			case 8:
-				break;
 			case 9:
-				NetworkRegistry.I.sendToServer(new ServerMessage(new byte[]{SSyncChunk.ID}));
 				break;
 			case 10:
+				NetworkRegistry.I.sendToServer(new ServerMessage(new byte[]{SSyncChunk.ID}));
+				break;
+			case 11:
 				this.back();
 		}
 	}

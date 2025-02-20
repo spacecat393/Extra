@@ -36,10 +36,7 @@ public class PageMap extends Page
 	public PageMap()
 	{
 		this.c_float_array[3] = 0.5F;
-		if (this.blockpos == null)
-		{
-			this.blockpos = Minecraft.getMinecraft().player.getPosition();
-		}
+		this.blockpos = Minecraft.getMinecraft().player.getPosition();
 	}
 
 	@Override

@@ -12,20 +12,21 @@ import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraftforge.client.GuiIngameForge;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
 {
-	@Shadow public GuiIngame ingameGUI;
-
 	@Shadow protected abstract void clickMouse();
 
 	@Shadow protected abstract void rightClickMouse();
@@ -35,6 +36,8 @@ public abstract class MixinMinecraft
 //	@Shadow private int leftClickCounter;
 
 	@Shadow public GameSettings gameSettings;
+
+	@Shadow public GuiIngame ingameGUI;
 
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
@@ -104,12 +107,12 @@ public abstract class MixinMinecraft
 		ExtraQuadLine.init();
 	}
 
-	//clean gui
-	@Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;ingameGUI:Lnet/minecraft/client/gui/GuiIngame;"))
-	private void nali_extra_init_gui(Minecraft instance, GuiIngame value)
-	{
-		this.ingameGUI = new GuiIngame(instance);
-	}
+//	//clean gui
+//	@Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;ingameGUI:Lnet/minecraft/client/gui/GuiIngame;"))
+//	private void nali_extra_init_gui(Minecraft instance, GuiIngame value)
+//	{
+//		this.ingameGUI = new GuiIngame(instance);
+//	}
 
 	@Inject(method = "runTick", at = @At(value = "HEAD"))
 //	@Inject(method = "runGameLoop", at = @At("HEAD"))
@@ -147,9 +150,44 @@ public abstract class MixinMinecraft
 
 	//fbo
 //	//gtime
+	//clean gui
+	@Unique
+	private static GuiIngame extra$GUIINGAME;
+	@Unique
+	private static GuiIngameForge extra$GUIINGAMEFORGE;
+	@Unique
+	private static byte extra$STATE;
 	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
 	private void nali_extra_runGameLoopH(CallbackInfo callbackinfo)
 	{
+		if (Keyboard.isKeyDown(Keyboard.KEY_F4))
+		{
+			if ((extra$STATE & 1) == 0)
+			{
+				extra$STATE |= 1;
+				if (this.ingameGUI instanceof GuiIngameForge)
+				{
+					if (extra$GUIINGAME == null)
+					{
+						extra$GUIINGAMEFORGE = (GuiIngameForge)this.ingameGUI;
+						extra$GUIINGAME = new GuiIngame((Minecraft)(Object)this);
+					}
+					this.ingameGUI = extra$GUIINGAME;
+				}
+				else
+				{
+//				if (GUIINGAMEFORGE == null)
+//				{
+//					GUIINGAMEFORGE = new GuiIngameForge((Minecraft)(Object)this);
+//				}
+					this.ingameGUI = extra$GUIINGAMEFORGE;
+				}
+			}
+		}
+		else
+		{
+			extra$STATE &= 255-1;
+		}
 //		if (!ExtraConfig.RAW_FPS)
 		if (!SmallConfig.FAST_RAW_FPS)
 		{

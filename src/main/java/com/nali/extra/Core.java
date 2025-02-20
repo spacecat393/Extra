@@ -19,8 +19,8 @@ public class Core implements IEarlyMixinLoader, IFMLLoadingPlugin
 	@Override
 	public String[] getASMTransformerClass()
 	{
-//		return new String[]{"com.nali.extra.asm.ASM"};
 		return null;
+//		return new String[]{ASMInfo.class.getName()};
 	}
 
 	@Override

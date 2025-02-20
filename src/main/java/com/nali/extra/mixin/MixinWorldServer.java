@@ -1,9 +1,16 @@
 package com.nali.extra.mixin;
 
 import com.nali.Nali;
+import com.nali.extra.ExtraConfig;
+import com.nali.extra.patch.PatchTombstone;
 import com.nali.list.gui.da.server.SDaInvSelect;
 import com.nali.list.gui.da.server.SDaInvSelectAdd;
+import net.minecraft.profiler.Profiler;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.WorldInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,8 +18,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldServer.class)
-public abstract class MixinWorldServer
+public abstract class MixinWorldServer extends World
 {
+	protected MixinWorldServer(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client)
+	{
+		super(saveHandlerIn, info, providerIn, profilerIn, client);
+	}
+
 //	@Mutable
 //	@Shadow @Final private TreeSet<NextTickListEntry> pendingTickListEntriesTreeSet;
 //
@@ -37,7 +49,7 @@ public abstract class MixinWorldServer
 	}
 
 	@Inject(method = "updateEntities", at = @At("HEAD"))
-	public void nali_extra_updateEntities(CallbackInfo ci)
+	private void nali_extra_updateEntities(CallbackInfo ci)
 	{
 		try
 		{
@@ -47,6 +59,16 @@ public abstract class MixinWorldServer
 		catch (Exception e)
 		{
 			Nali.warn(e);
+		}
+	}
+
+	//patch tombstone
+	@Inject(method = "tick", at = @At("HEAD"))
+	private void nali_extra_tick(CallbackInfo ci)
+	{
+		if (ExtraConfig.PATCH_TOMBSTONE)
+		{
+			PatchTombstone.forceEvent(this.getWorldTime(), this.rand);
 		}
 	}
 

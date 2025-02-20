@@ -17,12 +17,12 @@
 		"MixinGuiButton",
 		"MixinGuiButtonLanguage",
 		"MixinGuiIngame",
+		"MixinGuiIngameForge",
 		"MixinGuiMainMenu",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
 		"MixinGuiTextField",
 		"MixinItemRenderer",
-		"MixinLayerArmorBase",
 		"MixinMinecraft",
 		"MixinModelBiped",
 		"MixinModelPlayer",
@@ -36,6 +36,7 @@
 		"MixinRenderGlobal",
 		"MixinRenderLivingBase",
 		"MixinRenderManager",
+		"MixinRenderPlayer",
 		"MixinTileEntityRendererDispatcher"
 	],
 	"mixins": [

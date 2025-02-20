@@ -1,7 +1,7 @@
 .gradle
 .vscode
 .idea
-libs
+lib
 bin
 build
 run/usercache.json

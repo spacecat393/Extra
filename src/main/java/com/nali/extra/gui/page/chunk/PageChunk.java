@@ -107,7 +107,6 @@ public class PageChunk extends PageEdit
 					break;
 				case 9:
 					this.back();
-					break;
 			}
 		}
 		catch (Exception e)
