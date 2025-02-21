@@ -1,4 +1,4 @@
-package com.nali.extra.gui.page.chunk;
+package com.nali.extra.gui.page;
 
 import com.nali.extra.ExtraCostume;
 import com.nali.gui.box.text.BoxTextAll;

@@ -43,7 +43,7 @@ public class SSIELook
 					break;
 				case B_SET_YAW_BODY:
 					EntityLe le = (EntityLe)e;
-					le.rotation_yaw_head = ByteReader.getFloat(servermessage.data, 3+8);
+					le.rotation_yaw_body = ByteReader.getFloat(servermessage.data, 3+8);
 					servermessage.data[2] = B_FETCH_LE;
 			}
 
@@ -56,7 +56,7 @@ public class SSIELook
 			{
 				byte[] byte_array = new byte[1 + 1 + 4 + 4 + 4];
 				EntityLe le = (EntityLe)e;
-				ByteWriter.set(byte_array, le.rotation_yaw_head, 2+4+4);
+				ByteWriter.set(byte_array, le.rotation_yaw_body, 2+4+4);
 				sendNet(byte_array, entityplayermp, e);
 			}
 		}

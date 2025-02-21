@@ -1,12 +1,12 @@
 package com.nali.list.gui.da.server;
 
 import com.nali.Nali;
+import com.nali.list.entity.si.SIEInv;
 import com.nali.list.gui.da.client.CDaInv;
 import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
-import com.nali.small.entity.inv.InvE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -70,9 +70,9 @@ public class SDaInv
 				}
 				break;
 			case B_DELETE:
-				if ((InvE.ST & InvE.BS_LOCK) == 0)
+				if ((SIEInv.ST & SIEInv.BS_LOCK) == 0)
 				{
-					InvE.ST |= InvE.BS_LOCK;
+					SIEInv.ST |= SIEInv.BS_LOCK;
 					int index = servermessage.data[4] + page * MAX_SIZE;
 
 					File inv_i_file = inv_file.listFiles()[index];
@@ -103,13 +103,13 @@ public class SDaInv
 					servermessage.data[2] = B_FETCH;
 					--max_inv_file;
 
-					InvE.ST &= 255 - InvE.BS_LOCK;
+					SIEInv.ST &= 255 - SIEInv.BS_LOCK;
 				}
 				break;
 			case B_ADD:
-				if ((InvE.ST & InvE.BS_LOCK) == 0)
+				if ((SIEInv.ST & SIEInv.BS_LOCK) == 0)
 				{
-					InvE.ST |= InvE.BS_LOCK;
+					SIEInv.ST |= SIEInv.BS_LOCK;
 
 					int file_index = 0;
 					File file = new File(inv_file, "" + file_index);
@@ -133,7 +133,7 @@ public class SDaInv
 
 					servermessage.data[2] = B_FETCH;
 					++max_inv_file;
-					InvE.ST &= 255 - InvE.BS_LOCK;
+					SIEInv.ST &= 255 - SIEInv.BS_LOCK;
 				}
 		}
 

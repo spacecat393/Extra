@@ -1,12 +1,12 @@
 package com.nali.list.gui.da.server;
 
 import com.nali.Nali;
+import com.nali.list.entity.si.SIEInv;
 import com.nali.list.gui.da.client.CDaInvSelectItem;
 import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.client.CPageDa;
 import com.nali.network.NetworkRegistry;
-import com.nali.small.entity.inv.InvE;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,9 +22,9 @@ public class SDaInvSelectItem
 	//count
 	public static void run(EntityPlayerMP entityplayermp, ServerMessage servermessage)
 	{
-		if ((InvE.ST & InvE.BS_LOCK) == 0)
+		if ((SIEInv.ST & SIEInv.BS_LOCK) == 0)
 		{
-			InvE.ST |= InvE.BS_LOCK;
+			SIEInv.ST |= SIEInv.BS_LOCK;
 			int inv = ByteReader.getInt(servermessage.data, 2);
 			int item_id = ByteReader.getInt(servermessage.data, 2+4);
 
@@ -43,7 +43,7 @@ public class SDaInvSelectItem
 			{
 				Nali.warn(e);
 			}
-			InvE.ST &= 255 - InvE.BS_LOCK;
+			SIEInv.ST &= 255 - SIEInv.BS_LOCK;
 		}
 	}
 }

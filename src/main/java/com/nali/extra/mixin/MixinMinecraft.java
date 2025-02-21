@@ -12,15 +12,13 @@ import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.util.FrameTimer;
 import net.minecraftforge.client.GuiIngameForge;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -38,6 +36,10 @@ public abstract class MixinMinecraft
 	@Shadow public GameSettings gameSettings;
 
 	@Shadow public GuiIngame ingameGUI;
+
+	@Shadow @Final public FrameTimer frameTimer;
+
+	@Shadow private int fpsCounter;
 
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
@@ -195,7 +197,7 @@ public abstract class MixinMinecraft
 //		ExtraGTime.start();
 		}
 	}
-//
+
 //	@Inject(method = "runGameLoop", at = @At(value = "TAIL"))
 //	private void nali_extra_runGameLoopT(CallbackInfo callbackinfo)
 //	{
@@ -215,6 +217,8 @@ public abstract class MixinMinecraft
 //		return false;
 //	}
 
+	//fix tr
+	private static long FRAME;
 	@Redirect(method = "updateDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;update()V"))
 	public void nali_extra_updateDisplay()
 	{
@@ -239,6 +243,8 @@ public abstract class MixinMinecraft
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 				GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ExtraFBO.FBO0);
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+				++this.fpsCounter;
+				this.frameTimer.addFrame(FRAME);
 			}
 			else
 			{
@@ -246,6 +252,38 @@ public abstract class MixinMinecraft
 			}
 
 			Small.FLAG ^= 1/* | 2*/;
+		}
+	}
+
+	@Redirect(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FrameTimer;addFrame(J)V"))
+	private void nali_extra_runGameLoop(FrameTimer instance, long runningTime)
+	{
+		if (SmallConfig.FAST_RAW_FPS)
+		{
+			this.frameTimer.addFrame(runningTime);
+		}
+		else
+		{
+			FRAME = runningTime;
+		}
+	}
+
+	@Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;fpsCounter:I", ordinal = 0))
+	private int nali_extra_runGameLoop(Minecraft instance)
+	{
+		if (SmallConfig.FAST_RAW_FPS)
+		{
+			return this.fpsCounter;
+		}
+		return 0;
+	}
+
+	@Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;fpsCounter:I", ordinal = 1))
+	private void nali_extra_runGameLoop(Minecraft instance, int value)
+	{
+		if (SmallConfig.FAST_RAW_FPS)
+		{
+			++this.fpsCounter;
 		}
 	}
 
@@ -258,7 +296,7 @@ public abstract class MixinMinecraft
 
 	//clean gui
 	@Redirect(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;getUserMessage()Ljava/lang/String;"))
-	public String nali_extra_launchIntegratedServer(IntegratedServer instance)
+	private String nali_extra_launchIntegratedServer(IntegratedServer instance)
 	{
 		return null;
 	}

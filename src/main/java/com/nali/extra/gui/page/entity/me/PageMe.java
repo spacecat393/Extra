@@ -1,7 +1,6 @@
 package com.nali.extra.gui.page.entity.me;
 
 import com.nali.extra.gui.page.entity.PageEntity;
-import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
@@ -120,7 +119,6 @@ public class PageMe extends PageEdit
 			case 6:
 				PAGE_LIST.add(this);
 				KEY_LIST.add(Key.KEY);
-				//
 				this.set(new PageInv(), new KeySelect());
 				break;
 			case 7:

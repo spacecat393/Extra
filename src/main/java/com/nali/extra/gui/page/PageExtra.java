@@ -2,7 +2,6 @@ package com.nali.extra.gui.page;
 
 import com.nali.extra.gui.key.KeyMap;
 import com.nali.extra.gui.page.chunk.PageChunk;
-import com.nali.extra.gui.page.chunk.PageCostume;
 import com.nali.extra.gui.page.entity.PageEntity;
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.map.PageMap;
