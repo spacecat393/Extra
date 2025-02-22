@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.me;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaAttribute;
 import com.nali.list.network.message.ServerMessage;
@@ -135,8 +134,6 @@ public class PageAttribute extends PageSelect
 			}
 			else
 			{
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
 //				byte select = (byte)(this.select - 2);
 //				this.set(new PageAttributeE(), new KeyEdit());
 //				STATE &= 255-1;

@@ -6,10 +6,10 @@ import com.nali.extra.gui.page.entity.PageEntity;
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.map.PageMap;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageConfig;
+import com.nali.gui.page.PageEdit;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.key.ExtraPage;
 import com.nali.list.network.message.ServerMessage;
@@ -56,37 +56,34 @@ public class PageExtra extends PageSelect
 	@Override
 	public void enter()
 	{
+		PageSelect ps;
+		PageEdit pe;
+		PageMap pm;
 		switch (this.select)
 		{
 			case 2:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageInv(), new KeyEdit());
+				pe = new PageInv();
+				this.set(pe, new KeyEdit(pe));
 				break;
 			case 3:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageMap(), new KeyMap());
+				pm = new PageMap();
+				this.set(pm, new KeyMap(pm));
 				break;
 			case 4:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageEntity(), new KeySelect());
+				ps = new PageEntity();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 5:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageChunk(), new KeyEdit());
+				pe = new PageChunk();
+				this.set(pe, new KeyEdit(pe));
 				break;
 			case 6:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageCostume(), new KeySelect());
+				ps = new PageCostume();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 7:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageConfig(), new KeySelect());
+				ps = new PageConfig();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 9:
 				break;
@@ -108,8 +105,22 @@ public class PageExtra extends PageSelect
 	@Override
 	public void exit()
 	{
-		ExtraPage.setSmallPage();
+//		Nali.warn(Page.TEMP_PAGE_LIST.size() + " STEMP_PAGE_LIST " + Page.TEMP_PAGE_LIST);
+//		Nali.warn(Page.TEMP_KEY_LIST.size() + " STEMP_KEY_LIST " + Page.TEMP_KEY_LIST);
 
-		super.exit();
+		ExtraPage.setSmallPage();
+		if (TEMP_PAGE_LIST.size() == 2)
+		{
+			this.clear();
+			TEMP_PAGE_LIST.clear();
+			TEMP_KEY_LIST.clear();
+		}
+		else
+		{
+			super.exit();
+		}
+
+//		Nali.warn(Page.TEMP_PAGE_LIST.size() + " ETEMP_PAGE_LIST " + Page.TEMP_PAGE_LIST);
+//		Nali.warn(Page.TEMP_KEY_LIST.size() + " ETEMP_KEY_LIST " + Page.TEMP_KEY_LIST);
 	}
 }

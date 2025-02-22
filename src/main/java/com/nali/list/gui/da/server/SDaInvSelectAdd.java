@@ -1,11 +1,7 @@
 package com.nali.list.gui.da.server;
 
 import com.nali.list.entity.si.SIEInv;
-import com.nali.list.gui.da.client.CDaInvSelectAdd;
-import com.nali.list.network.message.ClientMessage;
 import com.nali.list.network.message.ServerMessage;
-import com.nali.list.network.method.client.CPageDa;
-import com.nali.network.NetworkRegistry;
 import com.nali.system.bytes.ByteReader;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -22,6 +18,7 @@ public class SDaInvSelectAdd
 		//should support over than long?
 //		SDaInvSelect.RUNNABLE_LIST.add(() ->
 //		{
+//		Nali.warn("SIEInv.ST " + SIEInv.ST);
 		if ((SIEInv.ST & SIEInv.BS_LOCK) == 0)
 		{
 			SIEInv.ST |= SIEInv.BS_LOCK;
@@ -43,7 +40,9 @@ public class SDaInvSelectAdd
 
 			byte item_slot = SDaInvSelectAdd.BYTE_ARRAY[2+4];
 
+//			Nali.warn("item_slot " + item_slot);
 			ItemStack itemstack = ENTITYPLAYERMP.inventory.getStackInSlot(item_slot);
+//			Nali.warn("itemstack " + itemstack);
 //			if (!itemstack.isEmpty())
 //			{
 //				int item_id = Item.getIdFromItem(itemstack.getItem());
@@ -157,15 +156,15 @@ public class SDaInvSelectAdd
 //				}), ENTITYPLAYERMP);
 //			}
 
+//			Nali.warn("add");
 			if (SIEInv.invAdd(ENTITYPLAYERMP.world.getSaveHandler().getWorldDirectory(), inv, itemstack))
 			{
 				ENTITYPLAYERMP.inventory.removeStackFromSlot(item_slot);
-
-				NetworkRegistry.I.sendTo(new ClientMessage(new byte[]
-				{
-					CPageDa.ID,
-					CDaInvSelectAdd.ID
-				}), ENTITYPLAYERMP);
+//				NetworkRegistry.I.sendTo(new ClientMessage(new byte[]
+//				{
+//					CPageDa.ID,
+//					CDaInvSelectAdd.ID
+//				}), ENTITYPLAYERMP);
 			}
 
 			BYTE_ARRAY = null;

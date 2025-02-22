@@ -151,7 +151,7 @@ public class PageMap extends Page
 	{
 		for (BoxColor boxcolor : this.boxcolor_array)
 		{
-			OpenGlHelper.glDeleteBuffers(boxcolor.array_buffer);
+			boxcolor.clear();
 		}
 	}
 

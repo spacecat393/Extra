@@ -3,8 +3,8 @@ package com.nali.extra.gui.page.entity;
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
+import com.nali.gui.page.PageEdit;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaEntity;
 import com.nali.list.network.message.ServerMessage;
@@ -149,10 +149,9 @@ public class PageEntity extends PageSelect
 			}
 			else
 			{
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
 				byte select = (byte)(this.select - 3);
-				this.set(new PageMe(ID_LONG_ARRAY[select], NAME_STRING_ARRAY[select]), new KeyEdit());
+				PageEdit pe = new PageMe(ID_LONG_ARRAY[select], NAME_STRING_ARRAY[select]);
+				this.set(pe, new KeyEdit(pe));
 //				STATE &= 255-1;
 			}
 		}

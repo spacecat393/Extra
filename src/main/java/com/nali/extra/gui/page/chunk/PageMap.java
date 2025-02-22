@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.chunk;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaChunkMap;
@@ -141,12 +140,11 @@ public class PageMap extends PageSelect
 			}
 			else
 			{
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
 				SELECT = (byte)(this.select - 3);
 				int new_index = 2 + SELECT * (8 + 2 * 4);
 				long id = ByteReader.getLong(BYTE_ARRAY, new_index);
-				this.set(new PagePiece((int)id, (int)(id >> 32), ByteReader.getInt(BYTE_ARRAY, new_index + 8), ByteReader.getInt(BYTE_ARRAY, new_index + 8 + 4)), new KeySelect());
+				PageSelect ps = new PagePiece((int)id, (int)(id >> 32), ByteReader.getInt(BYTE_ARRAY, new_index + 8), ByteReader.getInt(BYTE_ARRAY, new_index + 8 + 4));
+				this.set(ps, new KeySelect(ps));
 //				STATE &= 255-1;
 			}
 		}

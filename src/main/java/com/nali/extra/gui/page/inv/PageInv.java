@@ -3,7 +3,6 @@ package com.nali.extra.gui.page.inv;
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.inv.select.PageSelect;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageEdit;
 import com.nali.list.gui.da.server.SDaInv;
@@ -157,12 +156,11 @@ public class PageInv extends PageEdit
 			}
 			else/* if (this.select > 1)*/
 			{
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
 				SELECT = (byte)(this.select - 3);
 //				INV = ByteReader.getShort(BYTE_ARRAY, (this.select - 3) * 2 + 2);
 //				INV = ByteReader.getInt(BYTE_ARRAY, 2 + (this.select - 3) * 4);
-				this.set(new PageSelect(), new KeySelect());
+				PageSelect ps = new PageSelect();
+				this.set(ps, new KeySelect(ps));
 //				STATE &= 255-1;
 			}
 		}

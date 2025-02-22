@@ -4,8 +4,8 @@ import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.inv.select.item.PageItem;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
+import com.nali.gui.page.PageEdit;
 import com.nali.list.gui.da.server.SDaInv;
 import com.nali.list.gui.da.server.SDaInvSelect;
 import com.nali.list.network.message.ServerMessage;
@@ -112,6 +112,7 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 //		{
 //			STATE |= 1;
 		byte boxtextall_array_length = (byte)this.boxtextall_array.length;
+		PageEdit pe;
 		if (boxtextall_array_length == 8)
 		{
 			switch (this.select)
@@ -126,12 +127,11 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 					this.sendNet(SDaInvSelect.ID, SDaInvSelect.B_FETCH);
 					break;
 				case 5:
-					PAGE_LIST.add(this);
-					KEY_LIST.add(Key.KEY);
 //						SELECT = (byte)(this.select - 2);
 //					int new_index = 2 + SELECT * (8 + 2 * 4);
 //					long id = ByteReader.getLong(BYTE_ARRAY, new_index);
-					this.set(new PageAdd(/*(int)id, (int)(id >> 32), NAME_STRING_ARRAY[SELECT]*/), new KeyEdit());
+					pe = new PageAdd(/*(int)id, (int)(id >> 32), NAME_STRING_ARRAY[SELECT]*/);
+					this.set(pe, new KeyEdit(pe));
 //					STATE &= 255-1;
 				case 6:
 					this.sendNet(SDaInv.ID, SDaInv.B_DELETE);
@@ -158,12 +158,11 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 			else if (this.select == (boxtextall_array_length - 3))
 			{
 				//add
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
 //					SELECT = (byte)(this.select - 2);
 //					int new_index = 2 + SELECT * (8 + 2 * 4);
 //					long id = ByteReader.getLong(BYTE_ARRAY, new_index);
-				this.set(new PageAdd(/*(int)id, (int)(id >> 32), NAME_STRING_ARRAY[SELECT]*/), new KeyEdit());
+				pe = new PageAdd(/*(int)id, (int)(id >> 32), NAME_STRING_ARRAY[SELECT]*/);
+				this.set(pe, new KeyEdit(pe));
 //				STATE &= 255-1;
 			}
 			else if (this.select == (boxtextall_array_length - 2))
@@ -177,12 +176,11 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 			}
 			else/* if (this.select > 1)*/
 			{
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
 //					SELECT = (byte)(this.select - 2);
 //					int new_index = 2 + SELECT * (8 + 2 * 4);
 //					long id = ByteReader.getLong(BYTE_ARRAY, new_index);
-				this.set(new PageItem(ByteReader.getInt(BYTE_ARRAY, 2 + (byte)(this.select - 3) * 4)/*(int)id, (int)(id >> 32), NAME_STRING_ARRAY[SELECT]*/), new KeyEdit());
+				pe = new PageItem(ByteReader.getInt(BYTE_ARRAY, 2 + (byte)(this.select - 3) * 4)/*(int)id, (int)(id >> 32), NAME_STRING_ARRAY[SELECT]*/);
+				this.set(pe, new KeyEdit(pe));
 //				STATE &= 255-1;
 			}
 		}

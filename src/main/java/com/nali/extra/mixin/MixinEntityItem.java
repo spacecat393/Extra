@@ -1,8 +1,8 @@
 package com.nali.extra.mixin;
 
 import com.nali.list.block.ExtraCloud;
+import com.nali.list.entity.si.SIEArea;
 import com.nali.list.item.ExtraBox;
-import com.nali.small.entity.EntityMath;
 import com.nali.small.entity.EntityRegistry;
 import com.nali.small.mix.block.BlockRegistry;
 import com.nali.small.mix.item.ItemRegistry;
@@ -56,7 +56,7 @@ public abstract class MixinEntityItem extends Entity
 				for (Entity entity : entity_map.values())
 				{
 					boolean has_inv = entity instanceof IInventoryChangedListener;
-					if (this != entity && !(entity instanceof EntityPlayer) && EntityMath.getDistanceAABBToAABB(this, entity) <= 0)
+					if (this != entity && !(entity instanceof EntityPlayer) && SIEArea.getDistanceAABBToAABB(this, entity) <= 0)
 					{
 						if (entity instanceof EntityItem || has_inv && !(entity instanceof AbstractChestHorse))
 						{

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import java.io.File;
 import java.io.IOException;
@@ -245,7 +246,8 @@ public class SDaInvSelect
 
 				if (!SDaInvSelect.ENTITYPLAYERMP.inventory.addItemStackToInventory(itemstack))
 				{
-					SDaInvSelect.ENTITYPLAYERMP.world.spawnEntity(new EntityItem(SDaInvSelect.ENTITYPLAYERMP.world, SDaInvSelect.ENTITYPLAYERMP.posX, SDaInvSelect.ENTITYPLAYERMP.posY, SDaInvSelect.ENTITYPLAYERMP.posZ, itemstack));
+					World world = SDaInvSelect.ENTITYPLAYERMP.world;
+					world.spawnEntity(new EntityItem(world, SDaInvSelect.ENTITYPLAYERMP.posX, SDaInvSelect.ENTITYPLAYERMP.posY, SDaInvSelect.ENTITYPLAYERMP.posZ, itemstack));
 				}
 			}
 			catch (IOException e)

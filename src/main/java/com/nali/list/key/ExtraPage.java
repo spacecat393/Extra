@@ -5,118 +5,92 @@ import com.nali.extra.gui.page.entity.me.PageMe;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.Page;
+import com.nali.gui.page.PageEdit;
+import com.nali.gui.page.PageSelect;
 import com.nali.key.Key;
-import com.nali.small.entity.memo.client.box.mix.MixBoxSeRSe;
-import com.nali.small.entity.memo.client.box.mix.MixBoxSleInv;
+import com.nali.small.entity.memo.client.box.mix.MixBoxSle;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SideOnly(Side.CLIENT)
 public class ExtraPage extends Key
 {
-	public static byte STATE;//1key 2bit
+	public final static byte K_KEY = 1;
+	public final static byte K_BIT = 2;
+	public static byte KS;
 
-	public static Page PAGE;
-	public static com.nali.gui.key.Key KEY;
-
-	public static List<Page> PAGE_LIST = new ArrayList();
-	public static List<com.nali.gui.key.Key> KEY_LIST = new ArrayList();
+//	public static Page PAGE;
+//	public static com.nali.gui.key.Key KEY;
 
 	@Override
 	public void run()
 	{
-		if ((MixBoxSeRSe.PAGE & MixBoxSeRSe.B_OPEN) == MixBoxSeRSe.B_OPEN)
+		if (MixBoxSle.ENTITYLE != null)
 		{
-			setSmallPage();
-		}
-		else if (MixBoxSleInv.ENTITYLE != null)
-		{
-			setSmallPage();
-
-			if (Page.PAGE_LIST.size() > 1)
+			if ((KS & K_KEY) == 0)
 			{
-				int index = Page.PAGE_LIST.size() - 1;
-				Page.PAGE.set(Page.PAGE_LIST.get(index), Page.KEY_LIST.get(index));
-				Page.PAGE_LIST.remove(index);
-				Page.KEY_LIST.remove(index);
+				setSmallPage();
+
+//				Nali.warn("TEMP_PAGE_LIST " + Page.TEMP_PAGE_LIST);
+//				Nali.warn("TEMP_KEY_LIST " + Page.TEMP_KEY_LIST);
+				PageEdit pe = new PageMe((long)MixBoxSle.ENTITYLE.world.provider.getDimension() << 32 | MixBoxSle.ENTITYLE.getEntityId(), MixBoxSle.ENTITYLE.getName());
+				Page.PAGE.set(pe, new KeyEdit(pe));
+
+				KS |= K_KEY;
 			}
 
-			Page.PAGE_LIST.add(Page.PAGE);
-			Page.KEY_LIST.add(KEY);
-			Page.PAGE.set(new PageMe((long)MixBoxSleInv.ENTITYLE.world.provider.getDimension() << 32 | MixBoxSleInv.ENTITYLE.getEntityId(), MixBoxSleInv.ENTITYLE.getName()), new KeyEdit());
-			MixBoxSleInv.ENTITYLE = null;
+			MixBoxSle.ENTITYLE = null;
 		}
 		else if (Minecraft.getMinecraft().currentScreen == null)
 		{
 			if (Keyboard.isKeyDown(Keyboard.KEY_P))
 			{
-				if ((STATE & 1) == 0)
+				if ((KS & K_KEY) == 0)
 				{
-//					if ((this.state & 2) == 2)
-//					{
-//						Page.PAGE.clear();
-//
-//						PAGE = Page.PAGE;
-//						KEY = com.nali.gui.key.Key.KEY;
-//
-//						Page.PAGE = null;
-//						com.nali.gui.key.Key.KEY = null;
-//
-//						this.state &= 255-2;
-//					}
-//					else
-//					{
 					setSmallPage();
-//						this.state |= 2;
-//					}
-					STATE |= 1;
+
+//					Nali.warn("TEMP_PAGE_LIST " + Page.TEMP_PAGE_LIST);
+//					Nali.warn("TEMP_KEY_LIST " + Page.TEMP_KEY_LIST);
+					KS |= K_KEY;
 				}
 			}
 			else
 			{
-				STATE &= 255-1;
+				KS &= 255 - K_KEY;
 			}
 		}
 	}
 
 	public static void setSmallPage()
 	{
-		if (Page.PAGE != null)
+		if (Page.TEMP_PAGE_LIST.isEmpty())
+//		if (PAGE == null)
 		{
-			PAGE.clear();
-		}
+			PageSelect ps = new PageExtra();
+			Page.PAGE = ps;
+			com.nali.gui.key.Key.KEY = new KeySelect(ps);
 
-		if (PAGE == null)
-		{
-			Page.PAGE = new PageExtra();
-			com.nali.gui.key.Key.KEY = new KeySelect();
+			Page.TEMP_PAGE_LIST.add(Page.PAGE);
+			Page.TEMP_KEY_LIST.add(com.nali.gui.key.Key.KEY);
 
-			PAGE = Page.PAGE;
-			KEY = com.nali.gui.key.Key.KEY;
-
-			PAGE_LIST = new ArrayList(Page.PAGE_LIST);
-			KEY_LIST = new ArrayList(Page.KEY_LIST);
+//			PAGE = Page.PAGE;
+//			KEY = com.nali.gui.key.Key.KEY;
 
 			Page.PAGE.init();
 			Page.WIDTH = -1;
 		}
 		else
 		{
-			if ((STATE & 2) == 2)
+			if ((KS & K_BIT) == K_BIT)
 			{
-				PAGE = Page.PAGE;
-				KEY = com.nali.gui.key.Key.KEY;
+				Page.PAGE.clear();
+				Page.TEMP_PAGE_LIST.add(Page.PAGE);
+				Page.TEMP_KEY_LIST.add(com.nali.gui.key.Key.KEY);
 
-				PAGE_LIST = new ArrayList(Page.PAGE_LIST);
-				KEY_LIST = new ArrayList(Page.KEY_LIST);
-
-				Page.PAGE_LIST.clear();
-				Page.KEY_LIST.clear();
+//				PAGE = Page.PAGE;
+//				KEY = com.nali.gui.key.Key.KEY;
 
 				Page.PAGE = null;
 				com.nali.gui.key.Key.KEY = null;
@@ -125,17 +99,20 @@ public class ExtraPage extends Key
 			}
 			else
 			{
-				Page.PAGE = PAGE;
-				com.nali.gui.key.Key.KEY = KEY;
+				int index = Page.TEMP_PAGE_LIST.size() - 1;
+				Page.PAGE = Page.TEMP_PAGE_LIST.get(index);
+				com.nali.gui.key.Key.KEY = Page.TEMP_KEY_LIST.get(index);
+				Page.TEMP_PAGE_LIST.remove(index);
+				Page.TEMP_KEY_LIST.remove(index);
 
-				Page.PAGE_LIST = PAGE_LIST;
-				Page.KEY_LIST = KEY_LIST;
+//				Page.PAGE = PAGE;
+//				com.nali.gui.key.Key.KEY = KEY;
 
 				Page.PAGE.init();
 				Page.WIDTH = -1;
 			}
 		}
 
-		STATE ^= 2;
+		KS ^= K_BIT;
 	}
 }

@@ -3,9 +3,9 @@ package com.nali.extra.gui.page.chunk;
 import com.nali.Nali;
 import com.nali.extra.ExtraView;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageEdit;
+import com.nali.gui.page.PageSelect;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,17 +51,16 @@ public class PageChunk extends PageEdit
 	{
 		try
 		{
+			PageSelect ps;
 			switch (this.select)
 			{
 				case 2:
-					PAGE_LIST.add(this);
-					KEY_LIST.add(Key.KEY);
-					this.set(new PageList(), new KeySelect());
+					ps = new PageList();
+					this.set(ps, new KeySelect(ps));
 					break;
 				case 3:
-					PAGE_LIST.add(this);
-					KEY_LIST.add(Key.KEY);
-					this.set(new PageMap(), new KeySelect());
+					ps = new PageMap();
+					this.set(ps, new KeySelect(ps));
 					break;
 				case 5:
 					if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)

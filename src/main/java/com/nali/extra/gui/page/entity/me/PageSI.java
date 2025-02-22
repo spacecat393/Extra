@@ -3,7 +3,6 @@ package com.nali.extra.gui.page.entity.me;
 import com.nali.Nali;
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaSI;
 import com.nali.list.network.message.ServerMessage;
@@ -142,9 +141,6 @@ public class PageSI extends PageSelect
 			}
 			else
 			{
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-
 				GI = BYTE_ARRAY[/*2 + */this.select/* - 2*/];
 				try
 				{

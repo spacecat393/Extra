@@ -2,10 +2,10 @@ package com.nali.extra.gui.page.entity.me;
 
 import com.nali.extra.gui.page.entity.PageEntity;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageEdit;
+import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaEntity;
 import com.nali.list.network.message.ServerMessage;
 import com.nali.list.network.method.server.SPageDa;
@@ -46,7 +46,7 @@ public class PageMe extends PageEdit
 			new BoxTextAll("ME-ATTRIBUTE".toCharArray()),
 			new BoxTextAll("ME-MIXSI".toCharArray()),
 			new BoxTextAll("ME-SI".toCharArray()),
-			new BoxTextAll("ME-INV".toCharArray()),
+//			new BoxTextAll("ME-INV".toCharArray()),
 //			new BoxTextAll("ME-MAP".toCharArray()),
 			new BoxTextAll("ME-EFFECT".toCharArray()),
 			new BoxTextAll("ACTION".toCharArray()),
@@ -55,11 +55,11 @@ public class PageMe extends PageEdit
 
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
-		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
+		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 
 		if ((this.fl & BF_SET_SELECT) == 0)
 		{
-			this.select = 9;
+			this.select = 8;
 			this.fl |= BF_SET_SELECT;
 		}
 	}
@@ -67,6 +67,8 @@ public class PageMe extends PageEdit
 	@Override
 	public void enter()
 	{
+		PageSelect ps;
+		PageEdit pe;
 		switch (this.select)
 		{
 			case 2:
@@ -97,36 +99,32 @@ public class PageMe extends PageEdit
 				this.scroll = 0;
 				break;
 			case 3:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageAttribute(), new KeySelect());
+				ps = new PageAttribute();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 4:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageMixSI(), new KeySelect());
+				ps = new PageMixSI();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 5:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageSI(), new KeySelect());
+				ps = new PageSI();
+				this.set(ps, new KeySelect(ps));
 				break;
 //			case 5:
 //				PAGE_LIST.add(this);
 //				KEY_LIST.add(Key.KEY);
 //				this.set(new PageInv(), new KeySelect());
 //				break;
+//			case 6:
+//				PAGE_LIST.add(this);
+//				KEY_LIST.add(Key.KEY);
+//				this.set(new PageSIEInv(), new KeySelect());
+//				break;
 			case 6:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageInv(), new KeySelect());
+				pe = new PageEffect();
+				this.set(pe, new KeyEdit(pe));
 				break;
-			case 7:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageEffect(), new KeyEdit());
-				break;
-			case 9:
+			case 8:
 				this.back();
 				break;
 		}

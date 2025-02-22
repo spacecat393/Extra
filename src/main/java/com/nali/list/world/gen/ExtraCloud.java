@@ -1,7 +1,7 @@
 package com.nali.list.world.gen;
 
 import com.nali.Nali;
-import com.nali.small.entity.memo.server.si.path.PathMath;
+import com.nali.list.entity.si.SIEFindMove;
 import com.nali.small.mix.block.BlockRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -234,9 +234,9 @@ public class ExtraCloud implements IWorldGenerator
 
 	public byte get(File world_file, int chunkx, int chunkz, byte chance)
 	{
-		for (byte x : PathMath.PATH_BYTE_ARRAY)
+		for (byte x : SIEFindMove.PATH_BYTE_ARRAY)
 		{
-			for (byte z : PathMath.PATH_BYTE_ARRAY)
+			for (byte z : SIEFindMove.PATH_BYTE_ARRAY)
 			{
 				if (!(x == 0 && z == 0))
 				{
