@@ -300,4 +300,31 @@ public abstract class MixinMinecraft
 	{
 		return null;
 	}
+
+//	@Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;loadingScreen:Lnet/minecraft/client/LoadingScreenRenderer;"))
+//	private void nali_extra_init(Minecraft instance, LoadingScreenRenderer value)
+//	{
+//	}
+//
+//	@Redirect(method = "resize", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;loadingScreen:Lnet/minecraft/client/LoadingScreenRenderer;"))
+//	private void nali_extra_resize(Minecraft instance, LoadingScreenRenderer value)
+//	{
+//	}
+//
+//	@Redirect(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/LoadingScreenRenderer;displaySavingString(Ljava/lang/String;)V"))
+//	private void nali_extra_launchIntegratedServer(LoadingScreenRenderer instance, String message)
+//	{
+//	}
+//
+//	@Redirect(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;serverIsInRunLoop()Z"))
+//	private boolean nali_extra_launchIntegratedServerLoop(IntegratedServer instance)
+//	{
+//		return true;
+//	}
+//
+//	@Redirect(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V", ordinal = 1))
+//	private void nali_extra_launchIntegratedServer(Minecraft instance, GuiScreen i)
+//	{
+//		instance.displayGuiScreen(null);
+//	}
 }

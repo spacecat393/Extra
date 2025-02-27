@@ -1,13 +1,15 @@
 package com.nali.extra.gui.page.map;
 
 import com.nali.extra.ExtraColor;
-import com.nali.gui.box.BoxColor;
+import com.nali.gui.box.BoxImage;
 import com.nali.gui.page.Page;
 import com.nali.list.data.NaliData;
+import com.nali.render.RenderHelper;
 import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,10 +20,10 @@ import org.lwjgl.opengl.GL20;
 @SideOnly(Side.CLIENT)
 public class PageMap extends Page
 {
-	public BoxColor[] boxcolor_array;
+	public BoxImage[] boxcolor_array;
 	public float[] vs_float_array = new float[2];
-	public float[] cw_float_array = new float[]{1, 1, 1, 0.5F};
-	public float[] cb_float_array = new float[]{0, 0, 0, 0.5F};
+	public float[] cw_float_array = new float[]{1, 1, 1, 0.75F};
+	public float[] cb_float_array = new float[]{0.5F, 0.5F, 0.5F, 0.75F};
 
 //	public final static byte BS_ENTER_MODE = 1;
 //	public byte state;
@@ -45,7 +47,7 @@ public class PageMap extends Page
 //		float size = WIDTH / 16.0F;
 		int min = Math.min(WIDTH, HEIGHT);
 		float size = min / 16.0F;
-		this.boxcolor_array = new BoxColor[16*16+1];
+		this.boxcolor_array = new BoxImage[16*16+1];
 		float x, y;
 		float fixx, fixy;
 		if (min == WIDTH)
@@ -71,29 +73,39 @@ public class PageMap extends Page
 				y += size;
 			}
 
-			BoxColor boxcolor = new BoxColor();
+			BoxImage boxcolor = new BoxImage();
 			boxcolor.x0 = x;
 			boxcolor.y0 = y;
 			boxcolor.x1 = x + size;
 			boxcolor.y1 = y + size;
+
+			boxcolor.u1 = 32;
+			boxcolor.v1 = 32;
+			boxcolor.t_width = 32;
+			boxcolor.t_height = 32;
 			this.boxcolor_array[i] = boxcolor;
 
 			x += size;
 		}
 
-		BoxColor boxcolor = new BoxColor();
+		BoxImage boxcolor = new BoxImage();
 		float h2_size = size / 4.0F;
 		boxcolor.x0 = fixx + h2_size;
 		boxcolor.y0 = fixy + h2_size;
 		boxcolor.x1 = fixx + size - h2_size;
 		boxcolor.y1 = fixy + size - h2_size;
+
+		boxcolor.u1 = 32;
+		boxcolor.v1 = 32;
+		boxcolor.t_width = 32;
+		boxcolor.t_height = 32;
 		this.boxcolor_array[16*16] = boxcolor;
 	}
 
 	@Override
 	public void gen()
 	{
-		for (BoxColor boxcolor : this.boxcolor_array)
+		for (BoxImage boxcolor : this.boxcolor_array)
 		{
 			boxcolor.v_width = WIDTH;
 			boxcolor.v_height = HEIGHT;
@@ -112,16 +124,21 @@ public class PageMap extends Page
 //		float a = RenderO.FLOATBUFFER.get(3);
 //		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		MemoS rs = ClientLoader.S_LIST.get(NaliData.SHADER_STEP + 1);
+		MemoS rs = ClientLoader.S_LIST.get(NaliData.SHADER_STEP/* + 1*/);
 		OpenGlHelper.glUseProgram(rs.program);
 		int v = rs.attriblocation_int_array[0];
 		GL20.glEnableVertexAttribArray(v);
 		byte b = 0;
 		byte bb = 0;
 //		byte bb = 0;
+
+//		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+//		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderHelper.getTextureBuffer(new ResourceLocation("textures/blocks/glowstone.png")));
+
 		for (int i = 0; i < 16*16; ++i)
 		{
-			BoxColor boxcolor = this.boxcolor_array[i];
+			BoxImage boxcolor = this.boxcolor_array[i];
 			boxcolor.draw(rs, this.v_float_array, (b++ + bb) % 2 == 0 ? this.cb_float_array : this.cw_float_array);
 			if (b % 16 == 0)
 			{
@@ -149,7 +166,7 @@ public class PageMap extends Page
 	@Override
 	public void clear()
 	{
-		for (BoxColor boxcolor : this.boxcolor_array)
+		for (BoxImage boxcolor : this.boxcolor_array)
 		{
 			boxcolor.clear();
 		}
