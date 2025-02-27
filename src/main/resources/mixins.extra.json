@@ -58,6 +58,7 @@
 		"MixinItemEgg",
 		"MixinItemFood",
 		"MixinItemSnowball",
+		"MixinItemStack",
 		"MixinLightUtil",
 		"MixinMinecraftServer",
 		"MixinStateImplementation",

@@ -42,6 +42,7 @@ public abstract class MixinMinecraft
 	@Shadow private int fpsCounter;
 
 	//*extra-s0
+	//click
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
 	private void nali_extra_setIngameFocus(Minecraft instance, int value)
 	{

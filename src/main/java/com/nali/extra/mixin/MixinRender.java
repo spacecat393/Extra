@@ -14,18 +14,20 @@ public abstract class MixinRender<T extends Entity>
 	@Overwrite
 	public boolean shouldRender(T livingEntity, ICamera camera, double camX, double camY, double camZ)
 	{
-		AxisAlignedBB axisalignedbb = livingEntity.getRenderBoundingBox().grow(0.5D);
-
-		if (axisalignedbb.hasNaN() || axisalignedbb.getAverageEdgeLength() == 0.0D)
+		if (livingEntity.ignoreFrustumCheck)
 		{
-			axisalignedbb = new AxisAlignedBB(livingEntity.posX - 2.0D, livingEntity.posY - 2.0D, livingEntity.posZ - 2.0D, livingEntity.posX + 2.0D, livingEntity.posY + 2.0D, livingEntity.posZ + 2.0D);
+			return true;
 		}
 
-//        Nali.I.logger.info("livingEntity " + livingEntity);
-//        Nali.I.logger.info("isInRangeToRender3d " + livingEntity.isInRangeToRender3d(camX, camY, camZ));
-//        Nali.I.logger.info("ignoreFrustumCheck " + livingEntity.ignoreFrustumCheck);
-//        Nali.I.logger.info("isBoundingBoxInFrustum " + camera.isBoundingBoxInFrustum(axisalignedbb));
-		return /*livingEntity.isInRangeToRender3d(camX, camY, camZ) && (*/livingEntity.ignoreFrustumCheck || camera.isBoundingBoxInFrustum(axisalignedbb)/*)*/;
+//		AxisAlignedBB axisalignedbb = livingEntity.getRenderBoundingBox().grow(0.5D);
+//
+//		if (axisalignedbb.hasNaN() || axisalignedbb.getAverageEdgeLength() == 0.0D)
+//		{
+//			axisalignedbb = new AxisAlignedBB(livingEntity.posX - 2.0D, livingEntity.posY - 2.0D, livingEntity.posZ - 2.0D, livingEntity.posX + 2.0D, livingEntity.posY + 2.0D, livingEntity.posZ + 2.0D);
+//		}
+
+//		return /*livingEntity.isInRangeToRender3d(camX, camY, camZ) && (*/livingEntity.ignoreFrustumCheck || camera.isBoundingBoxInFrustum(axisalignedbb)/*)*/;
+		return camera.isBoundingBoxInFrustum(livingEntity.getRenderBoundingBox());
 	}
 
 	//remove light
