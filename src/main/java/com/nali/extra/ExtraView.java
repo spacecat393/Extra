@@ -122,6 +122,14 @@ public class ExtraView
 		double x = blockpos.getX() + 0.5D - entityplayersp.posX;
 		double y = blockpos.getY() + 0.5D - entityplayersp.posY;
 		double z = blockpos.getZ() + 0.5D - entityplayersp.posZ;
+
+
+//		float x = (float)(blockpos.getX() - entityplayersp.posX);
+//		float y = (float)(blockpos.getY() - entityplayersp.posY);
+//		float z = (float)(blockpos.getZ() - entityplayersp.posZ);
+//		return isOccluded(x, y, z, x + 1.0F, y + 1.0F, z + 1.0F);
+
+
 //		double x = blockpos.getX();
 //		double y = blockpos.getY();
 //		double z = blockpos.getZ();
@@ -415,4 +423,48 @@ public class ExtraView
 		PITCH_BLOCK_EPSILON = ByteReader.getFloat(byte_array, 4);
 		CHUNK_EPSILON = ByteReader.getFloat(byte_array, 4+4);
 	}
+
+//	public static float[] PROJECT_M4X4_FLOAT_ARRAY;
+//	public static float[] DEPTH_FLOAT_ARRAY;
+//	public static float[] TEMP0_FLOAT_ARRAY;
+//	static
+//	{
+//		TEMP0_FLOAT_ARRAY = new float[4];
+//		TEMP0_FLOAT_ARRAY[3] = 1.0F;
+//	}
+//
+//	public static boolean isOccluded(float minx, float miny, float minz, float maxx, float maxy, float maxz)
+//	{
+//		boolean outside = true;
+//
+//		for (int i = 0; i < 8; ++i)
+//		{
+//			TEMP0_FLOAT_ARRAY[0] = (i & 1) == 0 ? minx : maxx;
+//			TEMP0_FLOAT_ARRAY[1] = (i & 2) == 0 ? miny : maxy;
+//			TEMP0_FLOAT_ARRAY[2] = (i & 4) == 0 ? minz : maxz;
+//
+//			float[] transform_v4_float_array = M4x4.mV4M4x4(TEMP0_FLOAT_ARRAY, PROJECT_M4X4_FLOAT_ARRAY, 0);
+//			float w = transform_v4_float_array[3];
+//			if (w > 0)
+//			{
+//				float x = (transform_v4_float_array[0] / w) * 0.5F + 0.5F;
+//				float y = (transform_v4_float_array[1] / w) * 0.5F + 0.5F;
+//				float z = (transform_v4_float_array[2] / w);
+//
+//				int px = (int)(x * ExtraFBO.WIDTH);
+//				int py = (int)(y * ExtraFBO.HEIGHT);
+//
+//				if (px >= 0 && px < ExtraFBO.WIDTH && py >= 0 && py < ExtraFBO.HEIGHT)
+//				{
+//					if (z < DEPTH_FLOAT_ARRAY[py * ExtraFBO.HEIGHT + px])
+//					{
+//						return false;
+//					}
+//				}
+//				outside = false;
+//			}
+//		}
+//
+//		return !outside;
+//	}
 }

@@ -416,6 +416,13 @@ public abstract class MixinRenderGlobal
 		{
 			if (time - ExtraView.TIME >= 1000)
 			{
+//				ExtraView.DEPTH_FLOAT_ARRAY = new float[ExtraFBO.WIDTH * ExtraFBO.HEIGHT];
+//				ClippingHelperImpl clippinghelperimpl = new ClippingHelperImpl();
+//				clippinghelperimpl.init();
+//				float[] view_m4x4_float_array = clippinghelperimpl.modelviewMatrix;
+//				ExtraView.PROJECT_M4X4_FLOAT_ARRAY = clippinghelperimpl.projectionMatrix;
+//				M4x4.m(view_m4x4_float_array, ExtraView.PROJECT_M4X4_FLOAT_ARRAY, 0, 0);
+
 				ExtraView.TIME = time;
 				ExtraView.TEMP_YAW = yaw;
 				ExtraView.TEMP_PITCH = pitch;
