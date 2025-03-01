@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.chunk;
 
 import com.nali.Nali;
 import com.nali.extra.ExtraView;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageEdit;
 import com.nali.gui.page.PageSelect;
@@ -19,22 +18,21 @@ public class PageChunk extends PageEdit
 	@Override
 	public void init()
 	{
-		super.init();
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("CHUNK".toCharArray()),
-			new BoxTextAll("MENU".toCharArray()),
-			new BoxTextAll("CHUNK-LIST".toCharArray()),
-			new BoxTextAll("CHUNK-MAP".toCharArray()),
-			new BoxTextAll("VIEW".toCharArray()),
-			new BoxTextAll(this.getChar("YAW_BLOCK_EPSILON " + ExtraView.YAW_BLOCK_EPSILON)),
-			new BoxTextAll(this.getChar("PITCH_BLOCK_EPSILON " + ExtraView.PITCH_BLOCK_EPSILON)),
-			new BoxTextAll(this.getChar("CHUNK_EPSILON " + ExtraView.CHUNK_EPSILON)),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"CHUNK".toCharArray(),
+			"MENU".toCharArray(),
+			"CHUNK-LIST".toCharArray(),
+			"CHUNK-MAP".toCharArray(),
+			"VIEW".toCharArray(),
+			this.getChar("YAW_BLOCK_EPSILON " + ExtraView.YAW_BLOCK_EPSILON),
+			this.getChar("PITCH_BLOCK_EPSILON " + ExtraView.PITCH_BLOCK_EPSILON),
+			this.getChar("CHUNK_EPSILON " + ExtraView.CHUNK_EPSILON),
+			"ACTION".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[3 / 8] |= 1 << 3 % 8;
 		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
@@ -44,6 +42,7 @@ public class PageChunk extends PageEdit
 			this.select = 9;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

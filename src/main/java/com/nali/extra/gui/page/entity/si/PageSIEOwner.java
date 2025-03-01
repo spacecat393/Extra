@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.si;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.si.server.SSIEOwner;
 import com.nali.list.network.message.ServerMessage;
@@ -24,18 +23,18 @@ public class PageSIEOwner extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SIE-AREA".toCharArray()),
-			new BoxTextAll("DATA".toCharArray()),
-			new BoxTextAll(("OWN " + OWNER_NAME).toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("SET".toCharArray()),
-			new BoxTextAll("DELETE".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"SIE-AREA".toCharArray(),
+			"DATA".toCharArray(),
+			("OWN " + OWNER_NAME).toCharArray(),
+			"ACTION".toCharArray(),
+			"SET".toCharArray(),
+			"DELETE".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[2 / 8] |= 1 << 2 % 8;
 
@@ -44,6 +43,7 @@ public class PageSIEOwner extends PageSelect
 			this.select = 6;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.nali.extra.gui.key;
 
 import com.nali.extra.gui.page.map.PageMap;
 import com.nali.extra.gui.page.map.PageView;
+import com.nali.gui.box.Box;
 import com.nali.gui.key.Key;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageSelect;
@@ -22,7 +23,7 @@ public class KeyMap<P extends PageMap> extends Key
 	@Override
 	public void enter()
 	{
-		int min = Math.min(PageMap.WIDTH, PageMap.HEIGHT);
+		int min = Math.min(Box.WIDTH, Box.HEIGHT);
 		float size = min / 16.0F;
 ////		float fixx, fixy;
 //		if ((this.p.state & PageMap.BS_ENTER_MODE) == 0)
@@ -40,19 +41,19 @@ public class KeyMap<P extends PageMap> extends Key
 
 		if (this.key == Keyboard.KEY_UP)
 		{
-			this.p.vs_float_array[1] += size / PageMap.HEIGHT * 2;
+			this.p.vs_float_array[1] += size / Box.HEIGHT * 2;
 		}
 		else if (this.key == Keyboard.KEY_DOWN)
 		{
-			this.p.vs_float_array[1] -= size / PageMap.HEIGHT * 2;
+			this.p.vs_float_array[1] -= size / Box.HEIGHT * 2;
 		}
 		else if (this.key == Keyboard.KEY_LEFT)
 		{
-			this.p.vs_float_array[0] -= size / PageMap.WIDTH * 2;
+			this.p.vs_float_array[0] -= size / Box.WIDTH * 2;
 		}
 		else if (this.key == Keyboard.KEY_RIGHT)
 		{
-			this.p.vs_float_array[0] += size / PageMap.WIDTH * 2;
+			this.p.vs_float_array[0] += size / Box.WIDTH * 2;
 		}
 		else if (this.key == Keyboard.KEY_O)
 		{
@@ -64,18 +65,18 @@ public class KeyMap<P extends PageMap> extends Key
 		{
 			this.p.vs_float_array[0] = 0;
 		}
-		else if (this.p.vs_float_array[0] > (min - size) / PageMap.WIDTH * 2)
+		else if (this.p.vs_float_array[0] > (min - size) / Box.WIDTH * 2)
 		{
-			this.p.vs_float_array[0] = (min - size) / PageMap.WIDTH * 2;
+			this.p.vs_float_array[0] = (min - size) / Box.WIDTH * 2;
 		}
 
 		if (this.p.vs_float_array[1] < 0)
 		{
 			this.p.vs_float_array[1] = 0;
 		}
-		else if (this.p.vs_float_array[1] > (min - size) / PageMap.HEIGHT * 2)
+		else if (this.p.vs_float_array[1] > (min - size) / Box.HEIGHT * 2)
 		{
-			this.p.vs_float_array[1] = (min - size) / PageMap.HEIGHT * 2;
+			this.p.vs_float_array[1] = (min - size) / Box.HEIGHT * 2;
 		}
 //		}
 //		else

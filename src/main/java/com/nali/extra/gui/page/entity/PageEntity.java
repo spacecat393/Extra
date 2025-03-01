@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.page.PageEdit;
 import com.nali.gui.page.PageSelect;
@@ -42,12 +41,12 @@ public class PageEntity extends PageSelect
 			MAX_MIX_PAGE = ByteReader.getInt(BYTE_ARRAY, byte_array_length - 4);
 
 			byte index = 0;
-			this.boxtextall_array = new BoxTextAll[3 + MAX_PAGE + 5];
-			this.boxtextall_array[index++] = new BoxTextAll("ENTITY".toCharArray());
-//			this.boxtextall_array[index++] = new BoxTextAll(("PAGE " + PAGE + " - " + MAX_MIX_PAGE).toCharArray());
+			this.char_2d_array = new char[3 + MAX_PAGE + 5][];
+			this.char_2d_array[index++] = "ENTITY".toCharArray();
+//			this.boxtextall_array[index++] = ("PAGE " + PAGE + " - " + MAX_MIX_PAGE).toCharArray());
 
-			this.boxtextall_array[index++] = new BoxTextAll(("PAGE " + PAGE).toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll(("MAX-PAGE " + MAX_MIX_PAGE).toCharArray());
+			this.char_2d_array[index++] = ("PAGE " + PAGE).toCharArray();
+			this.char_2d_array[index++] = ("MAX-PAGE " + MAX_MIX_PAGE).toCharArray();
 
 			short i = 2;
 			byte n_index = 0;
@@ -63,12 +62,12 @@ public class PageEntity extends PageSelect
 				ID_LONG_ARRAY[n_index] = id;
 				NAME_STRING_ARRAY[n_index++] = name_string;
 				i += name_length;
-				this.boxtextall_array[index++] = new BoxTextAll(this.getChar((int)id + " " + name_string));
+				this.char_2d_array[index++] = this.getChar((int)id + " " + name_string);
 			}
 
-			this.boxtextall_array[index++] = new BoxTextAll("ACTION".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll("MORE".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll("LESS".toCharArray());
+			this.char_2d_array[index++] = "ACTION".toCharArray();
+			this.char_2d_array[index++] = "MORE".toCharArray();
+			this.char_2d_array[index++] = "LESS".toCharArray();
 
 			if ((this.fl & BF_SET_SELECT) == 0)
 			{
@@ -76,10 +75,10 @@ public class PageEntity extends PageSelect
 				this.fl |= BF_SET_SELECT;
 			}
 
-			this.boxtextall_array[index++] = new BoxTextAll("FETCH".toCharArray());
-			this.boxtextall_array[index] = new BoxTextAll("BACK".toCharArray());
+			this.char_2d_array[index++] = "FETCH".toCharArray();
+			this.char_2d_array[index] = "BACK".toCharArray();
 
-			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+			this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 			this.group_byte_array[1 / 8] |= 1 << 1 % 8;
 			byte new_index = (byte)(index - 5);
@@ -87,17 +86,17 @@ public class PageEntity extends PageSelect
 		}
 		else
 		{
-			this.boxtextall_array = new BoxTextAll[]
+			this.char_2d_array = new char[][]
 			{
-				new BoxTextAll("ENTITY".toCharArray()),
-				new BoxTextAll("ACTION".toCharArray()),
-				new BoxTextAll("MORE".toCharArray()),
-				new BoxTextAll("LESS".toCharArray()),
-				new BoxTextAll("FETCH".toCharArray()),
-				new BoxTextAll("BACK".toCharArray())
+				"ENTITY".toCharArray(),
+				"ACTION".toCharArray(),
+				"MORE".toCharArray(),
+				"LESS".toCharArray(),
+				"FETCH".toCharArray(),
+				"BACK".toCharArray()
 			};
 
-			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+			this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 
 			if ((this.fl & BF_SET_SELECT) == 0)
@@ -106,12 +105,13 @@ public class PageEntity extends PageSelect
 				this.fl |= BF_SET_SELECT;
 			}
 		}
+		super.init();
 	}
 
 	@Override
 	public void enter()
 	{
-		byte boxtextall_array_length = (byte)this.boxtextall_array.length;
+		byte boxtextall_array_length = (byte)this.char_2d_array.length;
 		if (boxtextall_array_length == 6)
 		{
 			switch (this.select)

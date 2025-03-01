@@ -1,7 +1,8 @@
 package com.nali.extra.gui.page.map;
 
 import com.nali.extra.ExtraColor;
-import com.nali.gui.box.BoxImage;
+import com.nali.gui.box.Box;
+import com.nali.gui.box.BoxV;
 import com.nali.gui.page.Page;
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderHelper;
@@ -20,13 +21,16 @@ import org.lwjgl.opengl.GL20;
 @SideOnly(Side.CLIENT)
 public class PageMap extends Page
 {
-	public BoxImage[] boxcolor_array;
+//	public BoxImage[] boxcolor_array;
 	public float[] vs_float_array = new float[2];
 	public float[] cw_float_array = new float[]{1, 1, 1, 0.75F};
 	public float[] cb_float_array = new float[]{0.5F, 0.5F, 0.5F, 0.75F};
 
 //	public final static byte BS_ENTER_MODE = 1;
 //	public byte state;
+	public float[]
+		float_array,
+		w_float_array;
 
 	public final static byte B_XZ = 0;
 	public final static byte B_XY = 1;
@@ -45,14 +49,14 @@ public class PageMap extends Page
 	public void init()
 	{
 //		float size = WIDTH / 16.0F;
-		int min = Math.min(WIDTH, HEIGHT);
+		int min = Math.min(Box.WIDTH, Box.HEIGHT);
 		float size = min / 16.0F;
 		this.boxcolor_array = new BoxImage[16*16+1];
 		float x, y;
 		float fixx, fixy;
-		if (min == WIDTH)
+		if (min == Box.WIDTH)
 		{
-			fixy = (HEIGHT - WIDTH) / 2.0F;
+			fixy = (Box.HEIGHT - Box.WIDTH) / 2.0F;
 			y = fixy;
 			fixx = 0;
 			x = 0;
@@ -61,7 +65,7 @@ public class PageMap extends Page
 		{
 			fixy = 0;
 			y = 0;
-			fixx = (WIDTH - HEIGHT) / 2.0F;
+			fixx = (Box.WIDTH - Box.HEIGHT) / 2.0F;
 			x = fixx;
 		}
 
@@ -105,6 +109,11 @@ public class PageMap extends Page
 	@Override
 	public void gen()
 	{
+		this.clear();
+
+		this.float_array[BoxV.B_FA_V_WIDTH] = Box.WIDTH;
+		this.float_array[BoxV.B_FA_V_HEIGHT] = Box.HEIGHT;
+
 		for (BoxImage boxcolor : this.boxcolor_array)
 		{
 			boxcolor.v_width = WIDTH;

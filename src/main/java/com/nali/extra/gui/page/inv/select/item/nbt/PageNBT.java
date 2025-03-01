@@ -15,6 +15,7 @@ public class PageNBT extends PageSelect
 			this.select = 2;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

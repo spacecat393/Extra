@@ -1,7 +1,6 @@
 package com.nali.extra.gui.page;
 
 import com.nali.extra.ExtraCostume;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaCostume;
 import com.nali.list.network.message.ServerMessage;
@@ -32,24 +31,24 @@ public class PageCostume extends PageSelect
 	{
 		EntityDataManager entitydatamanager = Minecraft.getMinecraft().player.getDataManager();
 		byte inv = entitydatamanager.get(ExtraCostume.INV_BYTE_DATAPARAMETER);
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("COSTUME".toCharArray()),
-			new BoxTextAll("FLAG".toCharArray()),
-			new BoxTextAll(("HEAD " + (byte)Math.signum(inv & F_HEAD)).toCharArray()),
-			new BoxTextAll(("CHEST " + (byte)Math.signum(inv & F_CHEST)).toCharArray()),
-			new BoxTextAll(("LEGS " + (byte)Math.signum(inv & F_LEGS)).toCharArray()),
-			new BoxTextAll(("FEET " + (byte)Math.signum(inv & F_FEET)).toCharArray()),
-			new BoxTextAll("SELECT".toCharArray()),
-			new BoxTextAll(this.getChar("HEAD " + entitydatamanager.get(ExtraCostume.HEAD_ITEMSTACK_DATAPARAMETER).getDisplayName())),
-			new BoxTextAll(this.getChar("CHEST " + entitydatamanager.get(ExtraCostume.CHEST_ITEMSTACK_DATAPARAMETER).getDisplayName())),
-			new BoxTextAll(this.getChar("LEGS " + entitydatamanager.get(ExtraCostume.LEGS_ITEMSTACK_DATAPARAMETER).getDisplayName())),
-			new BoxTextAll(this.getChar("FEET " + entitydatamanager.get(ExtraCostume.FEET_ITEMSTACK_DATAPARAMETER).getDisplayName())),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"COSTUME".toCharArray(),
+			"FLAG".toCharArray(),
+			("HEAD " + (byte)Math.signum(inv & F_HEAD)).toCharArray(),
+			("CHEST " + (byte)Math.signum(inv & F_CHEST)).toCharArray(),
+			("LEGS " + (byte)Math.signum(inv & F_LEGS)).toCharArray(),
+			("FEET " + (byte)Math.signum(inv & F_FEET)).toCharArray(),
+			"SELECT".toCharArray(),
+			this.getChar("HEAD " + entitydatamanager.get(ExtraCostume.HEAD_ITEMSTACK_DATAPARAMETER).getDisplayName()),
+			this.getChar("CHEST " + entitydatamanager.get(ExtraCostume.CHEST_ITEMSTACK_DATAPARAMETER).getDisplayName()),
+			this.getChar("LEGS " + entitydatamanager.get(ExtraCostume.LEGS_ITEMSTACK_DATAPARAMETER).getDisplayName()),
+			this.getChar("FEET " + entitydatamanager.get(ExtraCostume.FEET_ITEMSTACK_DATAPARAMETER).getDisplayName()),
+			"ACTION".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[5 / 8] |= 1 << 5 % 8;
 		this.group_byte_array[10 / 8] |= 1 << 10 % 8;
@@ -58,6 +57,8 @@ public class PageCostume extends PageSelect
 		{
 			this.fl |= BF_SET_SELECT;
 		}
+
+		super.init();
 	}
 
 	@Override

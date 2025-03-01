@@ -3,7 +3,6 @@ package com.nali.extra.gui.page.inv.select;
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.inv.select.item.PageItem;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.page.PageEdit;
 import com.nali.list.gui.da.server.SDaInv;
@@ -44,22 +43,22 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 			MAX_MIX_PAGE = ByteReader.getInt(BYTE_ARRAY, byte_array_length - 4);
 
 			byte index = 0;
-			this.boxtextall_array = new BoxTextAll[3 + MAX_PAGE + 7];
-			this.boxtextall_array[index++] = new BoxTextAll("INV-SELECT".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll(("PAGE " + PAGE).toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll(("MAX-PAGE " + MAX_MIX_PAGE).toCharArray());
+			this.char_2d_array = new char[3 + MAX_PAGE + 7][];
+			this.char_2d_array[index++] = "INV-SELECT".toCharArray();
+			this.char_2d_array[index++] = ("PAGE " + PAGE).toCharArray();
+			this.char_2d_array[index++] = ("MAX-PAGE " + MAX_MIX_PAGE).toCharArray();
 
 			short i = 2;
 			while (i < byte_array_length - 4 - 1 - 4)
 			{
 				int id = ByteReader.getInt(BYTE_ARRAY, i);
 				i += 4;
-				this.boxtextall_array[index++] = new BoxTextAll(this.getChar(id + " " + new ItemStack(Item.getItemById(id)).getDisplayName()));
+				this.char_2d_array[index++] = this.getChar(id + " " + new ItemStack(Item.getItemById(id)).getDisplayName());
 			}
 
-			this.boxtextall_array[index++] = new BoxTextAll("ACTION".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll("MORE".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll("LESS".toCharArray());
+			this.char_2d_array[index++] = "ACTION".toCharArray();
+			this.char_2d_array[index++] = "MORE".toCharArray();
+			this.char_2d_array[index++] = "LESS".toCharArray();
 
 			if ((this.fl & BF_SET_SELECT) == 0)
 			{
@@ -67,12 +66,12 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 				this.fl |= BF_SET_SELECT;
 			}
 
-			this.boxtextall_array[index++] = new BoxTextAll("FETCH".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll("ADD".toCharArray());
-			this.boxtextall_array[index++] = new BoxTextAll("DELETE".toCharArray());
-			this.boxtextall_array[index] = new BoxTextAll("BACK".toCharArray());
+			this.char_2d_array[index++] = "FETCH".toCharArray();
+			this.char_2d_array[index++] = "ADD".toCharArray();
+			this.char_2d_array[index++] = "DELETE".toCharArray();
+			this.char_2d_array[index] = "BACK".toCharArray();
 
-			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+			this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 			this.group_byte_array[1 / 8] |= 1 << 1 % 8;
 			byte new_index = (byte)(index - 7);
@@ -82,19 +81,19 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 		}
 		else
 		{
-			this.boxtextall_array = new BoxTextAll[]
+			this.char_2d_array = new char[][]
 			{
-				new BoxTextAll("INV-SELECT".toCharArray()),
-				new BoxTextAll("ACTION".toCharArray()),
-				new BoxTextAll("MORE".toCharArray()),
-				new BoxTextAll("LESS".toCharArray()),
-				new BoxTextAll("FETCH".toCharArray()),
-				new BoxTextAll("ADD".toCharArray()),
-				new BoxTextAll("DELETE".toCharArray()),
-				new BoxTextAll("BACK".toCharArray())
+				"INV-SELECT".toCharArray(),
+				"ACTION".toCharArray(),
+				"MORE".toCharArray(),
+				"LESS".toCharArray(),
+				"FETCH".toCharArray(),
+				"ADD".toCharArray(),
+				"DELETE".toCharArray(),
+				"BACK".toCharArray()
 			};
 
-			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+			this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 
 			if ((this.fl & BF_SET_SELECT) == 0)
@@ -103,6 +102,8 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 				this.fl |= BF_SET_SELECT;
 			}
 		}
+
+		super.init();
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class PageSelect extends com.nali.gui.page.PageSelect
 //		if ((STATE & 1) == 0)
 //		{
 //			STATE |= 1;
-		byte boxtextall_array_length = (byte)this.boxtextall_array.length;
+		byte boxtextall_array_length = (byte)this.char_2d_array.length;
 		PageEdit pe;
 		if (boxtextall_array_length == 8)
 		{

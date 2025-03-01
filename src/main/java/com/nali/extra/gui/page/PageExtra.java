@@ -5,7 +5,6 @@ import com.nali.extra.gui.page.chunk.PageChunk;
 import com.nali.extra.gui.page.entity.PageEntity;
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.map.PageMap;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.PageConfig;
@@ -26,23 +25,23 @@ public class PageExtra extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("EXTRA".toCharArray()),
-			new BoxTextAll("GAME".toCharArray()),
-			new BoxTextAll("INV".toCharArray()),
-			new BoxTextAll("MAP".toCharArray()),
-			new BoxTextAll("ENTITY".toCharArray()),
-			new BoxTextAll("CHUNK".toCharArray()),
-			new BoxTextAll("COSTUME".toCharArray()),
-			new BoxTextAll("CONFIG".toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("COMMAND".toCharArray()),
-			new BoxTextAll("SYNC_CHUNK".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"EXTRA".toCharArray(),
+			"GAME".toCharArray(),
+			"INV".toCharArray(),
+			"MAP".toCharArray(),
+			"ENTITY".toCharArray(),
+			"CHUNK".toCharArray(),
+			"COSTUME".toCharArray(),
+			"CONFIG".toCharArray(),
+			"ACTION".toCharArray(),
+			"COMMAND".toCharArray(),
+			"SYNC_CHUNK".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
 
@@ -51,6 +50,8 @@ public class PageExtra extends PageSelect
 			this.select = 2;
 			this.fl |= BF_SET_SELECT;
 		}
+
+		super.init();
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.si;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.entity.si.SIEArea;
 import com.nali.list.gui.si.server.SSIEArea;
@@ -25,24 +24,24 @@ public class PageSIEArea extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SIE-AREA".toCharArray()),
-			new BoxTextAll("FLAG".toCharArray()),
-			new BoxTextAll(("BYPASS_ARMY " + (byte)Math.signum(FLAG & SIEArea.B_BYPASS_ARMY)).toCharArray()),
-			new BoxTextAll(("PUT_ANIMAL " + (byte)Math.signum(FLAG & SIEArea.B_PUT_ANIMAL)).toCharArray()),
-			new BoxTextAll(("PUT_PLAYER " + (byte)Math.signum(FLAG & SIEArea.B_PUT_PLAYER)).toCharArray()),
-			new BoxTextAll(("PUT_OWNER " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OWNER)).toCharArray()),
-			new BoxTextAll(("PUT_OTHER_TAMEABLE " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OTHER_TAMEABLE)).toCharArray()),
-			new BoxTextAll(("PUT_OWNER_TAMEABLE " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OWNER_TAMEABLE)).toCharArray()),
-			new BoxTextAll(("PUT_ALL_TAMEABLE " + (byte)Math.signum(FLAG & SIEArea.B_PUT_ALL_TAMEABLE)).toCharArray()),
-			new BoxTextAll(("PUT_OBJECT " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OBJECT & 0xFF)).toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("FETCH".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"SIE-AREA".toCharArray(),
+			"FLAG".toCharArray(),
+			("BYPASS_ARMY " + (byte)Math.signum(FLAG & SIEArea.B_BYPASS_ARMY)).toCharArray(),
+			("PUT_ANIMAL " + (byte)Math.signum(FLAG & SIEArea.B_PUT_ANIMAL)).toCharArray(),
+			("PUT_PLAYER " + (byte)Math.signum(FLAG & SIEArea.B_PUT_PLAYER)).toCharArray(),
+			("PUT_OWNER " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OWNER)).toCharArray(),
+			("PUT_OTHER_TAMEABLE " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OTHER_TAMEABLE)).toCharArray(),
+			("PUT_OWNER_TAMEABLE " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OWNER_TAMEABLE)).toCharArray(),
+			("PUT_ALL_TAMEABLE " + (byte)Math.signum(FLAG & SIEArea.B_PUT_ALL_TAMEABLE)).toCharArray(),
+			("PUT_OBJECT " + (byte)Math.signum(FLAG & SIEArea.B_PUT_OBJECT & 0xFF)).toCharArray(),
+			"ACTION".toCharArray(),
+			"FETCH".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[9 / 8] |= 1 << 9 % 8;
 
@@ -51,6 +50,7 @@ public class PageSIEArea extends PageSelect
 			this.select = 11;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

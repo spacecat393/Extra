@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.si;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageEdit;
 import com.nali.list.entity.si.SIELocation;
 import com.nali.list.gui.si.server.SSIELocation;
@@ -28,23 +27,22 @@ public class PageSIELocation extends PageEdit
 	@Override
 	public void init()
 	{
-		super.init();
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SIE-LOCATION".toCharArray()),
-			new BoxTextAll("FLAG".toCharArray()),
-			new BoxTextAll(("ON " + (byte)Math.signum(FLAG & SIELocation.B_ON)).toCharArray()),
-			new BoxTextAll("DATA".toCharArray()),
-			new BoxTextAll(this.getChar("X " + X)),
-			new BoxTextAll(this.getChar("Y " + Y)),
-			new BoxTextAll(this.getChar("Z " + Z)),
-			new BoxTextAll(this.getChar("FAR " + FAR)),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("FETCH".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"SIE-LOCATION".toCharArray(),
+			"FLAG".toCharArray(),
+			("ON " + (byte)Math.signum(FLAG & SIELocation.B_ON)).toCharArray(),
+			"DATA".toCharArray(),
+			this.getChar("X " + X),
+			this.getChar("Y " + Y),
+			this.getChar("Z " + Z),
+			this.getChar("FAR " + FAR),
+			"ACTION".toCharArray(),
+			"FETCH".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[2 / 8] |= 1 << 2 % 8;
 		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
@@ -54,6 +52,7 @@ public class PageSIELocation extends PageEdit
 			this.select = 9;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

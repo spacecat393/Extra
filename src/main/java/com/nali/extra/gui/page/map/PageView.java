@@ -15,5 +15,6 @@ public class PageView extends PageSelect
 	@Override
 	public void init()
 	{
+		super.init();
 	}
 }

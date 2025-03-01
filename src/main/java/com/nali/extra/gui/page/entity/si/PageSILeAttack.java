@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.si;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.entity.si.SILeAttack;
 import com.nali.list.gui.si.server.SSILeAttack;
@@ -25,19 +24,19 @@ public class PageSILeAttack extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SILE-ATTACK".toCharArray()),
-			new BoxTextAll("FLAG".toCharArray()),
-			new BoxTextAll(("REMOTE " + (byte)Math.signum(FLAG & SILeAttack.B_REMOTE)).toCharArray()),
-			new BoxTextAll(("ATTACK_POSE " + (byte)Math.signum(FLAG & SILeAttack.B_ATTACK_POSE)).toCharArray()),
-			new BoxTextAll(("WALK_TO " + (byte)Math.signum(FLAG & SILeAttack.B_WALK_TO)).toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("FETCH".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"SILE-ATTACK".toCharArray(),
+			"FLAG".toCharArray(),
+			("REMOTE " + (byte)Math.signum(FLAG & SILeAttack.B_REMOTE)).toCharArray(),
+			("ATTACK_POSE " + (byte)Math.signum(FLAG & SILeAttack.B_ATTACK_POSE)).toCharArray(),
+			("WALK_TO " + (byte)Math.signum(FLAG & SILeAttack.B_WALK_TO)).toCharArray(),
+			"ACTION".toCharArray(),
+			"FETCH".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 
@@ -46,6 +45,7 @@ public class PageSILeAttack extends PageSelect
 			this.select = 6;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

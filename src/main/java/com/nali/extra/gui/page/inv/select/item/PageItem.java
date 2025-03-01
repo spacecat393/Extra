@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.inv.select.item;
 
 import com.nali.extra.gui.page.inv.PageInv;
 import com.nali.extra.gui.page.inv.select.PageSelect;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageEdit;
 import com.nali.list.gui.da.server.SDaInvSelect;
 import com.nali.list.gui.da.server.SDaInvSelectItem;
@@ -45,27 +44,25 @@ public class PageItem extends PageEdit
 	public void init()
 	{
 		//move
-		super.init();
-
 		this.item_name = new ItemStack(Item.getItemById(this.item_id)).getDisplayName();
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SELECT-ITEM".toCharArray()),
-			new BoxTextAll("MENU".toCharArray()),
-			new BoxTextAll(("ID " + this.item_id).toCharArray()),
-			new BoxTextAll(this.getChar("NAME " + this.item_name)),
+			"SELECT-ITEM".toCharArray(),
+			"MENU".toCharArray(),
+			("ID " + this.item_id).toCharArray(),
+			this.getChar("NAME " + this.item_name),
 			//size
-			new BoxTextAll(this.getChar("SIZE " + ITEM_SIZE)),
+			this.getChar("SIZE " + ITEM_SIZE),
 
-			new BoxTextAll(this.getChar("NBT " + this.nbt)),
-			new BoxTextAll("ITEM-NBT".toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("MOVE".toCharArray()),
-			new BoxTextAll("DELETE".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			this.getChar("NBT " + this.nbt),
+			"ITEM-NBT".toCharArray(),
+			"ACTION".toCharArray(),
+			"MOVE".toCharArray(),
+			"DELETE".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 
@@ -74,6 +71,7 @@ public class PageItem extends PageEdit
 			this.select = 10;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

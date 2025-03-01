@@ -1,7 +1,6 @@
 package com.nali.extra.gui.page.inv.select;
 
 import com.nali.extra.gui.page.inv.PageInv;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageEdit;
 import com.nali.list.gui.da.server.SDaInvSelectAdd;
 import com.nali.list.network.message.ServerMessage;
@@ -25,20 +24,18 @@ public class PageAdd extends PageEdit
 	@Override
 	public void init()
 	{
-		super.init();
-
 		InventoryPlayer inventoryplayer = Minecraft.getMinecraft().player.inventory;
 		byte inventoryplayer_size = (byte)inventoryplayer.getSizeInventory();
 		byte index = 0;
-		this.boxtextall_array = new BoxTextAll[2 + inventoryplayer_size + 2];
-		this.boxtextall_array[index++] = new BoxTextAll("SELECT-ADD".toCharArray());
-		this.boxtextall_array[index++] = new BoxTextAll("ITEM".toCharArray());
+		this.char_2d_array = new char[2 + inventoryplayer_size + 2][];
+		this.char_2d_array[index++] = "SELECT-ADD".toCharArray();
+		this.char_2d_array[index++] = "ITEM".toCharArray();
 		for (byte i = 0; i < inventoryplayer_size; ++i)
 		{
 			ItemStack itemstack = inventoryplayer.getStackInSlot(i);
-			this.boxtextall_array[index++] = new BoxTextAll(this.getChar(i + " " + itemstack.getDisplayName()));
+			this.char_2d_array[index++] = this.getChar(i + " " + itemstack.getDisplayName());
 		}
-		this.boxtextall_array[index++] = new BoxTextAll("ACTION".toCharArray());
+		this.char_2d_array[index++] = "ACTION".toCharArray();
 
 		if ((this.fl & BF_SET_SELECT) == 0)
 		{
@@ -46,9 +43,9 @@ public class PageAdd extends PageEdit
 			this.fl |= BF_SET_SELECT;
 		}
 
-		this.boxtextall_array[index] = new BoxTextAll("BACK".toCharArray());
+		this.char_2d_array[index] = "BACK".toCharArray();
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		byte new_index = (byte)(index - 2);
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[new_index / 8] |= 1 << new_index % 8;
@@ -58,6 +55,7 @@ public class PageAdd extends PageEdit
 //			Nali.warn("" + boxtextall);
 //			Nali.warn("" + boxtextall.char_array);
 //		}
+		super.init();
 	}
 
 	@Override
@@ -66,7 +64,7 @@ public class PageAdd extends PageEdit
 //		if ((STATE & 1) == 0)
 //		{
 //			STATE |= 1;
-		if (this.select == this.boxtextall_array.length - 1)
+		if (this.select == this.char_2d_array.length - 1)
 		{
 			this.back();
 		}

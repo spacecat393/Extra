@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.si;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageEdit;
 import com.nali.list.gui.si.server.SSIELook;
 import com.nali.list.network.message.ServerMessage;
@@ -23,20 +22,19 @@ public class PageSILeLook extends PageEdit
 	@Override
 	public void init()
 	{
-		super.init();
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SIE-LOOK".toCharArray()),
-			new BoxTextAll("DATA".toCharArray()),
-			new BoxTextAll(this.getChar("YAW " + PageSIELook.YAW)),
-			new BoxTextAll(this.getChar("PITCH " + PageSIELook.PITCH)),
-			new BoxTextAll(this.getChar("YAW_BODY " + YAW_BODY)),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("FETCH".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"SIE-LOOK".toCharArray(),
+			"DATA".toCharArray(),
+			this.getChar("YAW " + PageSIELook.YAW),
+			this.getChar("PITCH " + PageSIELook.PITCH),
+			this.getChar("YAW_BODY " + YAW_BODY),
+			"ACTION".toCharArray(),
+			"FETCH".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 
@@ -45,6 +43,7 @@ public class PageSILeLook extends PageEdit
 			this.select = 6;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

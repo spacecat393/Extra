@@ -2,7 +2,6 @@ package com.nali.extra.gui.page.entity.si;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.entity.si.SIEFollow;
 import com.nali.list.gui.si.server.SSIEFollow;
@@ -25,18 +24,18 @@ public class PageSIEFollow extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SIE-FOLLOW".toCharArray()),
-			new BoxTextAll("FLAG".toCharArray()),
-			new BoxTextAll(("TP_TO " + (byte)Math.signum(FLAG & SIEFollow.B_TP_TO)).toCharArray()),
-			new BoxTextAll(("WALK_TO " + (byte)Math.signum(FLAG & SIEFollow.B_WALK_TO)).toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("FETCH".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"SIE-FOLLOW".toCharArray(),
+			"FLAG".toCharArray(),
+			("TP_TO " + (byte)Math.signum(FLAG & SIEFollow.B_TP_TO)).toCharArray(),
+			("WALK_TO " + (byte)Math.signum(FLAG & SIEFollow.B_WALK_TO)).toCharArray(),
+			"ACTION".toCharArray(),
+			"FETCH".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[3 / 8] |= 1 << 3 % 8;
 
@@ -45,6 +44,7 @@ public class PageSIEFollow extends PageSelect
 			this.select = 5;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.nali.extra.gui.page.entity.me;
 
 import com.nali.extra.gui.page.PageExtra;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaMixSI;
 import com.nali.list.network.message.ServerMessage;
@@ -24,17 +23,17 @@ public class PageMixSI extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("MIX-SI".toCharArray()),
-			new BoxTextAll("FLAG".toCharArray()),
-			new BoxTextAll(("LOAD_CHUNK " + (byte)Math.signum(FLAG & MixSIE.B_LOAD_CHUNK)).toCharArray()),
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("FETCH".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"MIX-SI".toCharArray(),
+			"FLAG".toCharArray(),
+			("LOAD_CHUNK " + (byte)Math.signum(FLAG & MixSIE.B_LOAD_CHUNK)).toCharArray(),
+			"ACTION".toCharArray(),
+			"FETCH".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[2 / 8] |= 1 << 2 % 8;
 
@@ -43,6 +42,7 @@ public class PageMixSI extends PageSelect
 			this.select = 4;
 			this.fl |= BF_SET_SELECT;
 		}
+		super.init();
 	}
 
 	@Override

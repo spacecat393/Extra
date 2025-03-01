@@ -1,6 +1,5 @@
 package com.nali.extra.gui.page.chunk;
 
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.page.PageSelect;
 import com.nali.list.gui.da.server.SDaChunkList;
 import com.nali.list.gui.da.server.SDaChunkMap;
@@ -35,19 +34,19 @@ public class PagePiece extends PageSelect
 	{
 		if (this.i == -1)
 		{
-			this.boxtextall_array = new BoxTextAll[]
+			this.char_2d_array = new char[][]
 			{
-				new BoxTextAll("CHUNK-PIECE".toCharArray()),
-				new BoxTextAll("DATA".toCharArray()),
-				new BoxTextAll(("ID " + PageList.SELECT).toCharArray()),
-				new BoxTextAll(("X " + this.x).toCharArray()),
-				new BoxTextAll(("Z " + this.z).toCharArray()),
-				new BoxTextAll("ACTION".toCharArray()),
-				new BoxTextAll("DELETE".toCharArray()),
-				new BoxTextAll("BACK".toCharArray())
+				"CHUNK-PIECE".toCharArray(),
+				"DATA".toCharArray(),
+				("ID " + PageList.SELECT).toCharArray(),
+				("X " + this.x).toCharArray(),
+				("Z " + this.z).toCharArray(),
+				"ACTION".toCharArray(),
+				"DELETE".toCharArray(),
+				"BACK".toCharArray()
 			};
 
-			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+			this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 			this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 
@@ -61,19 +60,19 @@ public class PagePiece extends PageSelect
 		}
 		else
 		{
-			this.boxtextall_array = new BoxTextAll[]
+			this.char_2d_array = new char[][]
 			{
-				new BoxTextAll("CHUNK-PIECE".toCharArray()),
-				new BoxTextAll("DATA".toCharArray()),
-				new BoxTextAll(("I " + this.i).toCharArray()),
-				new BoxTextAll(("D " + this.d).toCharArray()),
-				new BoxTextAll(("X " + this.x).toCharArray()),
-				new BoxTextAll(("Z " + this.z).toCharArray()),
-				new BoxTextAll("ACTION".toCharArray()),
-				new BoxTextAll("DELETE".toCharArray()),
-				new BoxTextAll("BACK".toCharArray())
+				"CHUNK-PIECE".toCharArray(),
+				"DATA".toCharArray(),
+				("I " + this.i).toCharArray(),
+				("D " + this.d).toCharArray(),
+				("X " + this.x).toCharArray(),
+				("Z " + this.z).toCharArray(),
+				"ACTION".toCharArray(),
+				"DELETE".toCharArray(),
+				"BACK".toCharArray()
 			};
-			this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+			this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 			this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 			this.group_byte_array[5 / 8] |= 1 << 5 % 8;
 
@@ -85,6 +84,7 @@ public class PagePiece extends PageSelect
 
 			this.min_select = 7;
 		}
+		super.init();
 	}
 
 	@Override
