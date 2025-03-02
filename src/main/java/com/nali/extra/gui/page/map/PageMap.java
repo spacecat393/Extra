@@ -39,7 +39,7 @@ public class PageMap extends Page
 	public Map<String, Integer> texture_map = new HashMap();
 	public int
 		size,
-		array_buffer;
+		array_buffer = -1;
 
 	public final static byte B_XZ = 0;
 	public final static byte B_XY = 1;
