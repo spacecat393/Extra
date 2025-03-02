@@ -2,6 +2,7 @@ package com.nali.list.key;
 
 import com.nali.extra.gui.page.PageExtra;
 import com.nali.extra.gui.page.entity.me.PageMe;
+import com.nali.gui.box.Box;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.Page;
@@ -79,7 +80,7 @@ public class ExtraPage extends Key
 //			KEY = com.nali.gui.key.Key.KEY;
 
 			Page.PAGE.init();
-			Page.WIDTH = -1;
+			Box.WIDTH = -1;
 		}
 		else
 		{
@@ -109,7 +110,7 @@ public class ExtraPage extends Key
 //				com.nali.gui.key.Key.KEY = KEY;
 
 				Page.PAGE.init();
-				Page.WIDTH = -1;
+				Box.WIDTH = -1;
 			}
 		}
 
