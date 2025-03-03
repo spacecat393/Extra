@@ -197,6 +197,7 @@ public abstract class MixinEntityRenderer
 //		}
 //	}
 
+	//tr
 	@Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", ordinal = 3))
 	private int nali_extra_renderWorldPassL2(RenderGlobal instance, BlockRenderLayer k, double d0, int d1, Entity d2)
 	{

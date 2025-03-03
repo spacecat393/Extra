@@ -63,20 +63,44 @@ public class KeyMap<P extends PageMap> extends Key
 
 		if (this.p.vs_float_array[0] < 0)
 		{
+			if (this.p.xyz == PageMap.B_XZ)
+			{
+				this.p.blockpos = this.p.blockpos.west();
+			}
+
 			this.p.vs_float_array[0] = 0;
+			this.reP();
 		}
 		else if (this.p.vs_float_array[0] > (min - size) / Box.WIDTH * 2)
 		{
+			if (this.p.xyz == PageMap.B_XZ)
+			{
+				this.p.blockpos = this.p.blockpos.east();
+			}
+
 			this.p.vs_float_array[0] = (min - size) / Box.WIDTH * 2;
+			this.reP();
 		}
 
 		if (this.p.vs_float_array[1] < 0)
 		{
+			if (this.p.xyz == PageMap.B_XZ)
+			{
+				this.p.blockpos = this.p.blockpos.north();
+			}
+
 			this.p.vs_float_array[1] = 0;
+			this.reP();
 		}
 		else if (this.p.vs_float_array[1] > (min - size) / Box.HEIGHT * 2)
 		{
+			if (this.p.xyz == PageMap.B_XZ)
+			{
+				this.p.blockpos = this.p.blockpos.south();
+			}
+
 			this.p.vs_float_array[1] = (min - size) / Box.HEIGHT * 2;
+			this.reP();
 		}
 //		}
 //		else
@@ -85,5 +109,12 @@ public class KeyMap<P extends PageMap> extends Key
 //		}
 
 		super.enter();
+	}
+
+	public void reP()
+	{
+		this.p.clear();
+		this.p.init();
+		Box.WIDTH = -1;
 	}
 }

@@ -1,5 +1,6 @@
 package com.nali.extra.mixin;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ public abstract class MixinItemStack
 	private EnumActionResult nali_extra_onItemUse(Item instance, EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		instance.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		Minecraft.getMinecraft().player.swingArm(EnumHand.MAIN_HAND);
 		return EnumActionResult.PASS;
 	}
 

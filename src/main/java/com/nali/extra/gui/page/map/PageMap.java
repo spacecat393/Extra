@@ -11,9 +11,12 @@ import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.Display;
@@ -36,9 +39,12 @@ public class PageMap extends Page
 	public float[]
 		float_array,
 		w_float_array;
-	public Map<String, Integer> texture_map = new HashMap();
+	public int[]
+//		texture_id_int_array,
+		texture_int_array;
 	public int
 		size,
+		half,
 		array_buffer = -1;
 
 	public final static byte B_XZ = 0;
@@ -54,7 +60,10 @@ public class PageMap extends Page
 		this.blockpos = Minecraft.getMinecraft().player.getPosition();
 
 		this.float_array = new float[BoxV.B_FAL + BoxVT.B_FAL];
-		this.size = 16*16;
+		this.half = 16;
+		this.size = this.half * this.half;
+//		this.texture_id_int_array = new int[this.size];
+		this.texture_int_array = new int[this.size];
 		this.w_float_array = new float[(this.size + 1) * BoxVT.B_WFAL];
 
 		for (int i = 0; i < this.size; ++i)
@@ -70,6 +79,59 @@ public class PageMap extends Page
 	@Override
 	public void init()
 	{
+		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
+
+		int z = -1;
+//		int string_map_index = 0;
+		Map<String, Integer> string_map = new HashMap();
+		if (this.xyz == B_XZ)
+		{
+			//need check
+			for (int i = 0; i < this.size; ++i)
+			{
+				int x = i % this.half;
+				if (x == 0)
+				{
+					++z;
+				}
+//				Nali.warn("this.blockpos.add(x, 0, z) " + this.blockpos.add(x, 0, z));
+				String string = "textures/blocks/" + entityplayersp.world.getBlockState(this.blockpos.add(x, 0, z)).getBlock().getRegistryName().getPath() + ".png";
+//				Integer integer = string_map.get(string);
+//				if (integer == null)
+//				{
+//					integer = string_map_index;
+//					string_map.put(string, string_map_index);
+//					++string_map_index;
+//				}
+//				this.texture_id_int_array[i] = integer;
+//				Nali.warn(entityplayersp.world.getBlockState(this.blockpos.add(x, 0, 0)).getBlock().getRegistryName().getPath());
+				Integer texture = string_map.get(string);
+				if (texture == null)
+				{
+					texture = RenderHelper.getTextureBuffer(new ResourceLocation(string));
+					if (texture == -1)
+					{
+						texture = TextureUtil.MISSING_TEXTURE.getGlTextureId();
+					}
+					string_map.put(string, texture);
+				}
+				this.texture_int_array[i] = texture;
+			}
+		}
+//		int i = 0;
+//		Set<String> set = string_map.keySet();
+//		this.texture_int_array = new int[set.size()];
+//		for (String string : set)
+//		{
+//			int texture = RenderHelper.getTextureBuffer(new ResourceLocation(string));
+////			Nali.warn("texture " + texture);
+//			if (texture == -1)
+//			{
+//				texture = TextureUtil.MISSING_TEXTURE.getGlTextureId();
+////				Nali.warn("ntexture " + texture);
+//			}
+//			this.texture_int_array[i++] = texture;
+//		}
 	}
 
 	@Override
@@ -103,7 +165,7 @@ public class PageMap extends Page
 
 		for (int i = 0; i < this.size; ++i)
 		{
-			if (i != 0 && i % 16 == 0)
+			if (i != 0 && i % this.half == 0)
 			{
 				x = fixx;
 				y += size;
@@ -149,10 +211,35 @@ public class PageMap extends Page
 //			boxcolor.gen();
 //		}
 		float h2_size = size / 4.0F;
-		this.float_array[BoxV.B_FA_X0] = fixx + h2_size;
-		this.float_array[BoxV.B_FA_Y0] = fixy + h2_size;
-		this.float_array[BoxV.B_FA_X1] = fixx + size - h2_size;
-		this.float_array[BoxV.B_FA_Y1] = fixy + size - h2_size;
+//		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
+//		entityplayersp.rotationYaw;
+		Vec3d vec3d = Minecraft.getMinecraft().player.getLookVec();
+		float xx = (float)(h2_size * vec3d.x);
+		float zz = (float)(h2_size * vec3d.z);
+
+		this.float_array[BoxV.B_FA_X0] = fixx + h2_size + xx;
+		this.float_array[BoxV.B_FA_Y0] = fixy + h2_size + zz;
+		this.float_array[BoxV.B_FA_X1] = fixx + size - h2_size + xx;
+		this.float_array[BoxV.B_FA_Y1] = fixy + size - h2_size + zz;
+//		EnumFacing enumfacing = Minecraft.getMinecraft().player.getHorizontalFacing();
+//		switch (enumfacing)
+//		{
+//			case NORTH:
+//				this.float_array[BoxV.B_FA_Y0] -= h2_size;
+//				this.float_array[BoxV.B_FA_Y1] -= h2_size;
+//				break;
+//			case SOUTH:
+//				this.float_array[BoxV.B_FA_Y0] += h2_size;
+//				this.float_array[BoxV.B_FA_Y1] += h2_size;
+//				break;
+//			case WEST:
+//				this.float_array[BoxV.B_FA_X0] -= h2_size;
+//				this.float_array[BoxV.B_FA_X1] -= h2_size;
+//				break;
+//			case EAST:
+//				this.float_array[BoxV.B_FA_X0] += h2_size;
+//				this.float_array[BoxV.B_FA_X1] += h2_size;
+//		}
 		BoxVT.set(this.float_array, this.w_float_array, this.size * BoxVT.B_WFAL);
 		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(this.w_float_array));
 	}
@@ -175,7 +262,7 @@ public class PageMap extends Page
 
 //		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 //		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderHelper.getTextureBuffer(new ResourceLocation("textures/blocks/glowstone.png")));
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderHelper.getTextureBuffer(new ResourceLocation("textures/blocks/glowstone.png")));
 
 //		byte b = 0;
 //		byte bb = 0;
@@ -198,7 +285,15 @@ public class PageMap extends Page
 ////				bb ^= 1;
 //			}
 //		}
-		Box.draw(rs, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 0, this.size * 6);
+		for (int i = 0; i < this.size; ++i)
+		{
+//			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture_int_array[this.texture_id_int_array[i]]);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture_int_array[i]);
+			Box.draw(rs, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, i * 6, 6);
+		}
+
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, );
+//		Box.draw(rs, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 0, this.size * 6);
 		this.c_float_array[0] = ExtraColor.RED;
 		this.c_float_array[1] = ExtraColor.GREEN;
 		this.c_float_array[2] = ExtraColor.BLUE;

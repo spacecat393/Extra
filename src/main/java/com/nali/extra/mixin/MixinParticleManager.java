@@ -1,8 +1,12 @@
 package com.nali.extra.mixin;
 
+import com.nali.NaliConfig;
 import com.nali.extra.ExtraView;
+import com.nali.small.Small;
+import com.nali.small.SmallConfig;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,6 +41,27 @@ public abstract class MixinParticleManager
 			{
 				ci.cancel();
 			}
+		}
+	}
+
+	//tr
+	@Inject(method = "renderParticles", at = @At(value = "HEAD"), cancellable = true)
+	private void nali_extra_renderParticles(Entity entityIn, float partialTicks, CallbackInfo ci)
+	{
+		//!need check
+		if (!NaliConfig.NEED_EXTRA || (SmallConfig.FAST_RAW_FPS && Small.FLAG == 0) || (!SmallConfig.FAST_RAW_FPS && (Small.FLAG & 1) == 1))
+		{
+			ci.cancel();
+		}
+	}
+
+	@Inject(method = "renderLitParticles", at = @At(value = "HEAD"), cancellable = true)
+	private void nali_extra_renderLitParticles(Entity entityIn, float partialTicks, CallbackInfo ci)
+	{
+		//!need check
+		if (!NaliConfig.NEED_EXTRA || (SmallConfig.FAST_RAW_FPS && Small.FLAG == 0) || (!SmallConfig.FAST_RAW_FPS && (Small.FLAG & 1) == 1))
+		{
+			ci.cancel();
 		}
 	}
 
